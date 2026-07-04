@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace DVLD
 {
-    public partial class Main : Form
+    public partial class frmAddEditPerson : Form
     {
-        public Main()
+        public frmAddEditPerson()
         {
             InitializeComponent();
-        }
-
-        private void Main_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

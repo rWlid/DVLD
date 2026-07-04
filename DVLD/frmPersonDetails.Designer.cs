@@ -1,6 +1,6 @@
 ﻿namespace DVLD
 {
-    partial class Main
+    partial class frmPersonDetails
     {
         /// <summary>
         /// Required designer variable.
@@ -28,21 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // Main
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(909, 525);
-            this.Name = "Main";
-            this.Text = "Main";
-            this.Load += new System.EventHandler(this.Main_Load);
-            this.ResumeLayout(false);
-
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Text = "frmPersonDetails";
         }
 
         #endregion
     }
 }
-
