@@ -12,7 +12,7 @@ namespace DVLD.DAL
             DataTable dt = new DataTable();
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = "SELECT People.PersonID, People.NationalNo, People.FirstName, People.SecondName, People.ThirdName, People.LastName, People.DateOfBirth, CASE People.Gendor WHEN 0 THEN 'Male' WHEN 1 THEN 'Female' END AS Gender, People.Phone, People.Email, Countries.CountryName FROM Countries INNER JOIN People ON Countries.CountryID = People.NationalityCountryID";
+            string query = "SELECT CAST(People.PersonID AS NVARCHAR(20)) AS PersonID, People.NationalNo, People.FirstName, People.SecondName, People.ThirdName, People.LastName, People.DateOfBirth, CASE People.Gendor WHEN 0 THEN 'Male' WHEN 1 THEN 'Female' END AS Gender, People.Phone, People.Email, Countries.CountryName FROM Countries INNER JOIN People ON Countries.CountryID = People.NationalityCountryID";
 
             SqlCommand command = new SqlCommand(query, connection);
 
