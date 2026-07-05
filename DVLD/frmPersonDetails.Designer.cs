@@ -32,6 +32,7 @@
             this.lblFormTitle = new System.Windows.Forms.Label();
             this.btnCloseForm = new System.Windows.Forms.Button();
             this.ctrlPersonDetails1 = new DVLD.ctrlPersonDetails();
+            this.llblEditPersonInfo = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // lblFormTitle
@@ -56,6 +57,7 @@
             this.btnCloseForm.TabIndex = 8;
             this.btnCloseForm.Text = "    Close";
             this.btnCloseForm.UseVisualStyleBackColor = true;
+            this.btnCloseForm.Click += new System.EventHandler(this.btnCloseForm_Click);
             // 
             // ctrlPersonDetails1
             // 
@@ -73,11 +75,23 @@
             this.ctrlPersonDetails1.Size = new System.Drawing.Size(703, 251);
             this.ctrlPersonDetails1.TabIndex = 0;
             // 
+            // llblEditPersonInfo
+            // 
+            this.llblEditPersonInfo.AutoSize = true;
+            this.llblEditPersonInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.llblEditPersonInfo.Location = new System.Drawing.Point(600, 134);
+            this.llblEditPersonInfo.Name = "llblEditPersonInfo";
+            this.llblEditPersonInfo.Size = new System.Drawing.Size(93, 15);
+            this.llblEditPersonInfo.TabIndex = 9;
+            this.llblEditPersonInfo.TabStop = true;
+            this.llblEditPersonInfo.Text = "Edit Person Info";
+            // 
             // frmPersonDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(747, 396);
+            this.Controls.Add(this.llblEditPersonInfo);
             this.Controls.Add(this.btnCloseForm);
             this.Controls.Add(this.lblFormTitle);
             this.Controls.Add(this.ctrlPersonDetails1);
@@ -85,6 +99,7 @@
             this.Text = "Person Details";
             this.Load += new System.EventHandler(this.frmPersonDetails_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -93,5 +108,6 @@
         private ctrlPersonDetails ctrlPersonDetails1;
         private System.Windows.Forms.Label lblFormTitle;
         private System.Windows.Forms.Button btnCloseForm;
+        private System.Windows.Forms.LinkLabel llblEditPersonInfo;
     }
 }

@@ -60,9 +60,15 @@ namespace DVLD.DAL
                     NationalNo = (string)reader["NationalNo"];
                     FirstName = (string)reader["FirstName"];
                     SecondName = (string)reader["SecondName"];
-                    ThirdName = (string)reader["ThirdName"];
+                    if (reader["ThirdName"] != DBNull.Value)
+                    {
+                        ThirdName = (string)reader["ThirdName"];
+                    }
                     LastName = (string)reader["LastName"];
-                    Email = (string)reader["Email"];
+                    if (reader["Email"] != DBNull.Value)
+                    {
+                        Email = (string)reader["Email"];
+                    }
                     Phone = (string)reader["Phone"];
                     Address = (string)reader["Address"];
                     DateOfBirth = (DateTime)reader["DateOfBirth"];
@@ -73,10 +79,6 @@ namespace DVLD.DAL
                     if (reader["ImagePath"] != DBNull.Value)
                     {
                         ImagePath = (string)reader["ImagePath"];
-                    }
-                    else
-                    {
-                        ImagePath = "";
                     }
 
                 }
