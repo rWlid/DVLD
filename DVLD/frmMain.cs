@@ -19,7 +19,8 @@ namespace DVLD
 
         private void Main_Load(object sender, EventArgs e)
         {
-
+            frmManagePeople frm = new frmManagePeople();
+            frm.ShowDialog();
         }
     }
 }

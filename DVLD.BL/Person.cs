@@ -20,7 +20,7 @@ namespace DVLD.BL
         public string ThirdName { set; get; }
         public string LastName { set; get; }
         public DateTime DateOfBirth { set; get; }
-        public int Gendor { set; get; }
+        public byte Gender { set; get; }
         public string Address { set; get; }
         public string Phone { set; get; }
         public string Email { set; get; }
@@ -37,7 +37,7 @@ namespace DVLD.BL
             this.ThirdName= "";
             this.LastName = "";
             this.DateOfBirth = DateTime.Now;
-            this.Gendor = -1;
+            this.Gender = 1;
             this.Address = "";
             this.Phone = "";
             this.Email = "";
@@ -49,7 +49,7 @@ namespace DVLD.BL
         }
 
         private clsPerson(int ID, string NationalNo, string FirstName, string SecondName,
-            string ThirdName, string LastName, DateTime DateOfBirth, int Gendor,
+            string ThirdName, string LastName, DateTime DateOfBirth, byte Gender,
             string Address, string Phone, string Email, int CountryID, string ImagePath)
         {
             this.ID = ID;
@@ -59,7 +59,7 @@ namespace DVLD.BL
             this.ThirdName = ThirdName;
             this.LastName = LastName;
             this.DateOfBirth = DateOfBirth;
-            this.Gendor = Gendor;
+            this.Gender = Gender;
             this.Address = Address;
             this.Phone = Phone;
             this.Email = Email;
@@ -71,6 +71,26 @@ namespace DVLD.BL
         public static DataTable GetAllPeople()
         {
             return clsPersonDataAccess.GetAllPeople();
+        }
+        public static clsPerson Find(int ID)
+        {
+
+            string NationalNo = "", FirstName = "", SecondName = "", ThirdName = "", LastName = "", Email = "",
+                Phone = "", Address = "", ImagePath = "";
+            DateTime DateOfBirth = DateTime.Now;
+            int CountryID = -1;
+            byte Gender = 1;
+
+            if (clsPersonDataAccess.GetPersonInfoByID(ID, ref  NationalNo, ref  FirstName, ref  SecondName,
+            ref  ThirdName, ref  LastName, ref  DateOfBirth, ref  Gender,
+            ref  Address, ref  Phone, ref  Email, ref  CountryID, ref ImagePath))
+            {
+                return new clsPerson(ID, NationalNo, FirstName, SecondName,
+                            ThirdName, LastName, DateOfBirth, Gender,
+                            Address, Phone, Email, CountryID, ImagePath);
+            }
+            else { return null; }
+                
         }
     }
 }

@@ -89,5 +89,14 @@ namespace DVLD
         {
             this.Close();
         }
+
+        private void dgvAllPeople_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int PersonID = Convert.ToInt32(dgvAllPeople.CurrentRow.Cells[0].Value);
+
+            frmPersonDetails frm = new frmPersonDetails(PersonID);
+            frm.ShowDialog();
+
+        }
     }
 }

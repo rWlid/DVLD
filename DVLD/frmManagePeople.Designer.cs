@@ -29,30 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmManagePeople));
-            this.pbHeader = new System.Windows.Forms.PictureBox();
             this.lblFormTitle = new System.Windows.Forms.Label();
             this.dgvAllPeople = new System.Windows.Forms.DataGridView();
             this.cmbFilterBy = new System.Windows.Forms.ComboBox();
             this.tBFilter = new System.Windows.Forms.TextBox();
             this.lblFilterBy = new System.Windows.Forms.Label();
-            this.btnAddNewPerson = new System.Windows.Forms.Button();
-            this.btnCloseForm = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblNumberOfRecords = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pbHeader)).BeginInit();
+            this.btnCloseForm = new System.Windows.Forms.Button();
+            this.btnAddNewPerson = new System.Windows.Forms.Button();
+            this.pbHeader = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAllPeople)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbHeader)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pbHeader
-            // 
-            this.pbHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pbHeader.Image = ((System.Drawing.Image)(resources.GetObject("pbHeader.Image")));
-            this.pbHeader.Location = new System.Drawing.Point(0, 0);
-            this.pbHeader.Name = "pbHeader";
-            this.pbHeader.Size = new System.Drawing.Size(1204, 121);
-            this.pbHeader.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbHeader.TabIndex = 0;
-            this.pbHeader.TabStop = false;
             // 
             // lblFormTitle
             // 
@@ -78,6 +67,7 @@
             this.dgvAllPeople.ReadOnly = true;
             this.dgvAllPeople.Size = new System.Drawing.Size(1180, 273);
             this.dgvAllPeople.TabIndex = 2;
+            this.dgvAllPeople.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAllPeople_CellMouseDoubleClick);
             this.dgvAllPeople.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvAllPeople_DataBindingComplete);
             // 
             // cmbFilterBy
@@ -122,27 +112,6 @@
             this.lblFilterBy.TabIndex = 5;
             this.lblFilterBy.Text = "Filter By:";
             // 
-            // btnAddNewPerson
-            // 
-            this.btnAddNewPerson.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNewPerson.Image")));
-            this.btnAddNewPerson.Location = new System.Drawing.Point(1141, 163);
-            this.btnAddNewPerson.Name = "btnAddNewPerson";
-            this.btnAddNewPerson.Size = new System.Drawing.Size(51, 44);
-            this.btnAddNewPerson.TabIndex = 6;
-            this.btnAddNewPerson.UseVisualStyleBackColor = true;
-            // 
-            // btnCloseForm
-            // 
-            this.btnCloseForm.Image = ((System.Drawing.Image)(resources.GetObject("btnCloseForm.Image")));
-            this.btnCloseForm.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCloseForm.Location = new System.Drawing.Point(1077, 492);
-            this.btnCloseForm.Name = "btnCloseForm";
-            this.btnCloseForm.Size = new System.Drawing.Size(115, 38);
-            this.btnCloseForm.TabIndex = 7;
-            this.btnCloseForm.Text = "    Close";
-            this.btnCloseForm.UseVisualStyleBackColor = true;
-            this.btnCloseForm.Click += new System.EventHandler(this.btnCloseForm_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -163,6 +132,38 @@
             this.lblNumberOfRecords.TabIndex = 9;
             this.lblNumberOfRecords.Text = "0";
             // 
+            // btnCloseForm
+            // 
+            this.btnCloseForm.Image = ((System.Drawing.Image)(resources.GetObject("btnCloseForm.Image")));
+            this.btnCloseForm.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCloseForm.Location = new System.Drawing.Point(1077, 492);
+            this.btnCloseForm.Name = "btnCloseForm";
+            this.btnCloseForm.Size = new System.Drawing.Size(115, 38);
+            this.btnCloseForm.TabIndex = 7;
+            this.btnCloseForm.Text = "    Close";
+            this.btnCloseForm.UseVisualStyleBackColor = true;
+            this.btnCloseForm.Click += new System.EventHandler(this.btnCloseForm_Click);
+            // 
+            // btnAddNewPerson
+            // 
+            this.btnAddNewPerson.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNewPerson.Image")));
+            this.btnAddNewPerson.Location = new System.Drawing.Point(1141, 163);
+            this.btnAddNewPerson.Name = "btnAddNewPerson";
+            this.btnAddNewPerson.Size = new System.Drawing.Size(51, 44);
+            this.btnAddNewPerson.TabIndex = 6;
+            this.btnAddNewPerson.UseVisualStyleBackColor = true;
+            // 
+            // pbHeader
+            // 
+            this.pbHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pbHeader.Image = ((System.Drawing.Image)(resources.GetObject("pbHeader.Image")));
+            this.pbHeader.Location = new System.Drawing.Point(0, 0);
+            this.pbHeader.Name = "pbHeader";
+            this.pbHeader.Size = new System.Drawing.Size(1204, 121);
+            this.pbHeader.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbHeader.TabIndex = 0;
+            this.pbHeader.TabStop = false;
+            // 
             // frmManagePeople
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -179,10 +180,10 @@
             this.Controls.Add(this.lblFormTitle);
             this.Controls.Add(this.pbHeader);
             this.Name = "frmManagePeople";
-            this.Text = "frmManagePeople";
+            this.Text = "Manage People";
             this.Load += new System.EventHandler(this.frmManagePeople_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pbHeader)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAllPeople)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbHeader)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
