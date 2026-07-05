@@ -35,6 +35,10 @@
             this.cmbFilterBy = new System.Windows.Forms.ComboBox();
             this.tBFilter = new System.Windows.Forms.TextBox();
             this.lblFilterBy = new System.Windows.Forms.Label();
+            this.btnAddNewPerson = new System.Windows.Forms.Button();
+            this.btnCloseForm = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblNumberOfRecords = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbHeader)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAllPeople)).BeginInit();
             this.SuspendLayout();
@@ -106,6 +110,7 @@
             this.tBFilter.TabIndex = 4;
             this.tBFilter.Visible = false;
             this.tBFilter.TextChanged += new System.EventHandler(this.tBFilter_TextChanged);
+            this.tBFilter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tBFilter_KeyPress);
             // 
             // lblFilterBy
             // 
@@ -117,11 +122,56 @@
             this.lblFilterBy.TabIndex = 5;
             this.lblFilterBy.Text = "Filter By:";
             // 
+            // btnAddNewPerson
+            // 
+            this.btnAddNewPerson.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNewPerson.Image")));
+            this.btnAddNewPerson.Location = new System.Drawing.Point(1141, 163);
+            this.btnAddNewPerson.Name = "btnAddNewPerson";
+            this.btnAddNewPerson.Size = new System.Drawing.Size(51, 44);
+            this.btnAddNewPerson.TabIndex = 6;
+            this.btnAddNewPerson.UseVisualStyleBackColor = true;
+            // 
+            // btnCloseForm
+            // 
+            this.btnCloseForm.Image = ((System.Drawing.Image)(resources.GetObject("btnCloseForm.Image")));
+            this.btnCloseForm.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCloseForm.Location = new System.Drawing.Point(1077, 492);
+            this.btnCloseForm.Name = "btnCloseForm";
+            this.btnCloseForm.Size = new System.Drawing.Size(115, 38);
+            this.btnCloseForm.TabIndex = 7;
+            this.btnCloseForm.Text = "    Close";
+            this.btnCloseForm.UseVisualStyleBackColor = true;
+            this.btnCloseForm.Click += new System.EventHandler(this.btnCloseForm_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(8, 498);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(96, 20);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "# Records:";
+            // 
+            // lblNumberOfRecords
+            // 
+            this.lblNumberOfRecords.AutoSize = true;
+            this.lblNumberOfRecords.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumberOfRecords.Location = new System.Drawing.Point(101, 498);
+            this.lblNumberOfRecords.Name = "lblNumberOfRecords";
+            this.lblNumberOfRecords.Size = new System.Drawing.Size(18, 20);
+            this.lblNumberOfRecords.TabIndex = 9;
+            this.lblNumberOfRecords.Text = "0";
+            // 
             // frmManagePeople
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1204, 542);
+            this.Controls.Add(this.lblNumberOfRecords);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnCloseForm);
+            this.Controls.Add(this.btnAddNewPerson);
             this.Controls.Add(this.lblFilterBy);
             this.Controls.Add(this.tBFilter);
             this.Controls.Add(this.cmbFilterBy);
@@ -146,5 +196,9 @@
         private System.Windows.Forms.ComboBox cmbFilterBy;
         private System.Windows.Forms.TextBox tBFilter;
         private System.Windows.Forms.Label lblFilterBy;
+        private System.Windows.Forms.Button btnAddNewPerson;
+        private System.Windows.Forms.Button btnCloseForm;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblNumberOfRecords;
     }
 }

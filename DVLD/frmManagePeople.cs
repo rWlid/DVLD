@@ -32,10 +32,8 @@ namespace DVLD
             dgvAllPeople.Columns["ThirdName"].HeaderText = "Third Name";
             dgvAllPeople.Columns["LastName"].HeaderText = "Last Name";
             dgvAllPeople.Columns["DateOfBirth"].HeaderText = "Date Of Birth";
-            dgvAllPeople.Columns["Phone"].HeaderText = "Phone";
-            dgvAllPeople.Columns["Email"].HeaderText = "Email";
-            dgvAllPeople.Columns["CountryName"].HeaderText = "Nationality";
 
+            lblNumberOfRecords.Text = dgvAllPeople.RowCount.ToString();
         }
 
         private void frmManagePeople_Load(object sender, EventArgs e)
@@ -69,7 +67,27 @@ namespace DVLD
             else
             {
                 tBFilter.Visible = false;
+                tBFilter.Clear();
             }
+        }
+
+        private void tBFilter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            
+            if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != ' ' && e.KeyChar != '@')
+            {
+                e.Handled = true;
+            }
+
+            if(cmbFilterBy.SelectedIndex == 1 || cmbFilterBy.SelectedIndex == 9)
+            {
+                if(!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
+            }
+        }
+
+        private void btnCloseForm_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
