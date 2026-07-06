@@ -60,26 +60,15 @@ namespace DVLD.DAL
                     NationalNo = (string)reader["NationalNo"];
                     FirstName = (string)reader["FirstName"];
                     SecondName = (string)reader["SecondName"];
-                    if (reader["ThirdName"] != DBNull.Value)
-                    {
-                        ThirdName = (string)reader["ThirdName"];
-                    }
+                    ThirdName = reader["ThirdName"] != DBNull.Value ? (string)reader["ThirdName"] : "";
                     LastName = (string)reader["LastName"];
-                    if (reader["Email"] != DBNull.Value)
-                    {
-                        Email = (string)reader["Email"];
-                    }
+                    Email = reader["Email"] != DBNull.Value ? (string)reader["Email"] : "";
                     Phone = (string)reader["Phone"];
                     Address = (string)reader["Address"];
                     DateOfBirth = (DateTime)reader["DateOfBirth"];
                     CountryID = (int)reader["NationalityCountryID"];
                     Gender = (byte)reader["Gender"];
-
-                    //ImagePath: allows null in database so we should handle null
-                    if (reader["ImagePath"] != DBNull.Value)
-                    {
-                        ImagePath = (string)reader["ImagePath"];
-                    }
+                    ImagePath = reader["ImagePath"] != DBNull.Value ? (string)reader["ImagePath"] : "";
 
                 }
                 else
@@ -172,6 +161,76 @@ namespace DVLD.DAL
 
 
             return PersonID;
+        }
+        public static bool UpdatePerson(int PersonID, string NationalNo, string FirstName, string SecondName,
+                 string ThirdName, string LastName, DateTime DateOfBirth, byte Gender,
+                 string Address, string Phone, string Email, int CountryID, string ImagePath)
+        {
+            int rowsAffected = 0;
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+
+            string query = @"Update  People  
+                            set FirstName = @FirstName,SecondName = @SecondName, ThirdName = @ThirdName,LastName = @LastName, 
+                                Email = @Email, 
+                                Phone = @Phone, 
+                                Address = @Address, 
+                                DateOfBirth = @DateOfBirth,
+                                Gender = @Gender,
+                                NationalNo = @NationalNo,
+                                NationalityCountryID = @NationalityCountryID,
+                                ImagePath =@ImagePath
+                                where PersonID = @PersonID";
+
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@PersonID", PersonID);
+            command.Parameters.AddWithValue("@NationalNo", NationalNo);
+            command.Parameters.AddWithValue("@FirstName", FirstName);
+            command.Parameters.AddWithValue("@SecondName", SecondName);
+
+            if (ThirdName != "" && ThirdName != null)
+                command.Parameters.AddWithValue("@ThirdName", ThirdName);
+            else
+                command.Parameters.AddWithValue("@ThirdName", System.DBNull.Value);
+
+            command.Parameters.AddWithValue("@LastName", LastName);
+
+            if (Email != "" && Email != null)
+                command.Parameters.AddWithValue("@Email", Email);
+            else
+                command.Parameters.AddWithValue("@Email", System.DBNull.Value);
+
+            command.Parameters.AddWithValue("@Phone", Phone);
+            command.Parameters.AddWithValue("@Address", Address);
+            command.Parameters.AddWithValue("@DateOfBirth", DateOfBirth);
+            command.Parameters.AddWithValue("@NationalityCountryID", CountryID);
+            command.Parameters.AddWithValue("@Gender", Gender);
+
+            if (ImagePath != "" && ImagePath != null)
+                command.Parameters.AddWithValue("@ImagePath", ImagePath);
+            else
+                command.Parameters.AddWithValue("@ImagePath", System.DBNull.Value);
+
+            try
+            {
+                connection.Open();
+                rowsAffected = command.ExecuteNonQuery();
+            }
+
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Error: " + ex.Message);
+                return false;
+
+            }
+
+            finally
+            {
+                connection.Close();
+            }
+
+
+            return (rowsAffected > 0);
         }
     }
 }

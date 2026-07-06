@@ -96,6 +96,7 @@ namespace DVLD
 
             frmPersonDetails frm = new frmPersonDetails(PersonID);
             frm.ShowDialog();
+            _RefreshPeopleList();
 
         }
 
@@ -103,6 +104,7 @@ namespace DVLD
         {
             frmAddEditPerson frm = new frmAddEditPerson(-1);
             frm.ShowDialog();
+            _RefreshPeopleList();
         }
     }
 }

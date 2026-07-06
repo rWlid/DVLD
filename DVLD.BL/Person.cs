@@ -67,7 +67,12 @@ namespace DVLD.BL
             this.ImagePath = ImagePath;
             Mode = enMode.Update;
         }
-        private bool _UpdatePerson() { return true; }
+        private bool _UpdatePerson() 
+        {
+            return clsPersonDataAccess.UpdatePerson(this.ID, this.NationalNo, this.FirstName, this.SecondName,
+             this.ThirdName, this.LastName, this.DateOfBirth, this.Gender,
+             this.Address, this.Phone, this.Email, this.CountryID, this.ImagePath);
+        }
         private bool _AddNewPerson()
         {
             this.ID = clsPersonDataAccess.AddNewPerson(this.NationalNo, this.FirstName, this.SecondName,

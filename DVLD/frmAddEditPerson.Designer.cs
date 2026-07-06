@@ -96,6 +96,7 @@
             this.btnCloseForm.TabIndex = 9;
             this.btnCloseForm.Text = "    Close";
             this.btnCloseForm.UseVisualStyleBackColor = true;
+            this.btnCloseForm.Click += new System.EventHandler(this.btnCloseForm_Click);
             // 
             // btnSave
             // 
@@ -376,7 +377,6 @@
             this.rbFemale.TabIndex = 24;
             this.rbFemale.Text = "Female";
             this.rbFemale.UseVisualStyleBackColor = true;
-            this.rbFemale.CheckedChanged += new System.EventHandler(this.rbFemale_CheckedChanged);
             // 
             // rdMale
             // 

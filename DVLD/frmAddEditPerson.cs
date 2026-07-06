@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -61,15 +62,37 @@ namespace DVLD
                 return;
             }
 
+            lblFormTitle.Text = "Update Person";
+            this.Text = "Update Person";
+
+            lblPersonID.Text = _Person.ID.ToString();
+            txtNationalNo.Text = _Person.NationalNo;
+            txtFirstName.Text = _Person.FirstName;
+            txtSecondName.Text = _Person.SecondName;
+            txtThirdName.Text = _Person.ThirdName;
+            txtLastName.Text = _Person.LastName;
+            txtAddress.Text = _Person.Address;
+            txtEmail.Text = _Person.Email;
+            txtPhone.Text = _Person.Phone;
+            dtpDOB.Value = _Person.DateOfBirth;
+            _Person.CountryID = clsCountry.Find(cbCountry.Text).ID;
+            cbCountry.SelectedIndex = cbCountry.FindString(clsCountry.Find(_Person.CountryID).CountryName);
+            rdMale.Checked = _Person.Gender == (byte)0 ? true : false;
+            pbPersonPicture.ImageLocation = _Person.ImagePath != null ? _Person.ImagePath : "";
+            if(_Person.ImagePath != null && _Person.ImagePath != "")
+            {
+               pbPersonPicture.Load(_Person.ImagePath);
+            }
+            else
+            {
+                pbPersonPicture.Image = _Person.Gender == (byte)0 ? DVLD.Properties.Resources.Male_512 : DVLD.Properties.Resources.Female_512;
+            }
+
+
         }
         private void frmAddEditPerson_Load(object sender, EventArgs e)
         {
             _LoadData();
-        }
-
-        private void rbFemale_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -81,6 +104,8 @@ namespace DVLD
             _Person.LastName = txtLastName.Text;
             _Person.Address = txtAddress.Text;
             _Person.DateOfBirth = dtpDOB.Value;
+            _Person.Email = txtEmail.Text;
+            _Person.Phone = txtPhone.Text;
             _Person.CountryID = clsCountry.Find(cbCountry.Text).ID;
             _Person.Gender = rdMale.Checked == true ? (byte)0 : (byte)1;
             _Person.ImagePath = pbPersonPicture.ImageLocation != null ? pbPersonPicture.ImageLocation : "";
@@ -94,6 +119,11 @@ namespace DVLD
             }
 
 
+        }
+
+        private void btnCloseForm_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

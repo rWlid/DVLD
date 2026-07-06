@@ -68,5 +68,13 @@ namespace DVLD
         {
             this.Close();
         }
+
+        private void llblEditPersonInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmAddEditPerson frm = new frmAddEditPerson(_PersonID);
+            frm.ShowDialog();
+            _Person = clsPerson.Find(_PersonID);
+            _LoadData();
+        }
     }
 }
