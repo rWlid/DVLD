@@ -56,8 +56,15 @@ namespace DVLD
             get { return lblCountry.Text; }
             set { lblCountry.Text = value; }
         }
-        public PictureBox pbPerson { set { pbPersonPicture.Image = value.Image; } }
-
+        public Image PersonImage
+        {
+            get { return pbPersonPicture.Image; }
+            set
+            {
+                pbPersonPicture.Image?.Dispose();
+                pbPersonPicture.Image = value;
+            }
+        }
         public ctrlPersonDetails()
         {
             InitializeComponent();
@@ -65,7 +72,12 @@ namespace DVLD
 
         private void lblGender_TextChanged(object sender, EventArgs e)
         {
-            if (lblGender.Text.Equals("Female"))
+            if (lblGender.Text.Equals("Male"))
+            {
+                label12.Image = DVLD.Properties.Resources.Man_32;
+                pbPersonPicture.Image = DVLD.Properties.Resources.Male_512;
+            }
+            else
             {
                 label12.Image = DVLD.Properties.Resources.Woman_32;
                 pbPersonPicture.Image = DVLD.Properties.Resources.Female_512;

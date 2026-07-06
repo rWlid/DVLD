@@ -25,27 +25,17 @@ namespace DVLD
         private void _LoadData()
         {
             ctrlPersonDetails1.PersonID = _PersonID.ToString();
-
             ctrlPersonDetails1.FullName = $"{_Person.FirstName} {_Person.SecondName} {_Person.ThirdName} {_Person.LastName}";
-
             ctrlPersonDetails1.NationalNo = _Person.NationalNo;
-
-            switch (_Person.Gender) { case 0: ctrlPersonDetails1.Gender = "Male"; break; 
-                                      case 1: ctrlPersonDetails1.Gender = "Female"; break; }
-
+            ctrlPersonDetails1.Gender = _Person.Gender == 0 ? "Male" : "Female";
             ctrlPersonDetails1.Email = _Person.Email;
-
             ctrlPersonDetails1.Address = _Person.Address;
-
             ctrlPersonDetails1.DOB = _Person.DateOfBirth.ToString("dd/MM/yyyy");
-
             ctrlPersonDetails1.Phone = _Person.Phone;
-
             ctrlPersonDetails1.Country = clsCountry.Find(_Person.CountryID).CountryName;
-
             if (_Person.ImagePath != "")
             {
-                // pictureBox1.Load(_Person.ImagePath);
+                ctrlPersonDetails1.PersonImage = Image.FromFile(_Person.ImagePath);
             }
         }
         private void frmPersonDetails_Load(object sender, EventArgs e)

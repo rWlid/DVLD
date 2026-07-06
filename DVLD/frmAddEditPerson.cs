@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
@@ -20,6 +21,7 @@ namespace DVLD
         private enMode _Mode;
         int _PersonID;
         clsPerson _Person;
+        string ImagePath = null;
         public frmAddEditPerson(int PersonID)
         {
             InitializeComponent();
@@ -39,6 +41,14 @@ namespace DVLD
 
             }
 
+        }
+        private void _SetDefaultImage()
+        {
+            
+            if (_Person.ImagePath == "")
+            {
+                pbPersonPicture.Image = rdMale.Checked == true ? DVLD.Properties.Resources.Male_512 : DVLD.Properties.Resources.Female_512;
+            }
         }
         private void _LoadData()
         {
@@ -73,19 +83,17 @@ namespace DVLD
             txtLastName.Text = _Person.LastName;
             txtAddress.Text = _Person.Address;
             txtEmail.Text = _Person.Email;
-            txtPhone.Text = _Person.Phone;
+            txtPhone.Text = _Person.Phone; 
             dtpDOB.Value = _Person.DateOfBirth;
-            _Person.CountryID = clsCountry.Find(cbCountry.Text).ID;
             cbCountry.SelectedIndex = cbCountry.FindString(clsCountry.Find(_Person.CountryID).CountryName);
-            rdMale.Checked = _Person.Gender == (byte)0 ? true : false;
-            pbPersonPicture.ImageLocation = _Person.ImagePath != null ? _Person.ImagePath : "";
-            if(_Person.ImagePath != null && _Person.ImagePath != "")
+            if (_Person.Gender == (byte)0) { rdMale.Checked = true; } else { rbFemale.Checked = true; }
+            if (_Person.ImagePath != null && _Person.ImagePath != "")
             {
-               pbPersonPicture.Load(_Person.ImagePath);
+                pbPersonPicture.Image = Image.FromFile(_Person.ImagePath);
             }
             else
             {
-                pbPersonPicture.Image = _Person.Gender == (byte)0 ? DVLD.Properties.Resources.Male_512 : DVLD.Properties.Resources.Female_512;
+                _SetDefaultImage();
             }
 
 
@@ -108,7 +116,11 @@ namespace DVLD
             _Person.Phone = txtPhone.Text;
             _Person.CountryID = clsCountry.Find(cbCountry.Text).ID;
             _Person.Gender = rdMale.Checked == true ? (byte)0 : (byte)1;
-            _Person.ImagePath = pbPersonPicture.ImageLocation != null ? pbPersonPicture.ImageLocation : "";
+            if (!string.IsNullOrEmpty(_Person.ImagePath) && File.Exists(_Person.ImagePath))
+            {
+                File.Delete(_Person.ImagePath);
+            }
+            _Person.ImagePath = ImagePath != null ? ImagePath : "";
 
             if (_Person.Save())
             {
@@ -116,14 +128,62 @@ namespace DVLD
                 lblFormTitle.Text = "Update Person";
                 this.Text = "Update Person";
                 lblPersonID.Text = _Person.ID.ToString();
-            }
 
+                MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else { MessageBox.Show("Data is not Saved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 
         }
 
         private void btnCloseForm_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void llblSetImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            openFileDialogImage.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+            openFileDialogImage.Title = "Choose a Profile Image";
+
+            if (openFileDialogImage.ShowDialog() == DialogResult.OK)
+            {
+                const string targetFolder = @"C:\DVLD-People-Images\";
+                string selectedImagePath = openFileDialogImage.FileName;
+                string ImageName = Guid.NewGuid().ToString() + Path.GetExtension(selectedImagePath);
+                string targetImagePath = Path.Combine(targetFolder, ImageName);
+
+                if (!Directory.Exists(targetFolder))
+                {
+                    Directory.CreateDirectory(targetFolder);
+                }
+
+                try
+                {
+                    File.Copy(selectedImagePath, targetImagePath);
+                    pbPersonPicture.Image = Image.FromFile(targetImagePath);
+                    ImagePath = targetImagePath;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error while saving new image.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (File.Exists(targetImagePath))
+                    {
+                        File.Delete(targetImagePath);
+                    }
+                }
+            }
+        }
+
+        private void llRemoveImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            pbPersonPicture.Image?.Dispose();
+            ImagePath = null;
+            _SetDefaultImage();
+        }
+
+        private void rdMale_CheckedChanged(object sender, EventArgs e)
+        {
+            _SetDefaultImage();
         }
     }
 }

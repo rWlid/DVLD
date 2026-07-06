@@ -70,6 +70,8 @@
             this.cbCountry = new System.Windows.Forms.ComboBox();
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.llblSetImage = new System.Windows.Forms.LinkLabel();
+            this.openFileDialogImage = new System.Windows.Forms.OpenFileDialog();
+            this.llRemoveImage = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pbPersonPicture)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -315,6 +317,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.llRemoveImage);
             this.panel1.Controls.Add(this.llblSetImage);
             this.panel1.Controls.Add(this.txtAddress);
             this.panel1.Controls.Add(this.btnSave);
@@ -390,6 +393,7 @@
             this.rdMale.TabStop = true;
             this.rdMale.Text = "Male";
             this.rdMale.UseVisualStyleBackColor = true;
+            this.rdMale.CheckedChanged += new System.EventHandler(this.rdMale_CheckedChanged);
             // 
             // label18
             // 
@@ -528,6 +532,22 @@
             this.llblSetImage.TabIndex = 43;
             this.llblSetImage.TabStop = true;
             this.llblSetImage.Text = "Set Image";
+            this.llblSetImage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llblSetImage_LinkClicked);
+            // 
+            // openFileDialogImage
+            // 
+            this.openFileDialogImage.FileName = "openFileDialogImage";
+            // 
+            // llRemoveImage
+            // 
+            this.llRemoveImage.AutoSize = true;
+            this.llRemoveImage.Location = new System.Drawing.Point(635, 206);
+            this.llRemoveImage.Name = "llRemoveImage";
+            this.llRemoveImage.Size = new System.Drawing.Size(47, 13);
+            this.llRemoveImage.TabIndex = 44;
+            this.llRemoveImage.TabStop = true;
+            this.llRemoveImage.Text = "Remove";
+            this.llRemoveImage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llRemoveImage_LinkClicked);
             // 
             // frmAddEditPerson
             // 
@@ -594,5 +614,7 @@
         private System.Windows.Forms.LinkLabel llblSetImage;
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.ComboBox cbCountry;
+        private System.Windows.Forms.OpenFileDialog openFileDialogImage;
+        private System.Windows.Forms.LinkLabel llRemoveImage;
     }
 }
