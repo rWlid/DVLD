@@ -98,5 +98,11 @@ namespace DVLD
             frm.ShowDialog();
 
         }
+
+        private void btnAddNewPerson_Click(object sender, EventArgs e)
+        {
+            frmAddEditPerson frm = new frmAddEditPerson(-1);
+            frm.ShowDialog();
+        }
     }
 }

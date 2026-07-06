@@ -67,7 +67,15 @@ namespace DVLD.BL
             this.ImagePath = ImagePath;
             Mode = enMode.Update;
         }
+        private bool _UpdatePerson() { return true; }
+        private bool _AddNewPerson()
+        {
+            this.ID = clsPersonDataAccess.AddNewPerson(this.NationalNo, this.FirstName, this.SecondName,
+             this.ThirdName, this.LastName, this.DateOfBirth, this.Gender,
+             this.Address, this.Phone, this.Email, this.CountryID, this.ImagePath);
 
+            return (this.ID != -1);
+        }
         public static DataTable GetAllPeople()
         {
             return clsPersonDataAccess.GetAllPeople();
@@ -91,6 +99,24 @@ namespace DVLD.BL
             }
             else { return null; }
                 
+        }
+        public bool Save()
+        {
+            switch (Mode)
+            {
+                case enMode.AddNew:
+                    if (_AddNewPerson())
+                    {
+                        Mode = enMode.Update;
+                        return true;
+                    }
+                    else { return false; }
+
+                case enMode.Update:
+                    return _UpdatePerson();
+
+            }
+            return false;
         }
     }
 }

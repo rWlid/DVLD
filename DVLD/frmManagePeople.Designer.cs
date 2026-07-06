@@ -152,6 +152,7 @@
             this.btnAddNewPerson.Size = new System.Drawing.Size(51, 44);
             this.btnAddNewPerson.TabIndex = 6;
             this.btnAddNewPerson.UseVisualStyleBackColor = true;
+            this.btnAddNewPerson.Click += new System.EventHandler(this.btnAddNewPerson_Click);
             // 
             // pbHeader
             // 

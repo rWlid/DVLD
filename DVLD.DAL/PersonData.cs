@@ -4,15 +4,15 @@ using System.Data.SqlClient;
 
 namespace DVLD.DAL
 {
-    public class clsPersonDataAccess
+    public static class clsPersonDataAccess
     {
 
-        public static DataTable GetAllPeople() 
+        public static DataTable GetAllPeople()                  
         {
             DataTable dt = new DataTable();
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = "SELECT CAST(People.PersonID AS NVARCHAR(20)) AS PersonID, People.NationalNo, People.FirstName, People.SecondName, People.ThirdName, People.LastName, People.DateOfBirth, CASE People.Gendor WHEN 0 THEN 'Male' WHEN 1 THEN 'Female' END AS Gender, People.Phone, People.Email, Countries.CountryName AS Nationality FROM Countries INNER JOIN People ON Countries.CountryID = People.NationalityCountryID";
+            string query = "SELECT CAST(People.PersonID AS NVARCHAR(20)) AS PersonID, People.NationalNo, People.FirstName, People.SecondName, People.ThirdName, People.LastName, People.DateOfBirth, CASE People.Gender WHEN 0 THEN 'Male' WHEN 1 THEN 'Female' END AS Gender, People.Phone, People.Email, Countries.CountryName AS Nationality FROM Countries INNER JOIN People ON Countries.CountryID = People.NationalityCountryID";
 
             SqlCommand command = new SqlCommand(query, connection);
 
@@ -73,7 +73,7 @@ namespace DVLD.DAL
                     Address = (string)reader["Address"];
                     DateOfBirth = (DateTime)reader["DateOfBirth"];
                     CountryID = (int)reader["NationalityCountryID"];
-                    Gender = (byte)reader["Gendor"];
+                    Gender = (byte)reader["Gender"];
 
                     //ImagePath: allows null in database so we should handle null
                     if (reader["ImagePath"] != DBNull.Value)
@@ -103,6 +103,75 @@ namespace DVLD.DAL
             }
 
             return isFound;
+        }
+        public static int AddNewPerson( string NationalNo,  string FirstName,  string SecondName,
+             string ThirdName,  string LastName,  DateTime DateOfBirth,  byte Gender,
+             string Address,  string Phone,  string Email,  int CountryID,  string ImagePath)
+        {
+            //this function will return the new Person id if succeeded and -1 if not.
+            int PersonID = -1;
+
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+
+            string query = @"INSERT INTO People (NationalNo, FirstName, SecondName, ThirdName, LastName, Email, Phone, Address,DateOfBirth, NationalityCountryID, ImagePath, Gender)
+                             VALUES (@NationalNo, @FirstName, @SecondName, @ThirdName, @LastName, @Email, @Phone, @Address,@DateOfBirth, @NationalityCountryID,@ImagePath,@Gender);
+                             SELECT SCOPE_IDENTITY();";
+
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@NationalNo", NationalNo);
+            command.Parameters.AddWithValue("@FirstName", FirstName);
+            command.Parameters.AddWithValue("@SecondName", SecondName);
+
+            if (ThirdName != "" && ThirdName != null)
+                command.Parameters.AddWithValue("@ThirdName", ThirdName);
+            else
+                command.Parameters.AddWithValue("@ThirdName", System.DBNull.Value);
+
+            command.Parameters.AddWithValue("@LastName", LastName);
+
+            if (Email != "" && Email != null)
+                command.Parameters.AddWithValue("@Email", Email);
+            else
+                command.Parameters.AddWithValue("@Email", System.DBNull.Value);
+
+            command.Parameters.AddWithValue("@Phone", Phone);
+            command.Parameters.AddWithValue("@Address", Address);
+            command.Parameters.AddWithValue("@DateOfBirth", DateOfBirth);
+            command.Parameters.AddWithValue("@NationalityCountryID", CountryID);
+            command.Parameters.AddWithValue("@Gender", Gender);
+
+            if (ImagePath != "" && ImagePath != null)
+                command.Parameters.AddWithValue("@ImagePath", ImagePath);
+            else
+                command.Parameters.AddWithValue("@ImagePath", System.DBNull.Value);
+
+            try
+            {
+                connection.Open();
+
+                object result = command.ExecuteScalar();
+
+
+                if (result != null && int.TryParse(result.ToString(), out int insertedID))
+                {
+                    PersonID = insertedID;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Error: " + ex.Message);
+
+            }
+
+            finally
+            {
+                connection.Close();
+            }
+
+
+            return PersonID;
         }
     }
 }
