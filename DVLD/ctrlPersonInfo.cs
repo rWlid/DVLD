@@ -58,12 +58,7 @@ namespace DVLD
         }
         public Image PersonImage
         {
-            get { return pbPersonPicture.Image; }
-            set
-            {
-                pbPersonPicture.Image?.Dispose();
-                pbPersonPicture.Image = value;
-            }
+            set { pbPersonPicture.Image = value; }
         }
         public ctrlPersonDetails()
         {
@@ -75,12 +70,12 @@ namespace DVLD
             if (lblGender.Text.Equals("Male"))
             {
                 label12.Image = DVLD.Properties.Resources.Man_32;
-                pbPersonPicture.Image = DVLD.Properties.Resources.Male_512;
+                pbPersonPicture.Image = (Image)DVLD.Properties.Resources.Male_512.Clone();
             }
             else
             {
                 label12.Image = DVLD.Properties.Resources.Woman_32;
-                pbPersonPicture.Image = DVLD.Properties.Resources.Female_512;
+                pbPersonPicture.Image = (Image)DVLD.Properties.Resources.Female_512.Clone();
             }
         }
     }

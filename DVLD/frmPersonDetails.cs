@@ -35,8 +35,11 @@ namespace DVLD
             ctrlPersonDetails1.Country = clsCountry.Find(_Person.CountryID).CountryName;
             if (_Person.ImagePath != "")
             {
-                ctrlPersonDetails1.PersonImage = Image.FromFile(_Person.ImagePath);
+                Image temp = Image.FromFile(_Person.ImagePath);
+                ctrlPersonDetails1.PersonImage = new Bitmap(temp);
+                temp.Dispose();
             }
+            else { ctrlPersonDetails1.Gender = ctrlPersonDetails1.Gender.Equals("Male") ? "Male" : "Female"; }
         }
         private void frmPersonDetails_Load(object sender, EventArgs e)
         {

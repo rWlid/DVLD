@@ -44,11 +44,7 @@ namespace DVLD
         }
         private void _SetDefaultImage()
         {
-            
-            if (_Person.ImagePath == "")
-            {
-                pbPersonPicture.Image = rdMale.Checked == true ? DVLD.Properties.Resources.Male_512 : DVLD.Properties.Resources.Female_512;
-            }
+            pbPersonPicture.Image = rdMale.Checked == true ? (Image)DVLD.Properties.Resources.Male_512.Clone() : (Image)DVLD.Properties.Resources.Female_512.Clone();
         }
         private void _LoadData()
         {
@@ -89,7 +85,11 @@ namespace DVLD
             if (_Person.Gender == (byte)0) { rdMale.Checked = true; } else { rbFemale.Checked = true; }
             if (_Person.ImagePath != null && _Person.ImagePath != "")
             {
-                pbPersonPicture.Image = Image.FromFile(_Person.ImagePath);
+                Image temp = Image.FromFile(_Person.ImagePath);
+                pbPersonPicture.Image = new Bitmap(temp);
+                temp.Dispose();
+                // The file is unlocked because the Image in PictureBox 
+                // is now an independent copy in memory.
             }
             else
             {
@@ -116,11 +116,15 @@ namespace DVLD
             _Person.Phone = txtPhone.Text;
             _Person.CountryID = clsCountry.Find(cbCountry.Text).ID;
             _Person.Gender = rdMale.Checked == true ? (byte)0 : (byte)1;
-            if (!string.IsNullOrEmpty(_Person.ImagePath) && File.Exists(_Person.ImagePath))
+
+            if (ImagePath != null)
             {
-                File.Delete(_Person.ImagePath);
+                if (!string.IsNullOrEmpty(_Person.ImagePath) && File.Exists(_Person.ImagePath))
+                {
+                    File.Delete(_Person.ImagePath);
+                }
+                _Person.ImagePath = ImagePath;
             }
-            _Person.ImagePath = ImagePath != null ? ImagePath : "";
 
             if (_Person.Save())
             {
@@ -128,6 +132,7 @@ namespace DVLD
                 lblFormTitle.Text = "Update Person";
                 this.Text = "Update Person";
                 lblPersonID.Text = _Person.ID.ToString();
+                ImagePath = null;
 
                 MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -160,7 +165,11 @@ namespace DVLD
                 try
                 {
                     File.Copy(selectedImagePath, targetImagePath);
-                    pbPersonPicture.Image = Image.FromFile(targetImagePath);
+
+                    Image temp = Image.FromFile(targetImagePath);
+                    pbPersonPicture.Image = new Bitmap(temp);
+                    temp.Dispose();
+
                     ImagePath = targetImagePath;
                 }
                 catch (Exception)
@@ -176,14 +185,14 @@ namespace DVLD
 
         private void llRemoveImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            pbPersonPicture.Image?.Dispose();
-            ImagePath = null;
+            ImagePath = string.Empty;
             _SetDefaultImage();
         }
 
         private void rdMale_CheckedChanged(object sender, EventArgs e)
         {
-            _SetDefaultImage();
+            if (_Person.ImagePath == "")
+                    _SetDefaultImage();
         }
     }
 }
