@@ -235,7 +235,6 @@ namespace DVLD.DAL
         public static bool DeletePerson(int PersonID) 
         {
             int rowsAffected = 0;
-            string Message = "Successful Operation";
             string query = @"DELETE People WHERE PersonID = @PersonID";
 
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
