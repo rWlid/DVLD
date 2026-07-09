@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace DVLD
 {
-    public partial class ctrlPersonDetails : UserControl
+    public partial class ctrlPersonInfo : UserControl
     {
         public string PersonID {
             get { return lblPersonID.Text; }
@@ -60,23 +60,9 @@ namespace DVLD
         {
             set { pbPersonPicture.Image = value; }
         }
-        public ctrlPersonDetails()
+        public ctrlPersonInfo()
         {
             InitializeComponent();
-        }
-
-        private void lblGender_TextChanged(object sender, EventArgs e)
-        {
-            if (lblGender.Text.Equals("Male"))
-            {
-                label12.Image = DVLD.Properties.Resources.Man_32;
-                pbPersonPicture.Image = (Image)DVLD.Properties.Resources.Male_512.Clone();
-            }
-            else
-            {
-                label12.Image = DVLD.Properties.Resources.Woman_32;
-                pbPersonPicture.Image = (Image)DVLD.Properties.Resources.Female_512.Clone();
-            }
         }
     }
 }

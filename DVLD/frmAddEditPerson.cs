@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
@@ -21,14 +22,34 @@ namespace DVLD
         private enMode _Mode;
         int _PersonID;
         clsPerson _Person;
-        string ImagePath = null;
-        public frmAddEditPerson(int PersonID)
+        string _ImagePath = null;
+        bool _EditNotSaved = false;
+        HashSet<string> _NationalNos;
+
+        public frmAddEditPerson(int PersonID, HashSet<string> NationalNos = null)
         {
             InitializeComponent();
 
             _PersonID = PersonID;
             _Mode = _PersonID == -1 ? enMode.AddNew : enMode.Update;
 
+            _NationalNos = NationalNos;
+
+        }
+        private void _EditMaded(object sender, EventArgs e) { _EditNotSaved = true; }
+        private void _AttachChangeEvents()
+        {
+            txtNationalNo.TextChanged += _EditMaded;
+            txtFirstName.TextChanged += _EditMaded;
+            txtSecondName.TextChanged += _EditMaded;
+            txtThirdName.TextChanged += _EditMaded;
+            txtLastName.TextChanged += _EditMaded;
+            txtAddress.TextChanged += _EditMaded;
+            txtEmail.TextChanged += _EditMaded;
+            txtPhone.TextChanged += _EditMaded;
+            dtpDOB.ValueChanged += _EditMaded;
+            cbCountry.SelectedIndexChanged += _EditMaded;
+            rdMale.CheckedChanged += _EditMaded;
         }
         private void _FillCountriesInComoboBox()
         {
@@ -50,6 +71,7 @@ namespace DVLD
         {
             _FillCountriesInComoboBox();
             cbCountry.SelectedIndex = cbCountry.FindString("Saudi Arabia");
+            dtpDOB.MaxDate = DateTime.Now.AddYears(-18);
 
             if (_Mode == enMode.AddNew)
             {
@@ -90,6 +112,7 @@ namespace DVLD
                 temp.Dispose();
                 // The file is unlocked because the Image in PictureBox 
                 // is now an independent copy in memory.
+                llRemoveImage.Visible = true;
             }
             else
             {
@@ -101,8 +124,8 @@ namespace DVLD
         private void frmAddEditPerson_Load(object sender, EventArgs e)
         {
             _LoadData();
+            _AttachChangeEvents();
         }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             _Person.NationalNo = txtNationalNo.Text;
@@ -117,13 +140,13 @@ namespace DVLD
             _Person.CountryID = clsCountry.Find(cbCountry.Text).ID;
             _Person.Gender = rdMale.Checked == true ? (byte)0 : (byte)1;
 
-            if (ImagePath != null)
+            if (_ImagePath != null)
             {
                 if (!string.IsNullOrEmpty(_Person.ImagePath) && File.Exists(_Person.ImagePath))
                 {
                     File.Delete(_Person.ImagePath);
                 }
-                _Person.ImagePath = ImagePath;
+                _Person.ImagePath = _ImagePath;
             }
 
             if (_Person.Save())
@@ -132,23 +155,23 @@ namespace DVLD
                 lblFormTitle.Text = "Update Person";
                 this.Text = "Update Person";
                 lblPersonID.Text = _Person.ID.ToString();
-                ImagePath = null;
+                _ImagePath = null;
+                _EditNotSaved = false;
 
                 MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else { MessageBox.Show("Data is not Saved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 
         }
-
         private void btnCloseForm_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
         private void llblSetImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             openFileDialogImage.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
             openFileDialogImage.Title = "Choose a Profile Image";
+            openFileDialogImage.FileName = string.Empty;
 
             if (openFileDialogImage.ShowDialog() == DialogResult.OK)
             {
@@ -170,7 +193,9 @@ namespace DVLD
                     pbPersonPicture.Image = new Bitmap(temp);
                     temp.Dispose();
 
-                    ImagePath = targetImagePath;
+                    _ImagePath = targetImagePath;
+                    llRemoveImage.Visible = true;
+                    _EditNotSaved = true;
                 }
                 catch (Exception)
                 {
@@ -182,17 +207,100 @@ namespace DVLD
                 }
             }
         }
-
         private void llRemoveImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ImagePath = string.Empty;
-            _SetDefaultImage();
-        }
+            if (!string.IsNullOrEmpty(_ImagePath) && File.Exists(_ImagePath))
+            {
+                File.Delete(_ImagePath);
+            }
 
+            _ImagePath = string.Empty;
+            _SetDefaultImage();
+            _EditNotSaved = true;
+            llRemoveImage.Visible = false;
+        }
         private void rdMale_CheckedChanged(object sender, EventArgs e)
         {
             if (_Person.ImagePath == "")
                     _SetDefaultImage();
+        }
+        private void frmAddEditPerson_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_EditNotSaved)
+            {
+                if (MessageBox.Show("You have unsaved changes. Are you sure you want to close?",
+                    "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(_ImagePath) && File.Exists(_ImagePath))
+                    {
+                        File.Delete(_ImagePath);
+                    }
+                }
+            }
+        }
+        private void txt_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox txt = (TextBox)sender;
+            if (string.IsNullOrEmpty(txt.Text))
+            {
+                errorProvider1.SetError(txt, "Required field");
+            }
+            else
+            {
+                errorProvider1.SetError(txt, "");
+            }
+        }
+        private void txtEmail_Validating(object sender, CancelEventArgs e)
+        {
+            string email = txtEmail.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                errorProvider1.SetError(txtEmail, "");
+                return;
+            }
+
+            string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+
+            if (!Regex.IsMatch(email, pattern))
+            {
+                errorProvider1.SetError(txtEmail, "Invalid email format");
+                return;
+            }
+            else
+            {
+                errorProvider1.SetError(txtEmail, "");
+                return;
+            }
+        }
+        private void txtNationalNo_Validating(object sender, CancelEventArgs e)
+        {
+            if (_NationalNos != null && _NationalNos.Contains(txtNationalNo.Text))
+            {
+                errorProvider1.SetError(txtNationalNo, "National Number is used for another person");
+                return;
+            }
+            else
+            {
+                errorProvider1.SetError(txtNationalNo, "");
+                return;
+            }
+        }
+        private void LetterOrDigit_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
+        }
+        private void Digit_KeyPress(object sender, KeyPressEventArgs e)
+        {
+          if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
+        }
+        private void Letter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
         }
     }
 }

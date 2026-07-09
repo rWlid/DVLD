@@ -18,11 +18,22 @@ namespace DVLD
         {
             InitializeComponent();
         }
+        private HashSet<string> _GetNationalNosInDGV()
+        {
+            HashSet<string> NationalNos = new HashSet<string>();
 
+            foreach(DataGridViewRow row in dgvAllPeople.Rows)
+            {
+                NationalNos.Add(row.Cells["NationalNo"].Value.ToString().ToLower());
+            }
+
+            return NationalNos;
+        }
         private void _RefreshPeopleList()
         {
             dgvAllPeople.DataSource = clsPerson.GetAllPeople().DefaultView;
         }
+        private void FeatureStubError(object sender, EventArgs e) { MessageBox.Show("This feature is not implemented yet", "Try agian later", MessageBoxButtons.OK, icon: MessageBoxIcon.Warning); }
         private void dgvAllPeople_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             dgvAllPeople.Columns["PersonID"].HeaderText = "Person ID";
@@ -35,13 +46,11 @@ namespace DVLD
 
             lblNumberOfRecords.Text = dgvAllPeople.RowCount.ToString();
         }
-
         private void frmManagePeople_Load(object sender, EventArgs e)
         {
             _RefreshPeopleList();
             cmbFilterBy.SelectedIndex = 0;
         }
-
         private void tBFilter_TextChanged(object sender, EventArgs e)
         {
             DataView dv = (DataView)dgvAllPeople.DataSource;
@@ -57,7 +66,6 @@ namespace DVLD
 
             dv.RowFilter = $"[{column}] LIKE '{searchValue}%'";
         }
-
         private void cmbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbFilterBy.SelectedIndex != 0)
@@ -70,7 +78,6 @@ namespace DVLD
                 tBFilter.Clear();
             }
         }
-
         private void tBFilter_KeyPress(object sender, KeyPressEventArgs e)
         {
             
@@ -84,13 +91,11 @@ namespace DVLD
                 if(!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
             }
         }
-
         private void btnCloseForm_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
-        private void dgvAllPeople_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void ShowPersonDetails(object sender, EventArgs e)
         {
             int PersonID = Convert.ToInt32(dgvAllPeople.CurrentRow.Cells[0].Value);
 
@@ -99,10 +104,35 @@ namespace DVLD
             _RefreshPeopleList();
 
         }
-
-        private void btnAddNewPerson_Click(object sender, EventArgs e)
+        private void AddNewPerson(object sender, EventArgs e)
         {
-            frmAddEditPerson frm = new frmAddEditPerson(-1);
+            frmAddEditPerson frm = new frmAddEditPerson(-1, _GetNationalNosInDGV());
+            frm.ShowDialog();
+            _RefreshPeopleList();
+        }
+        private void tsmDelete_Click(object sender, EventArgs e)
+        {
+            int PersonID = Convert.ToInt32(dgvAllPeople.CurrentRow.Cells[0].Value);
+            if (MessageBox.Show($"Are you sure you want to delete person [{PersonID}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+
+            {
+
+                //Perform Delele and refresh
+                if (clsPerson.DeletePerson(PersonID))
+                {
+                    MessageBox.Show("Person Deleted Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    _RefreshPeopleList();
+                }
+
+                else
+                    MessageBox.Show("Person was not deleted because it has data linked to it","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+
+            }
+        }
+        private void tsmEditPerson_Click(object sender, EventArgs e)
+        {
+            int PersonID = Convert.ToInt32(dgvAllPeople.CurrentRow.Cells[0].Value);
+            frmAddEditPerson frm = new frmAddEditPerson(PersonID);
             frm.ShowDialog();
             _RefreshPeopleList();
         }

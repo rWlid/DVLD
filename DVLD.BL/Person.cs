@@ -28,24 +28,22 @@ namespace DVLD.BL
         public string ImagePath { set; get; }
 
         public clsPerson()
-
         {
             this.ID = -1;
-            this.NationalNo = "";
-            this.FirstName = "";
-            this.SecondName = "";
-            this.ThirdName= "";
-            this.LastName = "";
-            this.DateOfBirth = DateTime.Now;
-            this.Gender = 1;
-            this.Address = "";
-            this.Phone = "";
-            this.Email = "";
+            this.NationalNo = string.Empty;
+            this.FirstName = string.Empty;
+            this.SecondName = string.Empty;
+            this.ThirdName = null;
+            this.LastName = string.Empty;
+            this.DateOfBirth = DateTime.Now.AddYears(-18);
+            this.Gender = 0;
+            this.Address = string.Empty;
+            this.Phone = string.Empty;
+            this.Email = null;
             this.CountryID = -1;
-            this.ImagePath = "";
+            this.ImagePath = null;
 
             Mode = enMode.AddNew;
-
         }
 
         private clsPerson(int ID, string NationalNo, string FirstName, string SecondName,
@@ -66,6 +64,19 @@ namespace DVLD.BL
             this.CountryID = CountryID;
             this.ImagePath = ImagePath;
             Mode = enMode.Update;
+        }
+        private bool _Validate()
+        {
+            if (string.IsNullOrWhiteSpace(this.NationalNo)) return false;
+            if (string.IsNullOrWhiteSpace(this.FirstName)) return false;
+            if (string.IsNullOrWhiteSpace(this.SecondName)) return false;
+            if (string.IsNullOrWhiteSpace(this.LastName)) return false;
+            if (this.DateOfBirth == null) return false;
+            if (string.IsNullOrWhiteSpace(this.Address)) return false;
+            if (string.IsNullOrWhiteSpace(this.Phone)) return false;
+            if (this.CountryID == -1) return false;
+
+            return true;
         }
         private bool _UpdatePerson() 
         {
@@ -105,8 +116,19 @@ namespace DVLD.BL
             else { return null; }
                 
         }
+        public static bool DeletePerson(int PersonID)
+        {
+            if (clsPersonDataAccess.IsPersonExist(PersonID))
+            {
+                return clsPersonDataAccess.DeletePerson(PersonID);
+            }
+
+            return false;
+        }
         public bool Save()
         {
+            if (!_Validate()) {  return false; }
+
             switch (Mode)
             {
                 case enMode.AddNew:
@@ -123,5 +145,6 @@ namespace DVLD.BL
             }
             return false;
         }
+        
     }
 }

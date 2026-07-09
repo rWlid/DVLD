@@ -1,6 +1,6 @@
 ﻿namespace DVLD
 {
-    partial class ctrlPersonDetails
+    partial class ctrlPersonInfo
     {
         /// <summary> 
         /// Required designer variable.
@@ -161,7 +161,6 @@
             this.lblGender.Size = new System.Drawing.Size(28, 16);
             this.lblGender.TabIndex = 26;
             this.lblGender.Text = "???";
-            this.lblGender.TextChanged += new System.EventHandler(this.lblGender_TextChanged);
             // 
             // lblNationalNo
             // 
@@ -182,7 +181,7 @@
             this.lblName.Location = new System.Drawing.Point(153, 66);
             this.lblName.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(34, 16);
+            this.lblName.Size = new System.Drawing.Size(31, 16);
             this.lblName.TabIndex = 24;
             this.lblName.Text = "???";
             // 
@@ -296,7 +295,7 @@
             this.label8.Location = new System.Drawing.Point(342, 130);
             this.label8.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(57, 16);
+            this.label8.Size = new System.Drawing.Size(55, 16);
             this.label8.TabIndex = 14;
             this.label8.Text = "Phone:";
             // 
@@ -308,7 +307,7 @@
             this.label7.Location = new System.Drawing.Point(298, 98);
             this.label7.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(101, 16);
+            this.label7.Size = new System.Drawing.Size(96, 16);
             this.label7.TabIndex = 13;
             this.label7.Text = "Date of Birth:";
             // 
@@ -319,7 +318,7 @@
             this.label6.Location = new System.Drawing.Point(8, 194);
             this.label6.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(71, 16);
+            this.label6.Size = new System.Drawing.Size(69, 16);
             this.label6.TabIndex = 12;
             this.label6.Text = "Address:";
             // 
@@ -330,7 +329,7 @@
             this.label5.Location = new System.Drawing.Point(8, 162);
             this.label5.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(52, 16);
+            this.label5.Size = new System.Drawing.Size(50, 16);
             this.label5.TabIndex = 11;
             this.label5.Text = "Email:";
             // 
@@ -341,7 +340,7 @@
             this.label4.Location = new System.Drawing.Point(8, 130);
             this.label4.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(64, 16);
+            this.label4.Size = new System.Drawing.Size(62, 16);
             this.label4.TabIndex = 10;
             this.label4.Text = "Gender:";
             // 
@@ -352,7 +351,7 @@
             this.label3.Location = new System.Drawing.Point(8, 98);
             this.label3.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(97, 16);
+            this.label3.Size = new System.Drawing.Size(93, 16);
             this.label3.TabIndex = 9;
             this.label3.Text = "National No:";
             // 
@@ -363,7 +362,7 @@
             this.label2.Location = new System.Drawing.Point(8, 66);
             this.label2.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 16);
+            this.label2.Size = new System.Drawing.Size(52, 16);
             this.label2.TabIndex = 8;
             this.label2.Text = "Name:";
             // 
@@ -374,7 +373,7 @@
             this.label1.Location = new System.Drawing.Point(8, 34);
             this.label1.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 16);
+            this.label1.Size = new System.Drawing.Size(79, 16);
             this.label1.TabIndex = 7;
             this.label1.Text = "Person ID:";
             // 
@@ -385,7 +384,7 @@
             this.label9.Location = new System.Drawing.Point(333, 162);
             this.label9.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(66, 16);
+            this.label9.Size = new System.Drawing.Size(63, 16);
             this.label9.TabIndex = 6;
             this.label9.Text = "Country:";
             // 

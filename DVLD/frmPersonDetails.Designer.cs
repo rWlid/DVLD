@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPersonDetails));
             this.lblFormTitle = new System.Windows.Forms.Label();
             this.btnCloseForm = new System.Windows.Forms.Button();
-            this.ctrlPersonDetails1 = new DVLD.ctrlPersonDetails();
+            this.ctrlPersonInfo = new DVLD.ctrlPersonInfo();
             this.llblEditPersonInfo = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
@@ -59,21 +59,21 @@
             this.btnCloseForm.UseVisualStyleBackColor = true;
             this.btnCloseForm.Click += new System.EventHandler(this.btnCloseForm_Click);
             // 
-            // ctrlPersonDetails1
+            // ctrlPersonInfo
             // 
-            this.ctrlPersonDetails1.Address = "???";
-            this.ctrlPersonDetails1.Country = "???";
-            this.ctrlPersonDetails1.DOB = "???";
-            this.ctrlPersonDetails1.Email = "???";
-            this.ctrlPersonDetails1.FullName = "???";
-            this.ctrlPersonDetails1.Gender = "???";
-            this.ctrlPersonDetails1.Location = new System.Drawing.Point(22, 92);
-            this.ctrlPersonDetails1.Name = "ctrlPersonDetails1";
-            this.ctrlPersonDetails1.NationalNo = "???";
-            this.ctrlPersonDetails1.PersonID = "???";
-            this.ctrlPersonDetails1.Phone = "???";
-            this.ctrlPersonDetails1.Size = new System.Drawing.Size(703, 251);
-            this.ctrlPersonDetails1.TabIndex = 0;
+            this.ctrlPersonInfo.Address = "???";
+            this.ctrlPersonInfo.Country = "???";
+            this.ctrlPersonInfo.DOB = "???";
+            this.ctrlPersonInfo.Email = "???";
+            this.ctrlPersonInfo.FullName = "???";
+            this.ctrlPersonInfo.Gender = "???";
+            this.ctrlPersonInfo.Location = new System.Drawing.Point(22, 92);
+            this.ctrlPersonInfo.Name = "ctrlPersonInfo";
+            this.ctrlPersonInfo.NationalNo = "???";
+            this.ctrlPersonInfo.PersonID = "???";
+            this.ctrlPersonInfo.Phone = "???";
+            this.ctrlPersonInfo.Size = new System.Drawing.Size(703, 251);
+            this.ctrlPersonInfo.TabIndex = 0;
             // 
             // llblEditPersonInfo
             // 
@@ -95,8 +95,13 @@
             this.Controls.Add(this.llblEditPersonInfo);
             this.Controls.Add(this.btnCloseForm);
             this.Controls.Add(this.lblFormTitle);
-            this.Controls.Add(this.ctrlPersonDetails1);
+            this.Controls.Add(this.ctrlPersonInfo);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmPersonDetails";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Person Details";
             this.Load += new System.EventHandler(this.frmPersonDetails_Load);
             this.ResumeLayout(false);
@@ -106,7 +111,7 @@
 
         #endregion
 
-        private ctrlPersonDetails ctrlPersonDetails1;
+        private ctrlPersonInfo ctrlPersonInfo;
         private System.Windows.Forms.Label lblFormTitle;
         private System.Windows.Forms.Button btnCloseForm;
         private System.Windows.Forms.LinkLabel llblEditPersonInfo;

@@ -22,24 +22,28 @@ namespace DVLD
             InitializeComponent();
             _PersonID = PersonID;
         }
+        private void _SetDefaultImage()
+        {
+            ctrlPersonInfo.PersonImage = _Person.Gender == 0 ? (Image)DVLD.Properties.Resources.Male_512.Clone() : (Image)DVLD.Properties.Resources.Female_512.Clone();
+        }
         private void _LoadData()
         {
-            ctrlPersonDetails1.PersonID = _PersonID.ToString();
-            ctrlPersonDetails1.FullName = $"{_Person.FirstName} {_Person.SecondName} {_Person.ThirdName} {_Person.LastName}";
-            ctrlPersonDetails1.NationalNo = _Person.NationalNo;
-            ctrlPersonDetails1.Gender = _Person.Gender == 0 ? "Male" : "Female";
-            ctrlPersonDetails1.Email = _Person.Email;
-            ctrlPersonDetails1.Address = _Person.Address;
-            ctrlPersonDetails1.DOB = _Person.DateOfBirth.ToString("dd/MM/yyyy");
-            ctrlPersonDetails1.Phone = _Person.Phone;
-            ctrlPersonDetails1.Country = clsCountry.Find(_Person.CountryID).CountryName;
+            ctrlPersonInfo.PersonID = _PersonID.ToString();
+            ctrlPersonInfo.FullName = $"{_Person.FirstName} {_Person.SecondName} {_Person.ThirdName} {_Person.LastName}";
+            ctrlPersonInfo.NationalNo = _Person.NationalNo;
+            ctrlPersonInfo.Gender = _Person.Gender == 0 ? "Male" : "Female";
+            ctrlPersonInfo.Email = _Person.Email;
+            ctrlPersonInfo.Address = _Person.Address;
+            ctrlPersonInfo.DOB = _Person.DateOfBirth.ToString("dd/MM/yyyy");
+            ctrlPersonInfo.Phone = _Person.Phone;
+            ctrlPersonInfo.Country = clsCountry.Find(_Person.CountryID).CountryName;
             if (_Person.ImagePath != "")
             {
                 Image temp = Image.FromFile(_Person.ImagePath);
-                ctrlPersonDetails1.PersonImage = new Bitmap(temp);
+                ctrlPersonInfo.PersonImage = new Bitmap(temp);
                 temp.Dispose();
             }
-            else { ctrlPersonDetails1.Gender = ctrlPersonDetails1.Gender.Equals("Male") ? "Male" : "Female"; }
+            else { _SetDefaultImage(); }
         }
         private void frmPersonDetails_Load(object sender, EventArgs e)
         {

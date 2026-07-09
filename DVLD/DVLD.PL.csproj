@@ -52,6 +52,12 @@
     <Compile Include="ctrlPersonInfo.Designer.cs">
       <DependentUpon>ctrlPersonInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="ctrlPersonInfoFilter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctrlPersonInfoFilter.Designer.cs">
+      <DependentUpon>ctrlPersonInfoFilter.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmAddEditPerson.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ctrlPersonInfo.resx">
       <DependentUpon>ctrlPersonInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctrlPersonInfoFilter.resx">
+      <DependentUpon>ctrlPersonInfoFilter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmAddEditPerson.resx">
       <DependentUpon>frmAddEditPerson.cs</DependentUpon>

@@ -12,7 +12,7 @@ namespace DVLD.DAL
             DataTable dt = new DataTable();
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = "SELECT CAST(People.PersonID AS NVARCHAR(20)) AS PersonID, People.NationalNo, People.FirstName, People.SecondName, People.ThirdName, People.LastName, People.DateOfBirth, CASE People.Gender WHEN 0 THEN 'Male' WHEN 1 THEN 'Female' END AS Gender, People.Phone, People.Email, Countries.CountryName AS Nationality FROM Countries INNER JOIN People ON Countries.CountryID = People.NationalityCountryID";
+            string query = @"SELECT CAST(People.PersonID AS NVARCHAR(20)) AS PersonID, People.NationalNo, People.FirstName, People.SecondName, People.ThirdName, People.LastName, People.DateOfBirth, CASE People.Gender WHEN 0 THEN 'Male' WHEN 1 THEN 'Female' END AS Gender, People.Phone, People.Email, Countries.CountryName AS Nationality FROM Countries INNER JOIN People ON Countries.CountryID = People.NationalityCountryID";
 
             SqlCommand command = new SqlCommand(query, connection);
 
@@ -41,7 +41,7 @@ namespace DVLD.DAL
 
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = "SELECT * FROM People WHERE PersonID = @PersonID";
+            string query = @"SELECT * FROM People WHERE PersonID = @PersonID";
 
             SqlCommand command = new SqlCommand(query, connection);
 
@@ -231,6 +231,66 @@ namespace DVLD.DAL
 
 
             return (rowsAffected > 0);
+        }
+        public static bool DeletePerson(int PersonID) 
+        {
+            int rowsAffected = 0;
+            string Message = "Successful Operation";
+            string query = @"DELETE People WHERE PersonID = @PersonID";
+
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@PersonID", PersonID);
+
+            try
+            {
+                connection.Open();
+
+                rowsAffected = command.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+
+                connection.Close();
+
+            }
+
+            return (rowsAffected > 0);
+        }
+        public static bool IsPersonExist(int PersonID) 
+        {
+            bool isFound = false;
+            string query = @"SELECT Found=1 FROM People WHERE PersonID = @PersonID";
+
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@PersonID", PersonID);
+
+            try
+            {
+                connection.Open();
+                var result = command.ExecuteScalar();
+
+                isFound = result != null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                isFound = false;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return isFound;
         }
     }
 }
