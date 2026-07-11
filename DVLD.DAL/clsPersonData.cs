@@ -34,7 +34,7 @@ namespace DVLD.DAL
             return dt;
         }
         public static bool GetPersonInfoByID(int ID, ref string NationalNo, ref string FirstName, ref string SecondName,
-            ref string ThirdName, ref string LastName, ref DateTime DateOfBirth, ref byte Gender,
+            ref string ThirdName, ref string LastName, ref DateTime DateOfBirth, ref short Gender,
             ref string Address, ref string Phone, ref string Email, ref int CountryID, ref string ImagePath)
         {
             bool isFound = false;
@@ -93,8 +93,68 @@ namespace DVLD.DAL
 
             return isFound;
         }
+        public static bool GetPersonInfoByNationalNo(string NationalNo, ref int ID, ref string FirstName, ref string SecondName,
+            ref string ThirdName, ref string LastName, ref DateTime DateOfBirth, ref short Gender,
+            ref string Address, ref string Phone, ref string Email, ref int CountryID, ref string ImagePath)
+        {
+            bool isFound = false;
+
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+
+            string query = @"SELECT * FROM People WHERE NationalNo = @NationalNo";
+
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@NationalNo", NationalNo);
+
+            try
+            {
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    // The record was found
+                    isFound = true;
+
+                    ID = (int)reader["PersonID"];
+                    FirstName = (string)reader["FirstName"];
+                    SecondName = (string)reader["SecondName"];
+                    ThirdName = reader["ThirdName"] != DBNull.Value ? (string)reader["ThirdName"] : "";
+                    LastName = (string)reader["LastName"];
+                    Email = reader["Email"] != DBNull.Value ? (string)reader["Email"] : "";
+                    Phone = (string)reader["Phone"];
+                    Address = (string)reader["Address"];
+                    DateOfBirth = (DateTime)reader["DateOfBirth"];
+                    CountryID = (int)reader["NationalityCountryID"];
+                    Gender = (byte)reader["Gender"];
+                    ImagePath = reader["ImagePath"] != DBNull.Value ? (string)reader["ImagePath"] : "";
+
+                }
+                else
+                {
+                    // The record was not found
+                    isFound = false;
+                }
+
+                reader.Close();
+
+
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Error: " + ex.Message);
+                isFound = false;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return isFound;
+        }
         public static int AddNewPerson( string NationalNo,  string FirstName,  string SecondName,
-             string ThirdName,  string LastName,  DateTime DateOfBirth,  byte Gender,
+             string ThirdName,  string LastName,  DateTime DateOfBirth,  short Gender,
              string Address,  string Phone,  string Email,  int CountryID,  string ImagePath)
         {
             //this function will return the new Person id if succeeded and -1 if not.
@@ -163,7 +223,7 @@ namespace DVLD.DAL
             return PersonID;
         }
         public static bool UpdatePerson(int PersonID, string NationalNo, string FirstName, string SecondName,
-                 string ThirdName, string LastName, DateTime DateOfBirth, byte Gender,
+                 string ThirdName, string LastName, DateTime DateOfBirth, short Gender,
                  string Address, string Phone, string Email, int CountryID, string ImagePath)
         {
             int rowsAffected = 0;
@@ -291,5 +351,35 @@ namespace DVLD.DAL
 
             return isFound;
         }
+        public static bool IsPersonExist(string NationalNo)
+        {
+            bool isFound = false;
+            string query = @"SELECT Found=1 FROM People WHERE NationalNo = @NationalNo";
+
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@NationalNo", NationalNo);
+
+            try
+            {
+                connection.Open();
+                var result = command.ExecuteScalar();
+
+                isFound = result != null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                isFound = false;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return isFound;
+        }
+
     }
 }

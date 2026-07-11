@@ -19,14 +19,19 @@ namespace DVLD.BL
         public string SecondName { set; get; }
         public string ThirdName { set; get; }
         public string LastName { set; get; }
+        public string FullName
+        {
+            get { return FirstName + " " + SecondName + " " + ThirdName + " " + LastName; }
+
+        }
         public DateTime DateOfBirth { set; get; }
-        public byte Gender { set; get; }
+        public short Gender { set; get; }
         public string Address { set; get; }
         public string Phone { set; get; }
         public string Email { set; get; }
         public int CountryID { set; get; }
         public string ImagePath { set; get; }
-
+        public clsCountry CountryInfo { set; get; }
         public clsPerson()
         {
             this.ID = -1;
@@ -42,12 +47,11 @@ namespace DVLD.BL
             this.Email = null;
             this.CountryID = -1;
             this.ImagePath = null;
-
             Mode = enMode.AddNew;
         }
 
         private clsPerson(int ID, string NationalNo, string FirstName, string SecondName,
-            string ThirdName, string LastName, DateTime DateOfBirth, byte Gender,
+            string ThirdName, string LastName, DateTime DateOfBirth, short Gender,
             string Address, string Phone, string Email, int CountryID, string ImagePath)
         {
             this.ID = ID;
@@ -63,6 +67,7 @@ namespace DVLD.BL
             this.Email = Email;
             this.CountryID = CountryID;
             this.ImagePath = ImagePath;
+            this.CountryInfo = clsCountry.Find(CountryID);
             Mode = enMode.Update;
         }
         private bool _Validate()
@@ -78,12 +83,6 @@ namespace DVLD.BL
 
             return true;
         }
-        private bool _UpdatePerson() 
-        {
-            return clsPersonDataAccess.UpdatePerson(this.ID, this.NationalNo, this.FirstName, this.SecondName,
-             this.ThirdName, this.LastName, this.DateOfBirth, this.Gender,
-             this.Address, this.Phone, this.Email, this.CountryID, this.ImagePath);
-        }
         private bool _AddNewPerson()
         {
             this.ID = clsPersonDataAccess.AddNewPerson(this.NationalNo, this.FirstName, this.SecondName,
@@ -91,6 +90,12 @@ namespace DVLD.BL
              this.Address, this.Phone, this.Email, this.CountryID, this.ImagePath);
 
             return (this.ID != -1);
+        }
+        private bool _UpdatePerson() 
+        {
+            return clsPersonDataAccess.UpdatePerson(this.ID, this.NationalNo, this.FirstName, this.SecondName,
+             this.ThirdName, this.LastName, this.DateOfBirth, this.Gender,
+             this.Address, this.Phone, this.Email, this.CountryID, this.ImagePath);
         }
         public static DataTable GetAllPeople()
         {
@@ -103,11 +108,13 @@ namespace DVLD.BL
                 Phone = "", Address = "", ImagePath = "";
             DateTime DateOfBirth = DateTime.Now;
             int CountryID = -1;
-            byte Gender = 1;
+            short Gender = 1;
 
-            if (clsPersonDataAccess.GetPersonInfoByID(ID, ref  NationalNo, ref  FirstName, ref  SecondName,
-            ref  ThirdName, ref  LastName, ref  DateOfBirth, ref  Gender,
-            ref  Address, ref  Phone, ref  Email, ref  CountryID, ref ImagePath))
+            bool found = clsPersonDataAccess.GetPersonInfoByID(ID, ref NationalNo, ref FirstName, ref SecondName,
+            ref ThirdName, ref LastName, ref DateOfBirth, ref Gender,
+            ref Address, ref Phone, ref Email, ref CountryID, ref ImagePath);
+
+            if (found)
             {
                 return new clsPerson(ID, NationalNo, FirstName, SecondName,
                             ThirdName, LastName, DateOfBirth, Gender,
@@ -116,14 +123,31 @@ namespace DVLD.BL
             else { return null; }
                 
         }
+        public static clsPerson Find(string NationalNo)
+        {
+
+            string FirstName = "", SecondName = "", ThirdName = "", LastName = "", Email = "",
+                Phone = "", Address = "", ImagePath = "";
+            DateTime DateOfBirth = DateTime.Now;
+            int ID = -1, CountryID = -1;
+            short Gender = 1;
+
+            bool found = clsPersonDataAccess.GetPersonInfoByNationalNo(NationalNo, ref ID, ref FirstName, ref SecondName,
+            ref ThirdName, ref LastName, ref DateOfBirth, ref Gender,
+            ref Address, ref Phone, ref Email, ref CountryID, ref ImagePath);
+
+            if (found)
+            {
+                return new clsPerson(ID, NationalNo, FirstName, SecondName,
+                            ThirdName, LastName, DateOfBirth, Gender,
+                            Address, Phone, Email, CountryID, ImagePath);
+            }
+            else { return null; }
+
+        }
         public static bool DeletePerson(int PersonID)
         {
-            if (clsPersonDataAccess.IsPersonExist(PersonID))
-            {
-                return clsPersonDataAccess.DeletePerson(PersonID);
-            }
-
-            return false;
+            return clsPersonDataAccess.DeletePerson(PersonID);
         }
         public bool Save()
         {
@@ -145,6 +169,13 @@ namespace DVLD.BL
             }
             return false;
         }
-        
+        public static bool IsPersonExist(int PersonID)
+        {
+            return clsPersonDataAccess.IsPersonExist(PersonID);
+        }
+        public static bool IsPersonExist(string NationalNo)
+        {
+            return clsPersonDataAccess.IsPersonExist(NationalNo);
+        }
     }
 }

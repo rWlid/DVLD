@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
+using DVLD.People;
 
 namespace DVLD
 {
@@ -18,20 +19,11 @@ namespace DVLD
         {
             InitializeComponent();
         }
-        private HashSet<string> _GetNationalNosInDGV()
-        {
-            HashSet<string> NationalNos = new HashSet<string>();
-
-            foreach(DataGridViewRow row in dgvAllPeople.Rows)
-            {
-                NationalNos.Add(row.Cells["NationalNo"].Value.ToString().ToLower());
-            }
-
-            return NationalNos;
-        }
         private void _RefreshPeopleList()
         {
             dgvAllPeople.DataSource = clsPerson.GetAllPeople().DefaultView;
+
+            lblNumberOfRecords.Text = dgvAllPeople.RowCount.ToString();
         }
         private void FeatureStubError(object sender, EventArgs e) { MessageBox.Show("This feature is not implemented yet", "Try agian later", MessageBoxButtons.OK, icon: MessageBoxIcon.Warning); }
         private void dgvAllPeople_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -43,8 +35,6 @@ namespace DVLD
             dgvAllPeople.Columns["ThirdName"].HeaderText = "Third Name";
             dgvAllPeople.Columns["LastName"].HeaderText = "Last Name";
             dgvAllPeople.Columns["DateOfBirth"].HeaderText = "Date Of Birth";
-
-            lblNumberOfRecords.Text = dgvAllPeople.RowCount.ToString();
         }
         private void frmManagePeople_Load(object sender, EventArgs e)
         {
@@ -61,10 +51,12 @@ namespace DVLD
             if (string.IsNullOrEmpty(searchValue)) // Reset view
             {
                 dv.RowFilter = "";
+                lblNumberOfRecords.Text = dgvAllPeople.RowCount.ToString();
                 return;
             }
 
             dv.RowFilter = $"[{column}] LIKE '{searchValue}%'";
+            lblNumberOfRecords.Text = dgvAllPeople.RowCount.ToString();
         }
         private void cmbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -106,7 +98,7 @@ namespace DVLD
         }
         private void AddNewPerson(object sender, EventArgs e)
         {
-            frmAddEditPerson frm = new frmAddEditPerson(-1, _GetNationalNosInDGV());
+            frmAddEditPerson frm = new frmAddEditPerson();
             frm.ShowDialog();
             _RefreshPeopleList();
         }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.gbPersonInfo = new System.Windows.Forms.GroupBox();
+            this.llblEditPersonInfo = new System.Windows.Forms.LinkLabel();
             this.lblCountry = new System.Windows.Forms.Label();
             this.lblPhone = new System.Windows.Forms.Label();
             this.lblDOB = new System.Windows.Forms.Label();
@@ -36,7 +37,7 @@
             this.lblEmail = new System.Windows.Forms.Label();
             this.lblGender = new System.Windows.Forms.Label();
             this.lblNationalNo = new System.Windows.Forms.Label();
-            this.lblName = new System.Windows.Forms.Label();
+            this.lblFullName = new System.Windows.Forms.Label();
             this.lblPersonID = new System.Windows.Forms.Label();
             this.pbPersonPicture = new System.Windows.Forms.PictureBox();
             this.label17 = new System.Windows.Forms.Label();
@@ -45,7 +46,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
+            this.lblGenderIcon = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -62,6 +63,7 @@
             // 
             // gbPersonInfo
             // 
+            this.gbPersonInfo.Controls.Add(this.llblEditPersonInfo);
             this.gbPersonInfo.Controls.Add(this.lblCountry);
             this.gbPersonInfo.Controls.Add(this.lblPhone);
             this.gbPersonInfo.Controls.Add(this.lblDOB);
@@ -69,7 +71,7 @@
             this.gbPersonInfo.Controls.Add(this.lblEmail);
             this.gbPersonInfo.Controls.Add(this.lblGender);
             this.gbPersonInfo.Controls.Add(this.lblNationalNo);
-            this.gbPersonInfo.Controls.Add(this.lblName);
+            this.gbPersonInfo.Controls.Add(this.lblFullName);
             this.gbPersonInfo.Controls.Add(this.lblPersonID);
             this.gbPersonInfo.Controls.Add(this.pbPersonPicture);
             this.gbPersonInfo.Controls.Add(this.label17);
@@ -78,7 +80,7 @@
             this.gbPersonInfo.Controls.Add(this.label14);
             this.gbPersonInfo.Controls.Add(this.label13);
             this.gbPersonInfo.Controls.Add(this.label11);
-            this.gbPersonInfo.Controls.Add(this.label12);
+            this.gbPersonInfo.Controls.Add(this.lblGenderIcon);
             this.gbPersonInfo.Controls.Add(this.label10);
             this.gbPersonInfo.Controls.Add(this.label8);
             this.gbPersonInfo.Controls.Add(this.label7);
@@ -95,6 +97,18 @@
             this.gbPersonInfo.TabIndex = 0;
             this.gbPersonInfo.TabStop = false;
             this.gbPersonInfo.Text = "Person Information";
+            // 
+            // llblEditPersonInfo
+            // 
+            this.llblEditPersonInfo.AutoSize = true;
+            this.llblEditPersonInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.llblEditPersonInfo.Location = new System.Drawing.Point(577, 57);
+            this.llblEditPersonInfo.Name = "llblEditPersonInfo";
+            this.llblEditPersonInfo.Size = new System.Drawing.Size(93, 15);
+            this.llblEditPersonInfo.TabIndex = 10;
+            this.llblEditPersonInfo.TabStop = true;
+            this.llblEditPersonInfo.Text = "Edit Person Info";
+            this.llblEditPersonInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llblEditPersonInfo_LinkClicked);
             // 
             // lblCountry
             // 
@@ -173,17 +187,17 @@
             this.lblNationalNo.TabIndex = 25;
             this.lblNationalNo.Text = "???";
             // 
-            // lblName
+            // lblFullName
             // 
-            this.lblName.AutoSize = true;
-            this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblName.Location = new System.Drawing.Point(153, 66);
-            this.lblName.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
-            this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(31, 16);
-            this.lblName.TabIndex = 24;
-            this.lblName.Text = "???";
+            this.lblFullName.AutoSize = true;
+            this.lblFullName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFullName.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblFullName.Location = new System.Drawing.Point(153, 66);
+            this.lblFullName.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
+            this.lblFullName.Name = "lblFullName";
+            this.lblFullName.Size = new System.Drawing.Size(31, 16);
+            this.lblFullName.TabIndex = 24;
+            this.lblFullName.Text = "???";
             // 
             // lblPersonID
             // 
@@ -268,15 +282,15 @@
             this.label11.Size = new System.Drawing.Size(33, 33);
             this.label11.TabIndex = 17;
             // 
-            // label12
+            // lblGenderIcon
             // 
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Image = global::DVLD.Properties.Resources.Man_32;
-            this.label12.Location = new System.Drawing.Point(110, 120);
-            this.label12.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(33, 33);
-            this.label12.TabIndex = 16;
+            this.lblGenderIcon.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGenderIcon.Image = global::DVLD.Properties.Resources.Man_32;
+            this.lblGenderIcon.Location = new System.Drawing.Point(110, 120);
+            this.lblGenderIcon.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
+            this.lblGenderIcon.Name = "lblGenderIcon";
+            this.lblGenderIcon.Size = new System.Drawing.Size(33, 33);
+            this.lblGenderIcon.TabIndex = 16;
             // 
             // label10
             // 
@@ -388,12 +402,12 @@
             this.label9.TabIndex = 6;
             this.label9.Text = "Country:";
             // 
-            // ctrlPersonDetails
+            // ctrlPersonInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.gbPersonInfo);
-            this.Name = "ctrlPersonDetails";
+            this.Name = "ctrlPersonInfo";
             this.Size = new System.Drawing.Size(703, 251);
             this.gbPersonInfo.ResumeLayout(false);
             this.gbPersonInfo.PerformLayout();
@@ -417,7 +431,7 @@
         private System.Windows.Forms.PictureBox pbPersonPicture;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label lblGenderIcon;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label lblPhone;
@@ -426,11 +440,12 @@
         private System.Windows.Forms.Label lblEmail;
         private System.Windows.Forms.Label lblGender;
         private System.Windows.Forms.Label lblNationalNo;
-        private System.Windows.Forms.Label lblName;
+        private System.Windows.Forms.Label lblFullName;
         private System.Windows.Forms.Label lblPersonID;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label lblCountry;
+        private System.Windows.Forms.LinkLabel llblEditPersonInfo;
     }
 }

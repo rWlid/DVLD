@@ -46,60 +46,61 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ctrlPersonInfo.cs">
+    <Compile Include="clsUtil.cs" />
+    <Compile Include="People\ctrlPersonInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctrlPersonInfo.Designer.cs">
+    <Compile Include="People\ctrlPersonInfo.Designer.cs">
       <DependentUpon>ctrlPersonInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="ctrlPersonInfoFilter.cs">
+    <Compile Include="People\ctrlPersonInfoFilter.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctrlPersonInfoFilter.Designer.cs">
+    <Compile Include="People\ctrlPersonInfoFilter.Designer.cs">
       <DependentUpon>ctrlPersonInfoFilter.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmAddEditPerson.cs">
+    <Compile Include="People\frmAddEditPerson.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmAddEditPerson.Designer.cs">
+    <Compile Include="People\frmAddEditPerson.Designer.cs">
       <DependentUpon>frmAddEditPerson.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmMain.cs">
+    <Compile Include="People\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmMain.Designer.cs">
+    <Compile Include="People\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmManagePeople.cs">
+    <Compile Include="People\frmManagePeople.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmManagePeople.Designer.cs">
+    <Compile Include="People\frmManagePeople.Designer.cs">
       <DependentUpon>frmManagePeople.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmPersonDetails.cs">
+    <Compile Include="People\frmPersonDetails.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmPersonDetails.Designer.cs">
+    <Compile Include="People\frmPersonDetails.Designer.cs">
       <DependentUpon>frmPersonDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ctrlPersonInfo.resx">
+    <EmbeddedResource Include="People\ctrlPersonInfo.resx">
       <DependentUpon>ctrlPersonInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctrlPersonInfoFilter.resx">
+    <EmbeddedResource Include="People\ctrlPersonInfoFilter.resx">
       <DependentUpon>ctrlPersonInfoFilter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmAddEditPerson.resx">
+    <EmbeddedResource Include="People\frmAddEditPerson.resx">
       <DependentUpon>frmAddEditPerson.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmMain.resx">
+    <EmbeddedResource Include="People\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmManagePeople.resx">
+    <EmbeddedResource Include="People\frmManagePeople.resx">
       <DependentUpon>frmManagePeople.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmPersonDetails.resx">
+    <EmbeddedResource Include="People\frmPersonDetails.resx">
       <DependentUpon>frmPersonDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -108,7 +108,7 @@ namespace DVLD.DAL
             DataTable dt = new DataTable();
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = "SELECT * FROM Countries order by CountryName";
+            string query = "SELECT * FROM Countries ORDER BY CountryName";
 
             SqlCommand command = new SqlCommand(query, connection);
 
@@ -131,7 +131,7 @@ namespace DVLD.DAL
 
             catch (Exception ex)
             {
-                // Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Error: " + ex.Message);
             }
             finally
             {

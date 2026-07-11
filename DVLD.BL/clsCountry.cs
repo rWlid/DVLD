@@ -22,9 +22,6 @@ namespace DVLD.BL
 
             string CountryName = "";
 
-
-            int CountryID = -1;
-
             if (clsCountryData.GetCountryInfoByID(ID, ref CountryName))
                 return new clsCountry(ID, CountryName);
             else
@@ -35,7 +32,6 @@ namespace DVLD.BL
         {
 
             int ID = -1;
-
 
             if (clsCountryData.GetCountryInfoByName(CountryName, ref ID))
 

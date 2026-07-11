@@ -37,20 +37,7 @@
             this.SuspendLayout();
             // 
             // ctrlPersonInfo1
-            // 
-            this.ctrlPersonInfo1.Address = "???";
-            this.ctrlPersonInfo1.Country = "???";
-            this.ctrlPersonInfo1.DOB = "???";
-            this.ctrlPersonInfo1.Email = "???";
-            this.ctrlPersonInfo1.FullName = "???";
-            this.ctrlPersonInfo1.Gender = "???";
-            this.ctrlPersonInfo1.Location = new System.Drawing.Point(0, 40);
-            this.ctrlPersonInfo1.Name = "ctrlPersonInfo1";
-            this.ctrlPersonInfo1.NationalNo = "???";
-            this.ctrlPersonInfo1.PersonID = "???";
-            this.ctrlPersonInfo1.Phone = "???";
-            this.ctrlPersonInfo1.Size = new System.Drawing.Size(703, 251);
-            this.ctrlPersonInfo1.TabIndex = 0;
+            //
             // 
             // btnPersonLookUp
             // 
@@ -78,6 +65,7 @@
             this.tBFilter.Size = new System.Drawing.Size(137, 20);
             this.tBFilter.TabIndex = 8;
             this.tBFilter.Visible = false;
+            this.tBFilter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tBFilter_KeyPress);
             // 
             // cmbFilterBy
             // 
@@ -99,6 +87,7 @@
             this.cmbFilterBy.Name = "cmbFilterBy";
             this.cmbFilterBy.Size = new System.Drawing.Size(121, 21);
             this.cmbFilterBy.TabIndex = 7;
+            this.cmbFilterBy.SelectedIndexChanged += new System.EventHandler(this.cmbFilterBy_SelectedIndexChanged);
             // 
             // btnAddNewPerson
             // 
