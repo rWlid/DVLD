@@ -24,7 +24,6 @@ namespace DVLD.Users
             lblNumberOfRecords.Text = dgvAllUsers.RowCount.ToString();
         }
         private void FeatureStubError(object sender, EventArgs e) { MessageBox.Show("This feature is not implemented yet", "Try agian later", MessageBoxButtons.OK, icon: MessageBoxIcon.Warning); }
-
         private void dgvAllUsers_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             dgvAllUsers.Columns["UserID"].HeaderText = "User ID";
@@ -35,18 +34,11 @@ namespace DVLD.Users
             dgvAllUsers.Columns["IsActive"].HeaderText = "Is Active";
             dgvAllUsers.Columns["IsActive"].Width = 60;
         }
-
         private void frmManageUsers_Load(object sender, EventArgs e)
         {
             _RefreshUsersList();
             cmbFilterBy.SelectedIndex = 0;
         }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void txtFilterValue_TextChanged(object sender, EventArgs e)
         {
             DataView dv = (DataView)dgvAllUsers.DataSource;
@@ -64,7 +56,6 @@ namespace DVLD.Users
             dv.RowFilter = $"[{column}] LIKE '{searchValue}%'";
             lblNumberOfRecords.Text = dgvAllUsers.RowCount.ToString();
         }
-
         private void cmbActiveFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             DataView dv = (DataView)dgvAllUsers.DataSource;
@@ -84,7 +75,6 @@ namespace DVLD.Users
             }
             lblNumberOfRecords.Text = dgvAllUsers.RowCount.ToString();
         }
-
         private void cmbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbFilterBy.SelectedIndex == 0 )
@@ -123,6 +113,10 @@ namespace DVLD.Users
             {
                 if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
             }
+        }
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
