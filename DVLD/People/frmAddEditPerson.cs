@@ -93,7 +93,7 @@ namespace DVLD
             //_Person.ImagePath contains the old Image, we check if it changed then we copy the new image
             if (_Person.ImagePath != pbPersonPicture.ImageLocation)
             {
-                if (_Person.ImagePath != "")
+                if (!string.IsNullOrEmpty(_Person.ImagePath))
                 {
                     //first we delete the old image from the folder in case there is any.
 
@@ -180,7 +180,7 @@ namespace DVLD
             txtEmail.Text = _Person.Email;
             txtPhone.Text = _Person.Phone; 
             dtpDOB.Value = _Person.DateOfBirth;
-            cbCountry.SelectedIndex = cbCountry.FindString(clsCountry.Find(_Person.CountryID).CountryName);
+            cbCountry.SelectedIndex = cbCountry.FindString(_Person.CountryInfo.CountryName);
             if (_Person.Gender == 0) { rbMale.Checked = true; } else { rbFemale.Checked = true; }
             if (!string.IsNullOrEmpty(_Person.ImagePath))
             {
@@ -262,6 +262,7 @@ namespace DVLD
             {
                 string selectedImagePath = openFileDialogImage.FileName;
                 pbPersonPicture.Load(selectedImagePath);
+                _EditNotSaved = true;
                 llRemoveImage.Visible = true;
             }
         }

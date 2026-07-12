@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,7 +86,7 @@ namespace DVLD.BL
         }
         private bool _AddNewPerson()
         {
-            this.ID = clsPersonDataAccess.AddNewPerson(this.NationalNo, this.FirstName, this.SecondName,
+            this.ID = clsPersonData.AddNewPerson(this.NationalNo, this.FirstName, this.SecondName,
              this.ThirdName, this.LastName, this.DateOfBirth, this.Gender,
              this.Address, this.Phone, this.Email, this.CountryID, this.ImagePath);
 
@@ -93,13 +94,32 @@ namespace DVLD.BL
         }
         private bool _UpdatePerson() 
         {
-            return clsPersonDataAccess.UpdatePerson(this.ID, this.NationalNo, this.FirstName, this.SecondName,
+            return clsPersonData.UpdatePerson(this.ID, this.NationalNo, this.FirstName, this.SecondName,
              this.ThirdName, this.LastName, this.DateOfBirth, this.Gender,
              this.Address, this.Phone, this.Email, this.CountryID, this.ImagePath);
         }
+        private static bool _DeletePersonImage(int PersonID)
+        {
+            string imagePath = clsPersonData.GetPersonImagePathByID(PersonID);
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                try
+                {
+                    if (File.Exists(imagePath))
+                        File.Delete(imagePath);
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         public static DataTable GetAllPeople()
         {
-            return clsPersonDataAccess.GetAllPeople();
+            return clsPersonData.GetAllPeople();
         }
         public static clsPerson Find(int ID)
         {
@@ -110,7 +130,7 @@ namespace DVLD.BL
             int CountryID = -1;
             short Gender = 1;
 
-            bool found = clsPersonDataAccess.GetPersonInfoByID(ID, ref NationalNo, ref FirstName, ref SecondName,
+            bool found = clsPersonData.GetPersonInfoByID(ID, ref NationalNo, ref FirstName, ref SecondName,
             ref ThirdName, ref LastName, ref DateOfBirth, ref Gender,
             ref Address, ref Phone, ref Email, ref CountryID, ref ImagePath);
 
@@ -132,7 +152,7 @@ namespace DVLD.BL
             int ID = -1, CountryID = -1;
             short Gender = 1;
 
-            bool found = clsPersonDataAccess.GetPersonInfoByNationalNo(NationalNo, ref ID, ref FirstName, ref SecondName,
+            bool found = clsPersonData.GetPersonInfoByNationalNo(NationalNo, ref ID, ref FirstName, ref SecondName,
             ref ThirdName, ref LastName, ref DateOfBirth, ref Gender,
             ref Address, ref Phone, ref Email, ref CountryID, ref ImagePath);
 
@@ -147,7 +167,7 @@ namespace DVLD.BL
         }
         public static bool DeletePerson(int PersonID)
         {
-            return clsPersonDataAccess.DeletePerson(PersonID);
+            return _DeletePersonImage(PersonID) && clsPersonData.DeletePerson(PersonID);
         }
         public bool Save()
         {
@@ -171,11 +191,11 @@ namespace DVLD.BL
         }
         public static bool IsPersonExist(int PersonID)
         {
-            return clsPersonDataAccess.IsPersonExist(PersonID);
+            return clsPersonData.IsPersonExist(PersonID);
         }
         public static bool IsPersonExist(string NationalNo)
         {
-            return clsPersonDataAccess.IsPersonExist(NationalNo);
+            return clsPersonData.IsPersonExist(NationalNo);
         }
     }
 }

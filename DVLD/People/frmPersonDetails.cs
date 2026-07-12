@@ -21,6 +21,15 @@ namespace DVLD.People
                 this.Close();
             }
         }
+        public frmPersonDetails(string NationalNo)
+        {
+            InitializeComponent();
+            if (!ctrlPersonInfo.LoadPersonInfo(NationalNo))
+            {
+                MessageBox.Show("No Person is found with National Number: " + NationalNo);
+                this.Close();
+            }
+        }
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();

@@ -41,12 +41,12 @@ namespace DVLD
             _RefreshPeopleList();
             cmbFilterBy.SelectedIndex = 0;
         }
-        private void tBFilter_TextChanged(object sender, EventArgs e)
+        private void txtFilterValue_TextChanged(object sender, EventArgs e)
         {
             DataView dv = (DataView)dgvAllPeople.DataSource;
 
             string column = cmbFilterBy.Text.Replace(" ", ""); // "Person ID" → "PersonID"
-            string searchValue = tBFilter.Text.Trim();
+            string searchValue = txtFilterValue.Text.Trim();
 
             if (string.IsNullOrEmpty(searchValue)) // Reset view
             {
@@ -62,25 +62,27 @@ namespace DVLD
         {
             if (cmbFilterBy.SelectedIndex != 0)
             {
-                tBFilter.Visible = true;
+                txtFilterValue.Visible = true;
+                txtFilterValue.Clear();
+                txtFilterValue.Focus();
             }
             else
             {
-                tBFilter.Visible = false;
-                tBFilter.Clear();
+                txtFilterValue.Visible = false;
+                txtFilterValue.Clear();
             }
         }
-        private void tBFilter_KeyPress(object sender, KeyPressEventArgs e)
+        private void txtFilterValue_KeyPress(object sender, KeyPressEventArgs e)
         {
-            
+
             if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != ' ' && e.KeyChar != '@')
             {
                 e.Handled = true;
             }
 
-            if(cmbFilterBy.SelectedIndex == 1 || cmbFilterBy.SelectedIndex == 9)
+            if (cmbFilterBy.SelectedIndex == 1 || cmbFilterBy.SelectedIndex == 9)
             {
-                if(!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
+                if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
             }
         }
         private void btnCloseForm_Click(object sender, EventArgs e)
@@ -108,8 +110,7 @@ namespace DVLD
             if (MessageBox.Show($"Are you sure you want to delete person [{PersonID}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
 
             {
-
-                //Perform Delele and refresh
+                //Perform Delete and refresh
                 if (clsPerson.DeletePerson(PersonID))
                 {
                     MessageBox.Show("Person Deleted Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);

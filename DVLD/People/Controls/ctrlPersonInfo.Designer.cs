@@ -101,6 +101,7 @@
             // llblEditPersonInfo
             // 
             this.llblEditPersonInfo.AutoSize = true;
+            this.llblEditPersonInfo.Enabled = false;
             this.llblEditPersonInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.llblEditPersonInfo.Location = new System.Drawing.Point(577, 57);
             this.llblEditPersonInfo.Name = "llblEditPersonInfo";

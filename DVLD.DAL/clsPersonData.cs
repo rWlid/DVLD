@@ -4,15 +4,22 @@ using System.Data.SqlClient;
 
 namespace DVLD.DAL
 {
-    public static class clsPersonDataAccess
+    public static class clsPersonData
     {
 
-        public static DataTable GetAllPeople()                  
+        public static DataTable GetAllPeople()
         {
             DataTable dt = new DataTable();
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"SELECT CAST(People.PersonID AS NVARCHAR(20)) AS PersonID, People.NationalNo, People.FirstName, People.SecondName, People.ThirdName, People.LastName, People.DateOfBirth, CASE People.Gender WHEN 0 THEN 'Male' WHEN 1 THEN 'Female' END AS Gender, People.Phone, People.Email, Countries.CountryName AS Nationality FROM Countries INNER JOIN People ON Countries.CountryID = People.NationalityCountryID";
+            string query = @"SELECT CAST(People.PersonID AS NVARCHAR(20)) AS PersonID, People.NationalNo, 
+                            People.FirstName, People.SecondName, People.ThirdName, People.LastName, People.DateOfBirth, 
+                            CASE People.Gender 
+                            WHEN 0 THEN 'Male' 
+                            ELSE 'Female' 
+                            END AS Gender, People.Phone, People.Email, 
+                            Countries.CountryName AS Nationality FROM Countries 
+                            INNER JOIN People ON Countries.CountryID = People.NationalityCountryID";
 
             SqlCommand command = new SqlCommand(query, connection);
 
@@ -152,6 +159,36 @@ namespace DVLD.DAL
             }
 
             return isFound;
+        }
+        public static string GetPersonImagePathByID(int PersonID)
+        {
+            string ImagePath = string.Empty;
+            string query = @"SELECT ImagePath FROM People WHERE PersonID = @PersonID";
+
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@PersonID", PersonID);
+
+            try
+            {
+                connection.Open();
+
+                ImagePath = command.ExecuteScalar()?.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+
+                connection.Close();
+
+            }
+
+            return ImagePath;
         }
         public static int AddNewPerson( string NationalNo,  string FirstName,  string SecondName,
              string ThirdName,  string LastName,  DateTime DateOfBirth,  short Gender,

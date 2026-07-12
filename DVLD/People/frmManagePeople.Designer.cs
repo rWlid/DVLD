@@ -41,11 +41,11 @@
             this.tsmSendEmail = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmPhoneCall = new System.Windows.Forms.ToolStripMenuItem();
             this.cmbFilterBy = new System.Windows.Forms.ComboBox();
-            this.tBFilter = new System.Windows.Forms.TextBox();
+            this.txtFilterValue = new System.Windows.Forms.TextBox();
             this.lblFilterBy = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblNumberOfRecords = new System.Windows.Forms.Label();
-            this.btnCloseForm = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.btnAddNewPerson = new System.Windows.Forms.Button();
             this.pbHeader = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAllPeople)).BeginInit();
@@ -71,11 +71,14 @@
             this.dgvAllPeople.AllowUserToDeleteRows = false;
             this.dgvAllPeople.AllowUserToOrderColumns = true;
             this.dgvAllPeople.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dgvAllPeople.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvAllPeople.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAllPeople.ContextMenuStrip = this.cmManagePerson;
+            this.dgvAllPeople.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvAllPeople.Location = new System.Drawing.Point(12, 213);
+            this.dgvAllPeople.MultiSelect = false;
             this.dgvAllPeople.Name = "dgvAllPeople";
             this.dgvAllPeople.ReadOnly = true;
+            this.dgvAllPeople.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAllPeople.Size = new System.Drawing.Size(1180, 273);
             this.dgvAllPeople.TabIndex = 2;
             this.dgvAllPeople.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.ShowPersonDetails);
@@ -175,15 +178,15 @@
             this.cmbFilterBy.TabIndex = 3;
             this.cmbFilterBy.SelectedIndexChanged += new System.EventHandler(this.cmbFilterBy_SelectedIndexChanged);
             // 
-            // tBFilter
+            // txtFilterValue
             // 
-            this.tBFilter.Location = new System.Drawing.Point(221, 187);
-            this.tBFilter.Name = "tBFilter";
-            this.tBFilter.Size = new System.Drawing.Size(137, 20);
-            this.tBFilter.TabIndex = 4;
-            this.tBFilter.Visible = false;
-            this.tBFilter.TextChanged += new System.EventHandler(this.tBFilter_TextChanged);
-            this.tBFilter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tBFilter_KeyPress);
+            this.txtFilterValue.Location = new System.Drawing.Point(221, 187);
+            this.txtFilterValue.Name = "txtFilterValue";
+            this.txtFilterValue.Size = new System.Drawing.Size(137, 20);
+            this.txtFilterValue.TabIndex = 4;
+            this.txtFilterValue.Visible = false;
+            this.txtFilterValue.TextChanged += new System.EventHandler(this.txtFilterValue_TextChanged);
+            this.txtFilterValue.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFilterValue_KeyPress);
             // 
             // lblFilterBy
             // 
@@ -215,17 +218,17 @@
             this.lblNumberOfRecords.TabIndex = 9;
             this.lblNumberOfRecords.Text = "0";
             // 
-            // btnCloseForm
+            // btnClose
             // 
-            this.btnCloseForm.Image = global::DVLD.Properties.Resources.Close_32;
-            this.btnCloseForm.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCloseForm.Location = new System.Drawing.Point(1077, 492);
-            this.btnCloseForm.Name = "btnCloseForm";
-            this.btnCloseForm.Size = new System.Drawing.Size(115, 38);
-            this.btnCloseForm.TabIndex = 7;
-            this.btnCloseForm.Text = "    Close";
-            this.btnCloseForm.UseVisualStyleBackColor = true;
-            this.btnCloseForm.Click += new System.EventHandler(this.btnCloseForm_Click);
+            this.btnClose.Image = global::DVLD.Properties.Resources.Close_32;
+            this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClose.Location = new System.Drawing.Point(1077, 492);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(115, 38);
+            this.btnClose.TabIndex = 7;
+            this.btnClose.Text = "    Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnCloseForm_Click);
             // 
             // btnAddNewPerson
             // 
@@ -255,10 +258,10 @@
             this.ClientSize = new System.Drawing.Size(1204, 542);
             this.Controls.Add(this.lblNumberOfRecords);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnCloseForm);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnAddNewPerson);
             this.Controls.Add(this.lblFilterBy);
-            this.Controls.Add(this.tBFilter);
+            this.Controls.Add(this.txtFilterValue);
             this.Controls.Add(this.cmbFilterBy);
             this.Controls.Add(this.dgvAllPeople);
             this.Controls.Add(this.lblFormTitle);
@@ -284,10 +287,10 @@
         private System.Windows.Forms.Label lblFormTitle;
         private System.Windows.Forms.DataGridView dgvAllPeople;
         private System.Windows.Forms.ComboBox cmbFilterBy;
-        private System.Windows.Forms.TextBox tBFilter;
+        private System.Windows.Forms.TextBox txtFilterValue;
         private System.Windows.Forms.Label lblFilterBy;
         private System.Windows.Forms.Button btnAddNewPerson;
-        private System.Windows.Forms.Button btnCloseForm;
+        private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblNumberOfRecords;
         private System.Windows.Forms.ToolStripMenuItem tsmDelete;
