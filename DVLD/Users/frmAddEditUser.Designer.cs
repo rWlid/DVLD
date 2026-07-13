@@ -34,10 +34,10 @@
             this.tabPagePerson = new System.Windows.Forms.TabPage();
             this.btnNext = new System.Windows.Forms.Button();
             this.tabPageLogin = new System.Windows.Forms.TabPage();
-            this.cbIsActive = new System.Windows.Forms.CheckBox();
-            this.txtPassword = new System.Windows.Forms.TextBox();
             this.txtUserName = new System.Windows.Forms.TextBox();
+            this.txtPassword = new System.Windows.Forms.TextBox();
             this.txtConfirmPassword = new System.Windows.Forms.TextBox();
+            this.cbIsActive = new System.Windows.Forms.CheckBox();
             this.lblUserID = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -102,10 +102,10 @@
             // 
             // tabPageLogin
             // 
-            this.tabPageLogin.Controls.Add(this.cbIsActive);
-            this.tabPageLogin.Controls.Add(this.txtPassword);
             this.tabPageLogin.Controls.Add(this.txtUserName);
+            this.tabPageLogin.Controls.Add(this.txtPassword);
             this.tabPageLogin.Controls.Add(this.txtConfirmPassword);
+            this.tabPageLogin.Controls.Add(this.cbIsActive);
             this.tabPageLogin.Controls.Add(this.lblUserID);
             this.tabPageLogin.Controls.Add(this.label4);
             this.tabPageLogin.Controls.Add(this.label3);
@@ -119,6 +119,34 @@
             this.tabPageLogin.Text = "Login Info";
             this.tabPageLogin.UseVisualStyleBackColor = true;
             // 
+            // txtUserName
+            // 
+            this.txtUserName.Location = new System.Drawing.Point(214, 123);
+            this.txtUserName.Name = "txtUserName";
+            this.txtUserName.Size = new System.Drawing.Size(133, 20);
+            this.txtUserName.TabIndex = 6;
+            this.txtUserName.Validating += new System.ComponentModel.CancelEventHandler(this.txtUserName_Validating);
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(214, 165);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '*';
+            this.txtPassword.Size = new System.Drawing.Size(133, 20);
+            this.txtPassword.TabIndex = 7;
+            this.txtPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPassword_KeyPress);
+            this.txtPassword.Validating += new System.ComponentModel.CancelEventHandler(this.txt_Validating);
+            // 
+            // txtConfirmPassword
+            // 
+            this.txtConfirmPassword.Location = new System.Drawing.Point(214, 211);
+            this.txtConfirmPassword.Name = "txtConfirmPassword";
+            this.txtConfirmPassword.PasswordChar = '*';
+            this.txtConfirmPassword.Size = new System.Drawing.Size(133, 20);
+            this.txtConfirmPassword.TabIndex = 8;
+            this.txtConfirmPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPassword_KeyPress);
+            this.txtConfirmPassword.Validating += new System.ComponentModel.CancelEventHandler(this.txtConfirmPassword_Validating);
+            // 
             // cbIsActive
             // 
             this.cbIsActive.AutoSize = true;
@@ -129,34 +157,6 @@
             this.cbIsActive.TabIndex = 9;
             this.cbIsActive.Text = "Is Active";
             this.cbIsActive.UseVisualStyleBackColor = true;
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Location = new System.Drawing.Point(214, 165);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(133, 20);
-            this.txtPassword.TabIndex = 8;
-            this.txtPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPassword_KeyPress);
-            this.txtPassword.Validating += new System.ComponentModel.CancelEventHandler(this.txt_Validating);
-            // 
-            // txtUserName
-            // 
-            this.txtUserName.Location = new System.Drawing.Point(214, 123);
-            this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(133, 20);
-            this.txtUserName.TabIndex = 7;
-            this.txtUserName.Validating += new System.ComponentModel.CancelEventHandler(this.txtUserName_Validating);
-            // 
-            // txtConfirmPassword
-            // 
-            this.txtConfirmPassword.Location = new System.Drawing.Point(214, 211);
-            this.txtConfirmPassword.Name = "txtConfirmPassword";
-            this.txtConfirmPassword.PasswordChar = '*';
-            this.txtConfirmPassword.Size = new System.Drawing.Size(133, 20);
-            this.txtConfirmPassword.TabIndex = 6;
-            this.txtConfirmPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPassword_KeyPress);
-            this.txtConfirmPassword.Validating += new System.ComponentModel.CancelEventHandler(this.txtConfirmPassword_Validating);
             // 
             // lblUserID
             // 
@@ -255,6 +255,7 @@
             this.ctrlPersonInfoFilter1.Name = "ctrlPersonInfoFilter1";
             this.ctrlPersonInfoFilter1.Size = new System.Drawing.Size(703, 316);
             this.ctrlPersonInfoFilter1.TabIndex = 0;
+            this.ctrlPersonInfoFilter1.OnPersonSelected += new System.Action<int>(this.ctrlPersonInfoFilter1_OnPersonSelected);
             // 
             // frmAddEditUser
             // 
@@ -267,6 +268,7 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.lblFormTitle);
             this.Name = "frmAddEditUser";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add User";
             this.Load += new System.EventHandler(this.frmAddEditUser_Load);
             this.tabControl1.ResumeLayout(false);

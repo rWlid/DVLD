@@ -14,6 +14,18 @@ namespace DVLD
 {
     public partial class ctrlPersonInfoFilter : UserControl
     {
+        // Define a custom event handler delegate with parameters
+        public event Action<int> OnPersonSelected;
+        // Create a protected method to raise the event with a parameter
+        protected virtual void PersonSelected(int PersonID)
+        {
+            if (!FilterEnabled) { return; }
+            Action<int> handler = OnPersonSelected;
+            if (handler != null)
+            {
+                handler(PersonID); // Raise the event with the parameter
+            }
+        }
         //private bool _ShowAddPerson = true;
         //public bool ShowAddPerson
         //{
@@ -34,10 +46,9 @@ namespace DVLD
                 gbFilter.Enabled = _FilterEnabled;
             }
         }
-        private int _PersonID = -1;
         public int PersonID
         {
-            get { return _PersonID; }
+            get { return ctrlPersonInfo.SelectedPersonInfo.ID; }
         }
         public clsPerson SelectedPersonInfo
         {
@@ -68,6 +79,9 @@ namespace DVLD
                 default:
                     break;
             }
+
+            //raise event
+            PersonSelected(ctrlPersonInfo.PersonID);
         }
         public void LoadPersonInfo(int PersonID)
         {

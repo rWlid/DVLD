@@ -16,11 +16,12 @@ namespace DVLD
     public partial class ctrlPersonInfo : UserControl
     {
         private clsPerson _Person;
-        //private int _PersonID;
-        //public int PersonID 
-        //{
-        //    get { return _PersonID; }
-        //}
+
+        private int _PersonID = -1;
+        public int PersonID
+        {
+            get { return _PersonID; }
+        }
         public clsPerson SelectedPersonInfo
         {
             get { return _Person; }
@@ -44,7 +45,7 @@ namespace DVLD
         private void _LoadData()
         {
             llblEditPersonInfo.Enabled = true;
-
+            _PersonID = _Person.ID;
             lblPersonID.Text = _Person.ID.ToString();
             lblFullName.Text = _Person.FullName;
             lblNationalNo.Text = _Person.NationalNo;

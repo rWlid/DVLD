@@ -88,9 +88,7 @@ namespace DVLD.Users
                 return;
             }
 
-            tabPageLogin.Enabled = true;
             tabControl1.SelectedIndex = 1;
-            btnSave.Enabled = true;
             txtUserName.Focus();
         }
         private void txt_Validating(object sender, CancelEventArgs e)
@@ -103,10 +101,9 @@ namespace DVLD.Users
             }
             else
             {
-                errorProvider1.SetError(txtConfirmPassword, null);
+                errorProvider1.SetError(txt, null);
             }
         }
-
         private void txtConfirmPassword_Validating(object sender, CancelEventArgs e)
         {
             if (string.IsNullOrEmpty(txtConfirmPassword.Text))
@@ -124,7 +121,6 @@ namespace DVLD.Users
                 errorProvider1.SetError(txtConfirmPassword, null);
             }
         }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (!this.ValidateChildren()) { return; }
@@ -145,7 +141,6 @@ namespace DVLD.Users
             }
             else { MessageBox.Show("Data is not Saved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
-
         private void txtUserName_Validating(object sender, CancelEventArgs e)
         {
             if (string.IsNullOrEmpty(txtUserName.Text))
@@ -160,17 +155,21 @@ namespace DVLD.Users
             }
             else
             {
-                errorProvider1.SetError(txtConfirmPassword, null);
+                errorProvider1.SetError(txtUserName, null);
             }
         }
         private void LetterOrDigit_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
         }
-
         private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Space) { e.Handled = true; }
+        }
+        private void ctrlPersonInfoFilter1_OnPersonSelected(int obj)
+        {
+            btnSave.Enabled = true;
+            tabPageLogin.Enabled = true;
         }
     }
 }
