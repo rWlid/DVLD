@@ -28,18 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.lblFilterBy = new System.Windows.Forms.Label();
             this.txtFilterValue = new System.Windows.Forms.TextBox();
             this.cmbFilterBy = new System.Windows.Forms.ComboBox();
             this.dgvAllUsers = new System.Windows.Forms.DataGridView();
+            this.cmManageUser = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.lblFormTitle = new System.Windows.Forms.Label();
             this.lblNumberOfRecords = new System.Windows.Forms.Label();
             this.cmbActiveFilter = new System.Windows.Forms.ComboBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnAddUser = new System.Windows.Forms.Button();
+            this.tsmiShowDetails = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAddNewUser = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiEditUser = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDeleteUser = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSendEmail = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPhoneCall = new System.Windows.Forms.ToolStripMenuItem();
             this.pbHeader = new System.Windows.Forms.PictureBox();
+            this.tsmiChangePass = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAllUsers)).BeginInit();
+            this.cmManageUser.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbHeader)).BeginInit();
             this.SuspendLayout();
             // 
@@ -99,6 +111,7 @@
             this.dgvAllUsers.AllowUserToResizeRows = false;
             this.dgvAllUsers.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgvAllUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAllUsers.ContextMenuStrip = this.cmManageUser;
             this.dgvAllUsers.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvAllUsers.Location = new System.Drawing.Point(12, 219);
             this.dgvAllUsers.MultiSelect = false;
@@ -109,6 +122,31 @@
             this.dgvAllUsers.TabIndex = 11;
             this.dgvAllUsers.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ShowUserDetails);
             this.dgvAllUsers.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvAllUsers_DataBindingComplete);
+            // 
+            // cmManageUser
+            // 
+            this.cmManageUser.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiShowDetails,
+            this.toolStripSeparator1,
+            this.tsmiAddNewUser,
+            this.tsmiEditUser,
+            this.tsmiDeleteUser,
+            this.tsmiChangePass,
+            this.toolStripSeparator2,
+            this.tsmiSendEmail,
+            this.tsmiPhoneCall});
+            this.cmManageUser.Name = "cmManageUser";
+            this.cmManageUser.Size = new System.Drawing.Size(197, 304);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(193, 6);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(193, 6);
             // 
             // lblFormTitle
             // 
@@ -168,6 +206,60 @@
             this.btnAddUser.UseVisualStyleBackColor = true;
             this.btnAddUser.Click += new System.EventHandler(this.btnAddUser_Click);
             // 
+            // tsmiShowDetails
+            // 
+            this.tsmiShowDetails.Image = global::DVLD.Properties.Resources.PersonDetails_32;
+            this.tsmiShowDetails.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmiShowDetails.Name = "tsmiShowDetails";
+            this.tsmiShowDetails.Size = new System.Drawing.Size(196, 38);
+            this.tsmiShowDetails.Text = "Show Details";
+            this.tsmiShowDetails.Click += new System.EventHandler(this.ShowUserDetails);
+            // 
+            // tsmiAddNewUser
+            // 
+            this.tsmiAddNewUser.Image = global::DVLD.Properties.Resources.Add_New_User_32;
+            this.tsmiAddNewUser.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmiAddNewUser.Name = "tsmiAddNewUser";
+            this.tsmiAddNewUser.Size = new System.Drawing.Size(196, 38);
+            this.tsmiAddNewUser.Text = "Add New User";
+            this.tsmiAddNewUser.Click += new System.EventHandler(this.btnAddUser_Click);
+            // 
+            // tsmiEditUser
+            // 
+            this.tsmiEditUser.Image = global::DVLD.Properties.Resources.Edit_User_32;
+            this.tsmiEditUser.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmiEditUser.Name = "tsmiEditUser";
+            this.tsmiEditUser.Size = new System.Drawing.Size(196, 38);
+            this.tsmiEditUser.Text = "Edit";
+            this.tsmiEditUser.Click += new System.EventHandler(this.tsmiEditUser_Click);
+            // 
+            // tsmiDeleteUser
+            // 
+            this.tsmiDeleteUser.Image = global::DVLD.Properties.Resources.Delete_User_32;
+            this.tsmiDeleteUser.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmiDeleteUser.Name = "tsmiDeleteUser";
+            this.tsmiDeleteUser.Size = new System.Drawing.Size(196, 38);
+            this.tsmiDeleteUser.Text = "Delete";
+            this.tsmiDeleteUser.Click += new System.EventHandler(this.tsmiDeleteUser_Click);
+            // 
+            // tsmiSendEmail
+            // 
+            this.tsmiSendEmail.Image = global::DVLD.Properties.Resources.send_email_32;
+            this.tsmiSendEmail.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmiSendEmail.Name = "tsmiSendEmail";
+            this.tsmiSendEmail.Size = new System.Drawing.Size(196, 38);
+            this.tsmiSendEmail.Text = "Send Email";
+            this.tsmiSendEmail.Click += new System.EventHandler(this.FeatureStubError);
+            // 
+            // tsmiPhoneCall
+            // 
+            this.tsmiPhoneCall.Image = global::DVLD.Properties.Resources.call_32;
+            this.tsmiPhoneCall.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmiPhoneCall.Name = "tsmiPhoneCall";
+            this.tsmiPhoneCall.Size = new System.Drawing.Size(196, 38);
+            this.tsmiPhoneCall.Text = "Phone Call";
+            this.tsmiPhoneCall.Click += new System.EventHandler(this.FeatureStubError);
+            // 
             // pbHeader
             // 
             this.pbHeader.Dock = System.Windows.Forms.DockStyle.Top;
@@ -178,6 +270,15 @@
             this.pbHeader.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbHeader.TabIndex = 9;
             this.pbHeader.TabStop = false;
+            // 
+            // tsmiChangePass
+            // 
+            this.tsmiChangePass.Image = global::DVLD.Properties.Resources.Password_32;
+            this.tsmiChangePass.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmiChangePass.Name = "tsmiChangePass";
+            this.tsmiChangePass.Size = new System.Drawing.Size(196, 38);
+            this.tsmiChangePass.Text = "Change Password";
+            this.tsmiChangePass.Click += new System.EventHandler(this.tsmiChangePass_Click);
             // 
             // frmManageUsers
             // 
@@ -203,6 +304,7 @@
             this.Text = "Manage Users";
             this.Load += new System.EventHandler(this.frmManageUsers_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAllUsers)).EndInit();
+            this.cmManageUser.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbHeader)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -222,5 +324,15 @@
         private System.Windows.Forms.Button btnAddUser;
         private System.Windows.Forms.Label lblNumberOfRecords;
         private System.Windows.Forms.ComboBox cmbActiveFilter;
+        private System.Windows.Forms.ContextMenuStrip cmManageUser;
+        private System.Windows.Forms.ToolStripMenuItem tsmiShowDetails;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAddNewUser;
+        private System.Windows.Forms.ToolStripMenuItem tsmiEditUser;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDeleteUser;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSendEmail;
+        private System.Windows.Forms.ToolStripMenuItem tsmiPhoneCall;
+        private System.Windows.Forms.ToolStripMenuItem tsmiChangePass;
     }
 }

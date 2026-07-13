@@ -83,8 +83,8 @@ namespace DVLD
             this.dgvAllPeople.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAllPeople.Size = new System.Drawing.Size(1180, 273);
             this.dgvAllPeople.TabIndex = 2;
-            this.dgvAllPeople.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvAllPeople_DataBindingComplete);
             this.dgvAllPeople.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ShowPersonDetails);
+            this.dgvAllPeople.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvAllPeople_DataBindingComplete);
             // 
             // cmManagePerson
             // 
@@ -98,26 +98,26 @@ namespace DVLD
             this.tsmSendEmail,
             this.tsmPhoneCall});
             this.cmManagePerson.Name = "contextMenuStrip1";
-            this.cmManagePerson.Size = new System.Drawing.Size(163, 148);
+            this.cmManagePerson.Size = new System.Drawing.Size(181, 170);
             // 
             // tsmShowDetails
             // 
             this.tsmShowDetails.Image = global::DVLD.Properties.Resources.PersonDetails_32;
             this.tsmShowDetails.Name = "tsmShowDetails";
-            this.tsmShowDetails.Size = new System.Drawing.Size(162, 22);
+            this.tsmShowDetails.Size = new System.Drawing.Size(180, 22);
             this.tsmShowDetails.Text = "Show Details";
             this.tsmShowDetails.Click += new System.EventHandler(this.ShowPersonDetails);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(159, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmAddNewPerson
             // 
             this.tsmAddNewPerson.Image = global::DVLD.Properties.Resources.Add_Person_40;
             this.tsmAddNewPerson.Name = "tsmAddNewPerson";
-            this.tsmAddNewPerson.Size = new System.Drawing.Size(162, 22);
+            this.tsmAddNewPerson.Size = new System.Drawing.Size(180, 22);
             this.tsmAddNewPerson.Text = "Add New Person";
             this.tsmAddNewPerson.Click += new System.EventHandler(this.AddNewPerson);
             // 
@@ -125,7 +125,7 @@ namespace DVLD
             // 
             this.tsmEditPerson.Image = global::DVLD.Properties.Resources.edit_32;
             this.tsmEditPerson.Name = "tsmEditPerson";
-            this.tsmEditPerson.Size = new System.Drawing.Size(162, 22);
+            this.tsmEditPerson.Size = new System.Drawing.Size(180, 22);
             this.tsmEditPerson.Text = "Edit";
             this.tsmEditPerson.Click += new System.EventHandler(this.tsmEditPerson_Click);
             // 
@@ -133,20 +133,20 @@ namespace DVLD
             // 
             this.tsmDelete.Image = global::DVLD.Properties.Resources.Delete_32;
             this.tsmDelete.Name = "tsmDelete";
-            this.tsmDelete.Size = new System.Drawing.Size(162, 22);
+            this.tsmDelete.Size = new System.Drawing.Size(180, 22);
             this.tsmDelete.Text = "Delete";
             this.tsmDelete.Click += new System.EventHandler(this.tsmDelete_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(159, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmSendEmail
             // 
             this.tsmSendEmail.Image = global::DVLD.Properties.Resources.send_email_32;
             this.tsmSendEmail.Name = "tsmSendEmail";
-            this.tsmSendEmail.Size = new System.Drawing.Size(162, 22);
+            this.tsmSendEmail.Size = new System.Drawing.Size(180, 22);
             this.tsmSendEmail.Text = "Send Email";
             this.tsmSendEmail.Click += new System.EventHandler(this.FeatureStubError);
             // 
@@ -154,7 +154,7 @@ namespace DVLD
             // 
             this.tsmPhoneCall.Image = global::DVLD.Properties.Resources.call_32;
             this.tsmPhoneCall.Name = "tsmPhoneCall";
-            this.tsmPhoneCall.Size = new System.Drawing.Size(162, 22);
+            this.tsmPhoneCall.Size = new System.Drawing.Size(180, 22);
             this.tsmPhoneCall.Text = "Phone Call";
             this.tsmPhoneCall.Click += new System.EventHandler(this.FeatureStubError);
             // 

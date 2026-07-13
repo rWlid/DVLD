@@ -15,11 +15,11 @@ namespace DVLD.Users.Controls
     public partial class ctrlUserInfo : UserControl
     {
         private clsUser _User;
-        //private int _UserID;
-        //public int UserID 
-        //{
-        //    get { return _UserID; }
-        //}
+        private int _UserID;
+        public int UserID 
+        {
+            get { return _UserID; }
+        }
         public clsUser SelectedUserInfo
         {
             get { return _User; }
@@ -30,7 +30,7 @@ namespace DVLD.Users.Controls
         }
         private void _LoadData()
         {
-
+            _UserID = _User.ID;
             lblUserID.Text = _User.ID.ToString();
             lblUserName.Text = _User.UserName;
             lblIsActive.Text = _User.IsActive ? "Yes" : "No";

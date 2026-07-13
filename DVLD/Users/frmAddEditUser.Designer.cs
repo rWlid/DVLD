@@ -125,6 +125,7 @@
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(133, 20);
             this.txtUserName.TabIndex = 6;
+            this.txtUserName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LetterOrDigit_KeyPress);
             this.txtUserName.Validating += new System.ComponentModel.CancelEventHandler(this.txtUserName_Validating);
             // 
             // txtPassword

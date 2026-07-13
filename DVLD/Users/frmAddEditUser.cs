@@ -64,8 +64,6 @@ namespace DVLD.Users
 
             lblUserID.Text = _User.ID.ToString();
             txtUserName.Text = _User.UserName;
-            txtPassword.Text = _User.Password;
-            txtConfirmPassword.Text = _User.Password;
             cbIsActive.Checked = _User.IsActive;
             ctrlPersonInfoFilter1.LoadPersonInfo(_User.PersonID);
         }
@@ -75,9 +73,9 @@ namespace DVLD.Users
             
             if (_Mode == enMode.Update) 
             { 
+                _LoadData();
                 ctrlPersonInfoFilter1.FilterEnabled = false;
                 tabPageLogin.Enabled = true;
-                _LoadData();
             }
         }
         private void btnNext_Click(object sender, EventArgs e)

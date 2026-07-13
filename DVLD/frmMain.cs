@@ -18,10 +18,6 @@ namespace DVLD
             InitializeComponent();
         }
 
-        private void Main_Load(object sender, EventArgs e)
-        {
-        }
-
         private void peopleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmManagePeople frm = new frmManagePeople();

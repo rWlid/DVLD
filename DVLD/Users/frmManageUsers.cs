@@ -134,5 +134,38 @@ namespace DVLD.Users
             frm.ShowDialog();
             _RefreshUsersList();
         }
+
+        private void tsmiEditUser_Click(object sender, EventArgs e)
+        {
+            frmAddEditUser frm = new frmAddEditUser(Convert.ToInt32(dgvAllUsers.CurrentRow.Cells[0].Value));
+            frm.ShowDialog();
+            _RefreshUsersList();
+        }
+
+        private void tsmiDeleteUser_Click(object sender, EventArgs e)
+        {
+            int UserID = Convert.ToInt32(dgvAllUsers.CurrentRow.Cells[0].Value);
+            if (MessageBox.Show($"Are you sure you want to delete user [{UserID}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+
+            {
+                //Perform Delete and refresh
+                if (clsUser.DeleteUser(UserID))
+                {
+                    MessageBox.Show("User Deleted Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    _RefreshUsersList();
+                }
+
+                else
+                    MessageBox.Show("User was not deleted because it has data linked to it", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+        }
+
+        private void tsmiChangePass_Click(object sender, EventArgs e)
+        {
+            int UserID = Convert.ToInt32(dgvAllUsers.CurrentRow.Cells[0].Value);
+            frmChangePassowrd frm = new frmChangePassowrd(UserID);
+            frm.ShowDialog();
+        }
     }
 }

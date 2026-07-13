@@ -55,6 +55,10 @@ namespace DVLD.BL
         {
             return clsUserData.UpdateUser(this.ID,this.PersonID,this.UserName,this.Password,this.IsActive);
         }
+        private bool _UpdatePassword()
+        {
+            return clsUserData.UpdatePassword(this.ID, this.Password);
+        }
         public static DataTable GettAllUsers()
         {
             return clsUserData.GetAllUsers();
@@ -66,7 +70,7 @@ namespace DVLD.BL
             bool IsActive = false;
             int PersonID = -1;
 
-            if (clsUserData.GetUserInfoByID(ID, ref PersonID, ref UserName, ref IsActive))
+            if (clsUserData.GetUserInfoByID(ID, ref PersonID, ref UserName, ref Password, ref IsActive))
             {
                 return new clsUser(ID,PersonID,UserName,Password,IsActive);
             }
@@ -97,6 +101,14 @@ namespace DVLD.BL
             }
             return false;
         }
+        public static bool ChangeUserPassword(int UserID, string oldPassword, string newPassword)
+        {
+            if (!clsUserData.AreCredintialValid(UserID, oldPassword))
+            {
+                return false;
+            }
+            return clsUserData.UpdatePassword(UserID,newPassword);
+        } 
         public static bool IsUserNameExist(string UserName)
         {
             return clsUserData.IsUserNameExist(UserName);
