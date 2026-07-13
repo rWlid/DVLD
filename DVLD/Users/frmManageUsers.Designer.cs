@@ -34,11 +34,11 @@
             this.cmbFilterBy = new System.Windows.Forms.ComboBox();
             this.dgvAllUsers = new System.Windows.Forms.DataGridView();
             this.lblFormTitle = new System.Windows.Forms.Label();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.pbHeader = new System.Windows.Forms.PictureBox();
-            this.btnAddNewPerson = new System.Windows.Forms.Button();
             this.lblNumberOfRecords = new System.Windows.Forms.Label();
             this.cmbActiveFilter = new System.Windows.Forms.ComboBox();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.btnAddUser = new System.Windows.Forms.Button();
+            this.pbHeader = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAllUsers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbHeader)).BeginInit();
             this.SuspendLayout();
@@ -107,6 +107,7 @@
             this.dgvAllUsers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAllUsers.Size = new System.Drawing.Size(652, 273);
             this.dgvAllUsers.TabIndex = 11;
+            this.dgvAllUsers.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ShowUserDetails);
             this.dgvAllUsers.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvAllUsers_DataBindingComplete);
             // 
             // lblFormTitle
@@ -120,38 +121,6 @@
             this.lblFormTitle.TabIndex = 10;
             this.lblFormTitle.Text = "Manage Users";
             this.lblFormTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // btnClose
-            // 
-            this.btnClose.Image = global::DVLD.Properties.Resources.Close_32;
-            this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(549, 498);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(115, 38);
-            this.btnClose.TabIndex = 16;
-            this.btnClose.Text = "    Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // pbHeader
-            // 
-            this.pbHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pbHeader.Image = global::DVLD.Properties.Resources.Users_2_400;
-            this.pbHeader.Location = new System.Drawing.Point(0, 0);
-            this.pbHeader.Name = "pbHeader";
-            this.pbHeader.Size = new System.Drawing.Size(674, 121);
-            this.pbHeader.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbHeader.TabIndex = 9;
-            this.pbHeader.TabStop = false;
-            // 
-            // btnAddNewPerson
-            // 
-            this.btnAddNewPerson.Image = global::DVLD.Properties.Resources.Add_New_User_72;
-            this.btnAddNewPerson.Location = new System.Drawing.Point(584, 139);
-            this.btnAddNewPerson.Name = "btnAddNewPerson";
-            this.btnAddNewPerson.Size = new System.Drawing.Size(80, 74);
-            this.btnAddNewPerson.TabIndex = 15;
-            this.btnAddNewPerson.UseVisualStyleBackColor = true;
             // 
             // lblNumberOfRecords
             // 
@@ -177,6 +146,39 @@
             this.cmbActiveFilter.Visible = false;
             this.cmbActiveFilter.SelectedIndexChanged += new System.EventHandler(this.cmbActiveFilter_SelectedIndexChanged);
             // 
+            // btnClose
+            // 
+            this.btnClose.Image = global::DVLD.Properties.Resources.Close_32;
+            this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClose.Location = new System.Drawing.Point(549, 498);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(115, 38);
+            this.btnClose.TabIndex = 16;
+            this.btnClose.Text = "    Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnAddUser
+            // 
+            this.btnAddUser.Image = global::DVLD.Properties.Resources.Add_New_User_72;
+            this.btnAddUser.Location = new System.Drawing.Point(584, 139);
+            this.btnAddUser.Name = "btnAddUser";
+            this.btnAddUser.Size = new System.Drawing.Size(80, 74);
+            this.btnAddUser.TabIndex = 15;
+            this.btnAddUser.UseVisualStyleBackColor = true;
+            this.btnAddUser.Click += new System.EventHandler(this.btnAddUser_Click);
+            // 
+            // pbHeader
+            // 
+            this.pbHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pbHeader.Image = global::DVLD.Properties.Resources.Users_2_400;
+            this.pbHeader.Location = new System.Drawing.Point(0, 0);
+            this.pbHeader.Name = "pbHeader";
+            this.pbHeader.Size = new System.Drawing.Size(674, 121);
+            this.pbHeader.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbHeader.TabIndex = 9;
+            this.pbHeader.TabStop = false;
+            // 
             // frmManageUsers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -186,7 +188,7 @@
             this.Controls.Add(this.lblNumberOfRecords);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.btnAddNewPerson);
+            this.Controls.Add(this.btnAddUser);
             this.Controls.Add(this.lblFilterBy);
             this.Controls.Add(this.txtFilterValue);
             this.Controls.Add(this.cmbFilterBy);
@@ -217,7 +219,7 @@
         private System.Windows.Forms.DataGridView dgvAllUsers;
         private System.Windows.Forms.Label lblFormTitle;
         private System.Windows.Forms.PictureBox pbHeader;
-        private System.Windows.Forms.Button btnAddNewPerson;
+        private System.Windows.Forms.Button btnAddUser;
         private System.Windows.Forms.Label lblNumberOfRecords;
         private System.Windows.Forms.ComboBox cmbActiveFilter;
     }

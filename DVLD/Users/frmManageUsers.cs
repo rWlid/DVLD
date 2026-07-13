@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
+using DVLD.People;
 
 namespace DVLD.Users
 {
@@ -38,6 +39,15 @@ namespace DVLD.Users
         {
             _RefreshUsersList();
             cmbFilterBy.SelectedIndex = 0;
+        }
+        private void ShowUserDetails(object sender, EventArgs e)
+        {
+            int UserID = Convert.ToInt32(dgvAllUsers.CurrentRow.Cells[0].Value);
+
+            frmUserDetails frm = new frmUserDetails(UserID);
+            frm.ShowDialog();
+            _RefreshUsersList();
+
         }
         private void txtFilterValue_TextChanged(object sender, EventArgs e)
         {
@@ -117,6 +127,12 @@ namespace DVLD.Users
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+        private void btnAddUser_Click(object sender, EventArgs e)
+        {
+            frmAddEditUser frm = new frmAddEditUser();
+            frm.ShowDialog();
+            _RefreshUsersList();
         }
     }
 }

@@ -66,9 +66,7 @@ namespace DVLD.BL
             bool IsActive = false;
             int PersonID = -1;
 
-            bool found = clsUserData.GetUserInfoByID(ID,ref PersonID,ref UserName,ref Password,ref IsActive);
-
-            if (found)
+            if (clsUserData.GetUserInfoByID(ID, ref PersonID, ref UserName, ref IsActive))
             {
                 return new clsUser(ID,PersonID,UserName,Password,IsActive);
             }
@@ -98,6 +96,10 @@ namespace DVLD.BL
 
             }
             return false;
+        }
+        public static bool IsUserNameExist(string UserName)
+        {
+            return clsUserData.IsUserNameExist(UserName);
         }
     }
 }

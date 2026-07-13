@@ -43,13 +43,13 @@ namespace DVLD.DAL
 
             return dt;
         }
-        public static bool GetUserInfoByID(int UserID,  ref int PersonID, ref string UserName, ref string Password, ref bool IsActive)
+        public static bool GetUserInfoByID(int UserID,  ref int PersonID, ref string UserName, ref bool IsActive)
         {
             bool isFound = false;
 
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"SELECT * FROM Users WHERE UserID = @UserID";
+            string query = @"SELECT PersonID,UserName,IsActive FROM Users WHERE UserID = @UserID";
 
             SqlCommand command = new SqlCommand(query, connection);
 
@@ -67,7 +67,6 @@ namespace DVLD.DAL
 
                     PersonID = (int)reader["PersonID"];
                     UserName = (string)reader["UserName"];
-                    Password = (string)reader["SeconPassworddName"];
                     IsActive = (bool)reader["IsActive"];
 
                 }
@@ -207,6 +206,34 @@ namespace DVLD.DAL
             }
 
             return (rowsAffected > 0);
+        }
+        public static bool IsUserNameExist(string UserName)
+        {
+            bool isFound = false;
+            string query = @"SELECT Found=1 FROM Users WHERE UserName = @UserName";
+
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@UserName", UserName);
+
+            try
+            {
+                connection.Open();
+                isFound = command.ExecuteScalar() != null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+
+                connection.Close();
+
+            }
+
+            return isFound;
         }
     }
 }

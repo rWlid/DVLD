@@ -1,4 +1,6 @@
-﻿namespace DVLD
+﻿using System;
+
+namespace DVLD
 {
     partial class frmManagePeople
     {
@@ -81,8 +83,8 @@
             this.dgvAllPeople.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAllPeople.Size = new System.Drawing.Size(1180, 273);
             this.dgvAllPeople.TabIndex = 2;
-            this.dgvAllPeople.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.ShowPersonDetails);
             this.dgvAllPeople.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvAllPeople_DataBindingComplete);
+            this.dgvAllPeople.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ShowPersonDetails);
             // 
             // cmManagePerson
             // 

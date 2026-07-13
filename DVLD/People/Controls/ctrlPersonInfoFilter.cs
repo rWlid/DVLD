@@ -8,21 +8,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
+using DVLD.Properties;
 
 namespace DVLD
 {
     public partial class ctrlPersonInfoFilter : UserControl
     {
-        private bool _ShowAddPerson = true;
-        public bool ShowAddPerson
-        {
-            get {  return _ShowAddPerson; }
-            set 
-            { 
-                _ShowAddPerson = value;
-                btnAdd.Enabled = _ShowAddPerson;
-            }
-        }
+        //private bool _ShowAddPerson = true;
+        //public bool ShowAddPerson
+        //{
+        //    get {  return _ShowAddPerson; }
+        //    set 
+        //    { 
+        //        _ShowAddPerson = value;
+        //        btnAdd.Enabled = _ShowAddPerson;
+        //    }
+        //}
         private bool _FilterEnabled = true;
         public bool FilterEnabled
         {
@@ -45,6 +46,11 @@ namespace DVLD
         public ctrlPersonInfoFilter()
         {
             InitializeComponent();
+        }
+        public void ResetPersonInfo()
+        {
+            ctrlPersonInfo.ResetPersonInfo();
+
         }
         public void Find()
         {
@@ -106,7 +112,13 @@ namespace DVLD
         private void btnAddNewPerson_Click(object sender, EventArgs e)
         {
             frmAddEditPerson frm = new frmAddEditPerson();
+            frm.DataBack += ReciveNewPersonID;
             frm.ShowDialog();
+        }
+        private void ReciveNewPersonID(object sender, int PersonID)
+        {
+            if(PersonID != -1)
+                LoadPersonInfo(PersonID);
         }
 
         private void cmbFilterBy_SelectedIndexChanged(object sender, EventArgs e)

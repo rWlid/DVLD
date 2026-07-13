@@ -71,7 +71,6 @@
             this.txtFilterValue.Name = "txtFilterValue";
             this.txtFilterValue.Size = new System.Drawing.Size(137, 20);
             this.txtFilterValue.TabIndex = 8;
-            this.txtFilterValue.Visible = false;
             this.txtFilterValue.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tBFilter_KeyPress);
             this.txtFilterValue.Validating += new System.ComponentModel.CancelEventHandler(this.tBFilter_Validating);
             // 

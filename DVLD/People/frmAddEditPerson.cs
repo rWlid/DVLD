@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using DVLD.BL;
 using DVLD.Properties;
 
@@ -203,16 +204,10 @@ namespace DVLD
         {
             if (!_EditNotSaved)
             {
-                MessageBox.Show("No new data to save", "No New Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Nothing to Save", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            if (!this.ValidateChildren())
-            {
-                //Here we dont continue becuase the form is not valid
-                MessageBox.Show("Some fileds are not valid!, put the mouse over the red icon to see the error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-
-            }
+            if (!this.ValidateChildren()) { return; }
 
             if (!_HandlePersonImage()) { return; }
 
@@ -241,7 +236,7 @@ namespace DVLD
                 MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Trigger the event to send data back to the caller form.
-                DataBack?.Invoke(this, _Person.ID);
+                //DataBack?.Invoke(this, _Person.ID);
             }
             else { MessageBox.Show("Data is not Saved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 
@@ -285,6 +280,7 @@ namespace DVLD
             {
                 e.Cancel = true;
             }
+            DataBack?.Invoke(this, _Person.ID);
         }
         private void txt_Validating(object sender, CancelEventArgs e)
         {

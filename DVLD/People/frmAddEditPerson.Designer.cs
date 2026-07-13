@@ -204,21 +204,21 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.txtFirstName);
+            this.panel1.Controls.Add(this.txtSecondName);
+            this.panel1.Controls.Add(this.txtLastName);
+            this.panel1.Controls.Add(this.txtNationalNo);
+            this.panel1.Controls.Add(this.txtPhone);
+            this.panel1.Controls.Add(this.txtEmail);
+            this.panel1.Controls.Add(this.txtAddress);
             this.panel1.Controls.Add(this.llRemoveImage);
             this.panel1.Controls.Add(this.llblSetImage);
-            this.panel1.Controls.Add(this.txtAddress);
             this.panel1.Controls.Add(this.btnSave);
             this.panel1.Controls.Add(this.btnClose);
             this.panel1.Controls.Add(this.cbCountry);
             this.panel1.Controls.Add(this.dtpDOB);
-            this.panel1.Controls.Add(this.txtPhone);
-            this.panel1.Controls.Add(this.txtEmail);
-            this.panel1.Controls.Add(this.txtNationalNo);
-            this.panel1.Controls.Add(this.txtFirstName);
-            this.panel1.Controls.Add(this.txtSecondName);
             this.panel1.Controls.Add(this.txtThirdName);
             this.panel1.Controls.Add(this.label23);
-            this.panel1.Controls.Add(this.txtLastName);
             this.panel1.Controls.Add(this.label22);
             this.panel1.Controls.Add(this.label21);
             this.panel1.Controls.Add(this.label20);
