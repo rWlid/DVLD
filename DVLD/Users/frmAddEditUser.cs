@@ -46,14 +46,13 @@ namespace DVLD.Users
             lblUserID.Text = "???";
             txtUserName.Text = string.Empty;
             txtPassword.Text = string.Empty;
-            txtConfirmPassword.Text = string.Empty;
             cbIsActive.Checked = true;
             ctrlPersonInfoFilter1.ResetPersonInfo();
             tabPageLogin.Enabled = false;
         }
         private void _LoadData()
         {
-            _User = clsUser.Find(_UserID);
+            _User = clsUser.FindByUserID(_UserID);
 
             if (_User == null)
             {
@@ -85,6 +84,11 @@ namespace DVLD.Users
                 MessageBox.Show("Please Select a Person to create User", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            if (_Mode == enMode.AddNew && clsUser.IsUserExistForPerson(ctrlPersonInfoFilter1.PersonID)) 
+            {
+                MessageBox.Show("Selected Person already has User", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return; 
+            }
 
             tabControl1.SelectedIndex = 1;
             txtUserName.Focus();
@@ -102,26 +106,16 @@ namespace DVLD.Users
                 errorProvider1.SetError(txt, null);
             }
         }
-        private void txtConfirmPassword_Validating(object sender, CancelEventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtConfirmPassword.Text))
-            {
-                errorProvider1.SetError(txtConfirmPassword, "Required field");
-                e.Cancel = true;
-            }
-            else if (!txtConfirmPassword.Text.Equals(txtPassword.Text))
-            {
-                errorProvider1.SetError(txtConfirmPassword, "Passwords don't match");
-                e.Cancel = true;
-            }
-            else
-            {
-                errorProvider1.SetError(txtConfirmPassword, null);
-            }
-        }
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (!this.ValidateChildren()) { return; }
+            if (_Mode == enMode.AddNew && clsUser.IsUserExistForPerson(ctrlPersonInfoFilter1.PersonID)) 
+            {
+                MessageBox.Show("Selected Person already has User", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return; 
+            }
+            if (_Mode == enMode.Update && !clsUser.ValidateCredintials(_User.UserName, txtPassword.Text)) {
+                MessageBox.Show("Wrong Password.", "Invalid Credintials", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
 
             _User.PersonID = ctrlPersonInfoFilter1.PersonID;
             _User.UserName = txtUserName.Text;
@@ -133,9 +127,12 @@ namespace DVLD.Users
                 _Mode = enMode.Update;
                 lblFormTitle.Text = "Update User";
                 this.Text = "Update User";
+                ctrlPersonInfoFilter1.FilterEnabled = false;
                 lblUserID.Text = _User.ID.ToString();
 
                 MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if(Globals.CurrentUser.ID == _User.ID) { Globals.CurrentUser = _User; }
             }
             else { MessageBox.Show("Data is not Saved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
@@ -146,7 +143,7 @@ namespace DVLD.Users
                 errorProvider1.SetError(txtUserName, "Required field");
                 e.Cancel = true;
             }
-            else if (clsUser.IsUserNameExist(txtUserName.Text))
+            else if (!_User.UserName.ToLower().Equals(txtUserName.Text.ToLower()) && clsUser.IsUserExist(txtUserName.Text))
             {
                 errorProvider1.SetError(txtUserName, "This Username is Already Used");
                 e.Cancel = true;

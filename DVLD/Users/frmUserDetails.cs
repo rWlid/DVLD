@@ -12,12 +12,23 @@ namespace DVLD.Users
 {
     public partial class frmUserDetails : Form
     {
+        private int _UserID;
         public frmUserDetails(int UserID)
         {
             InitializeComponent();
-            if (!ctrlUserInfo.LoadPersonInfo(UserID))
+            _UserID = UserID;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void frmUserDetails_Load(object sender, EventArgs e)
+        {
+            if (!ctrlUserInfo.LoadUserInfo(_UserID))
             {
-                MessageBox.Show("No User is found with ID: " + UserID);
+                MessageBox.Show("No User is found with ID: " + _UserID);
                 this.Close();
             }
         }

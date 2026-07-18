@@ -12,21 +12,17 @@ using DVLD.People;
 
 namespace DVLD.Users
 {
-    public partial class frmManageUsers : Form
+    public partial class frmListUsers : Form
     {
-        public frmManageUsers()
+        public frmListUsers()
         {
             InitializeComponent();
-        }
-        private void _RefreshUsersList()
-        {
-            dgvAllUsers.DataSource = clsUser.GettAllUsers().DefaultView;
-
-            lblNumberOfRecords.Text = dgvAllUsers.RowCount.ToString();
         }
         private void FeatureStubError(object sender, EventArgs e) { MessageBox.Show("This feature is not implemented yet", "Try agian later", MessageBoxButtons.OK, icon: MessageBoxIcon.Warning); }
         private void dgvAllUsers_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
+            if (dgvAllUsers.Rows.Count <= 0) { return; }
+
             dgvAllUsers.Columns["UserID"].HeaderText = "User ID";
             dgvAllUsers.Columns["PersonID"].HeaderText = "Person ID";
             dgvAllUsers.Columns["FullName"].HeaderText = "Full Name";
@@ -37,16 +33,15 @@ namespace DVLD.Users
         }
         private void frmManageUsers_Load(object sender, EventArgs e)
         {
-            _RefreshUsersList();
+            dgvAllUsers.DataSource = clsUser.GettAllUsers().DefaultView;
+            lblNumberOfRecords.Text = dgvAllUsers.RowCount.ToString();
             cmbFilterBy.SelectedIndex = 0;
         }
         private void ShowUserDetails(object sender, EventArgs e)
         {
-            int UserID = Convert.ToInt32(dgvAllUsers.CurrentRow.Cells[0].Value);
-
-            frmUserDetails frm = new frmUserDetails(UserID);
+            frmUserDetails frm = new frmUserDetails(Convert.ToInt32(dgvAllUsers.CurrentRow.Cells[0].Value));
             frm.ShowDialog();
-            _RefreshUsersList();
+            frmManageUsers_Load(null,null);
 
         }
         private void txtFilterValue_TextChanged(object sender, EventArgs e)
@@ -63,7 +58,16 @@ namespace DVLD.Users
                 return;
             }
 
-            dv.RowFilter = $"[{column}] LIKE '{searchValue}%'";
+            //Handel filtering by IDs
+            if (dv.Table.Columns[column].DataType == typeof(int))
+            {
+                dv.RowFilter = $"CONVERT([{column}], System.String) LIKE '{searchValue}%'";
+            }
+            else
+            {
+                dv.RowFilter = $"[{column}] LIKE '{searchValue}%'";
+            }
+                
             lblNumberOfRecords.Text = dgvAllUsers.RowCount.ToString();
         }
         private void cmbActiveFilter_SelectedIndexChanged(object sender, EventArgs e)
@@ -76,37 +80,34 @@ namespace DVLD.Users
                     dv.RowFilter = "";
                     break;
                 case 1:
-                    dv.RowFilter = "IsActive = true";
+                    dv.RowFilter = "IsActive";
                     break;
                 case 2:
-                    dv.RowFilter = "IsActive = false";
+                    dv.RowFilter = "NOT IsActive";
                     break;
 
             }
+
             lblNumberOfRecords.Text = dgvAllUsers.RowCount.ToString();
         }
         private void cmbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbFilterBy.SelectedIndex == 0 )
+
+            if (cmbFilterBy.Text.Equals("Is Active"))
             {
                 txtFilterValue.Visible = false;
                 txtFilterValue.Clear();
 
-                cmbActiveFilter.Visible = false;
-                cmbActiveFilter.SelectedIndex = 0;
-            }
-            else if (cmbFilterBy.SelectedIndex == 5)
-            {
-                txtFilterValue.Visible = false;
-
                 cmbActiveFilter.Visible = true;
                 cmbActiveFilter.SelectedIndex = 0;
+                cmbActiveFilter.Focus();
             }
             else
             {
                 cmbActiveFilter.Visible = false;
+                cmbActiveFilter.SelectedIndex = 0;
 
-                txtFilterValue.Visible = true;
+                txtFilterValue.Visible = cmbFilterBy.SelectedIndex != 0;
                 txtFilterValue.Clear();
                 txtFilterValue.Focus();
             }
@@ -119,6 +120,7 @@ namespace DVLD.Users
                 e.Handled = true;
             }
 
+            //Allows only digits if filtering by IDs
             if (cmbFilterBy.SelectedIndex == 1 || cmbFilterBy.SelectedIndex == 3)
             {
                 if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
@@ -132,27 +134,26 @@ namespace DVLD.Users
         {
             frmAddEditUser frm = new frmAddEditUser();
             frm.ShowDialog();
-            _RefreshUsersList();
+            frmManageUsers_Load(null, null);
         }
 
         private void tsmiEditUser_Click(object sender, EventArgs e)
         {
-            frmAddEditUser frm = new frmAddEditUser(Convert.ToInt32(dgvAllUsers.CurrentRow.Cells[0].Value));
+            frmAddEditUser frm = new frmAddEditUser((int)dgvAllUsers.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
-            _RefreshUsersList();
+            frmManageUsers_Load(null, null);
         }
 
         private void tsmiDeleteUser_Click(object sender, EventArgs e)
         {
-            int UserID = Convert.ToInt32(dgvAllUsers.CurrentRow.Cells[0].Value);
-            if (MessageBox.Show($"Are you sure you want to delete user [{UserID}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show($"Are you sure you want to delete user [{dgvAllUsers.CurrentRow.Cells[0].Value}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
 
             {
                 //Perform Delete and refresh
-                if (clsUser.DeleteUser(UserID))
+                if (clsUser.DeleteUser((int)dgvAllUsers.CurrentRow.Cells[0].Value))
                 {
                     MessageBox.Show("User Deleted Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    _RefreshUsersList();
+                    frmManageUsers_Load(null, null);
                 }
 
                 else
@@ -163,8 +164,7 @@ namespace DVLD.Users
 
         private void tsmiChangePass_Click(object sender, EventArgs e)
         {
-            int UserID = Convert.ToInt32(dgvAllUsers.CurrentRow.Cells[0].Value);
-            frmChangePassowrd frm = new frmChangePassowrd(UserID);
+            frmChangePassowrd frm = new frmChangePassowrd((int)dgvAllUsers.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
         }
     }

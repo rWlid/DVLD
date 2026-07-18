@@ -130,11 +130,9 @@ namespace DVLD.BL
             int CountryID = -1;
             short Gender = 1;
 
-            bool found = clsPersonData.GetPersonInfoByID(ID, ref NationalNo, ref FirstName, ref SecondName,
+            if (clsPersonData.GetPersonInfoByID(ID, ref NationalNo, ref FirstName, ref SecondName,
             ref ThirdName, ref LastName, ref DateOfBirth, ref Gender,
-            ref Address, ref Phone, ref Email, ref CountryID, ref ImagePath);
-
-            if (found)
+            ref Address, ref Phone, ref Email, ref CountryID, ref ImagePath))
             {
                 return new clsPerson(ID, NationalNo, FirstName, SecondName,
                             ThirdName, LastName, DateOfBirth, Gender,

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ctrlPersonInfo = new DVLD.ctrlPersonInfo();
+            this.ctrlPersonInfo = new DVLD.People.Controls.ctrlPersonInfo();
             this.gbLoginInfo = new System.Windows.Forms.GroupBox();
             this.lblIsActive = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -137,7 +137,7 @@
 
         #endregion
 
-        private ctrlPersonInfo ctrlPersonInfo;
+        private DVLD.People.Controls.ctrlPersonInfo ctrlPersonInfo;
         private System.Windows.Forms.GroupBox gbLoginInfo;
         private System.Windows.Forms.Label lblUserID;
         private System.Windows.Forms.Label label1;

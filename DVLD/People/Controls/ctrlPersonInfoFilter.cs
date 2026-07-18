@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using DVLD.BL;
 using DVLD.Properties;
 
-namespace DVLD
+namespace DVLD.People.Controls
 {
     public partial class ctrlPersonInfoFilter : UserControl
     {
@@ -79,15 +79,24 @@ namespace DVLD
                 default:
                     break;
             }
-
-            //raise event
-            PersonSelected(ctrlPersonInfo.PersonID);
         }
         public void LoadPersonInfo(int PersonID)
         {
             cmbFilterBy.SelectedIndex = 1;
             txtFilterValue.Text = PersonID.ToString();
             btnFind.PerformClick();
+
+            //raise event
+            PersonSelected(ctrlPersonInfo.PersonID);
+        }
+        public void LoadPersonInfo(clsPerson Person)
+        {
+            cmbFilterBy.SelectedIndex = 1;
+            txtFilterValue.Text = Person.ID.ToString();
+
+            ctrlPersonInfo.LoadPersonInfo(Person);
+            //raise event
+            PersonSelected(ctrlPersonInfo.PersonID);
         }
         private void tBFilter_KeyPress(object sender, KeyPressEventArgs e)
         {

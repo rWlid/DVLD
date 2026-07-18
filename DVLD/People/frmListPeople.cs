@@ -11,23 +11,23 @@ using System.Windows.Forms;
 using DVLD.BL;
 using DVLD.People;
 
-namespace DVLD
+namespace DVLD.People
 {
-    public partial class frmManagePeople : Form
+    public partial class frmListPeople : Form
     {
-        public frmManagePeople()
+        public frmListPeople()
         {
             InitializeComponent();
         }
         private void _RefreshPeopleList()
         {
             dgvAllPeople.DataSource = clsPerson.GetAllPeople().DefaultView;
-
             lblNumberOfRecords.Text = dgvAllPeople.RowCount.ToString();
         }
         private void FeatureStubError(object sender, EventArgs e) { MessageBox.Show("This feature is not implemented yet", "Try agian later", MessageBoxButtons.OK, icon: MessageBoxIcon.Warning); }
         private void dgvAllPeople_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
+            if (dgvAllPeople.Rows.Count <= 0) { return; }
             dgvAllPeople.Columns["PersonID"].HeaderText = "Person ID";
             dgvAllPeople.Columns["NationalNo"].HeaderText = "National No";
             dgvAllPeople.Columns["FirstName"].HeaderText = "First Name";
@@ -55,7 +55,15 @@ namespace DVLD
                 return;
             }
 
-            dv.RowFilter = $"[{column}] LIKE '{searchValue}%'";
+            if (dv.Table.Columns[column].DataType == typeof(int))
+            {
+                dv.RowFilter = $"CONVERT([{column}], System.String) LIKE '{searchValue}%'";
+            }
+            else
+            {
+                dv.RowFilter = $"[{column}] LIKE '{searchValue}%'";
+            }
+
             lblNumberOfRecords.Text = dgvAllPeople.RowCount.ToString();
         }
         private void cmbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
@@ -91,9 +99,7 @@ namespace DVLD
         }
         private void ShowPersonDetails(object sender, EventArgs e)
         {
-            int PersonID = Convert.ToInt32(dgvAllPeople.CurrentRow.Cells[0].Value);
-
-            frmPersonDetails frm = new frmPersonDetails(PersonID);
+            frmPersonDetails frm = new frmPersonDetails((int)dgvAllPeople.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
             _RefreshPeopleList();
 
@@ -106,12 +112,11 @@ namespace DVLD
         }
         private void tsmDelete_Click(object sender, EventArgs e)
         {
-            int PersonID = Convert.ToInt32(dgvAllPeople.CurrentRow.Cells[0].Value);
-            if (MessageBox.Show($"Are you sure you want to delete person [{PersonID}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show($"Are you sure you want to delete person [{dgvAllPeople.CurrentRow.Cells[0].Value}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
 
             {
                 //Perform Delete and refresh
-                if (clsPerson.DeletePerson(PersonID))
+                if (clsPerson.DeletePerson((int)dgvAllPeople.CurrentRow.Cells[0].Value))
                 {
                     MessageBox.Show("Person Deleted Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     _RefreshPeopleList();
@@ -124,8 +129,7 @@ namespace DVLD
         }
         private void tsmEditPerson_Click(object sender, EventArgs e)
         {
-            int PersonID = Convert.ToInt32(dgvAllPeople.CurrentRow.Cells[0].Value);
-            frmAddEditPerson frm = new frmAddEditPerson(PersonID);
+            frmAddEditPerson frm = new frmAddEditPerson((int)dgvAllPeople.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
             _RefreshPeopleList();
         }

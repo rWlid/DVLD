@@ -51,6 +51,7 @@
             this.btnClose.TabIndex = 18;
             this.btnClose.Text = "    Close";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // frmUserDetails
             // 
@@ -66,6 +67,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "User Details";
+            this.Load += new System.EventHandler(this.frmUserDetails_Load);
             this.ResumeLayout(false);
 
         }

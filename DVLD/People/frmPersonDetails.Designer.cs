@@ -30,7 +30,7 @@
         {
             this.btnClose = new System.Windows.Forms.Button();
             this.lblFormTitle = new System.Windows.Forms.Label();
-            this.ctrlPersonInfo = new DVLD.ctrlPersonInfo();
+            this.ctrlPersonInfo = new DVLD.People.Controls.ctrlPersonInfo();
             this.SuspendLayout();
             // 
             // btnClose
@@ -89,6 +89,6 @@
         #endregion
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label lblFormTitle;
-        private ctrlPersonInfo ctrlPersonInfo;
+        private DVLD.People.Controls.ctrlPersonInfo ctrlPersonInfo;
     }
 }

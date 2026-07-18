@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using DVLD.BL;
 using DVLD.Properties;
 
-namespace DVLD
+namespace DVLD.People.Controls
 {
     public partial class ctrlPersonInfo : UserControl
     {
@@ -68,7 +68,7 @@ namespace DVLD
         }
         public void ResetPersonInfo()
         {
-            //_PersonID = -1;
+            _PersonID = -1;
             lblPersonID.Text = "[????]";
             lblNationalNo.Text = "[????]";
             lblFullName.Text = "[????]";
@@ -104,6 +104,20 @@ namespace DVLD
             {
                 ResetPersonInfo();
                 MessageBox.Show("No Person with National Number: " + NationalNo.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            _LoadData();
+            return true;
+        }
+        public bool LoadPersonInfo(clsPerson Perosn)
+        {
+            _Person = Perosn;
+
+            if (_Person == null)
+            {
+                ResetPersonInfo();
+                MessageBox.Show("No Person with National Number: " + Perosn.NationalNo.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

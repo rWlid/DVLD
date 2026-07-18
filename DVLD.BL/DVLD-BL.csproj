@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{63B97600-93FF-446A-B805-FD11E55DD358}</ProjectGuid>
+    <ProjectGuid>{BF26F947-1BD1-4C0A-8031-26149F8AF8F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DVLD.DAL</RootNamespace>
-    <AssemblyName>DVLD.DAL</AssemblyName>
+    <RootNamespace>DVLD.BL</RootNamespace>
+    <AssemblyName>DVLD.BL</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,11 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsDataAccessSettings.cs" />
-    <Compile Include="clsCountryData.cs" />
-    <Compile Include="clsPersonData.cs" />
-    <Compile Include="clsUserData.cs" />
+    <Compile Include="clsApplication.cs" />
+    <Compile Include="clsApplicationType.cs" />
+    <Compile Include="clsCountry.cs" />
+    <Compile Include="clsLicenseClass.cs" />
+    <Compile Include="clsLocalLicenseApplicaiton.cs" />
+    <Compile Include="clsPerson.cs" />
+    <Compile Include="clsTestType.cs" />
+    <Compile Include="clsUser.cs" />
+    <Compile Include="Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DVLD.DAL\DVLD-DAL.csproj">
+      <Project>{63b97600-93ff-446a-b805-fd11e55dd358}</Project>
+      <Name>DVLD-DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

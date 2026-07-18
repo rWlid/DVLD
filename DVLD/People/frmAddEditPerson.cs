@@ -15,7 +15,7 @@ using System.Xml.Linq;
 using DVLD.BL;
 using DVLD.Properties;
 
-namespace DVLD
+namespace DVLD.People
 {
     public partial class frmAddEditPerson : Form
     {

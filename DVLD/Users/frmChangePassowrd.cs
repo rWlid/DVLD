@@ -14,14 +14,11 @@ namespace DVLD.Users
 {
     public partial class frmChangePassowrd : Form
     {
+        private int _UserID;
         public frmChangePassowrd(int UserID)
         {
             InitializeComponent();
-            if (!ctrlUserInfo.LoadPersonInfo(UserID))
-            {
-                MessageBox.Show("No User is found with ID: " + UserID);
-                this.Close();
-            }
+            _UserID = UserID;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -71,6 +68,14 @@ namespace DVLD.Users
         private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Space) { e.Handled = true; }
+        }
+        private void frmChangePassowrd_Load(object sender, EventArgs e)
+        {
+            if (!ctrlUserInfo.LoadUserInfo(_UserID))
+            {
+                MessageBox.Show("No User is found with ID: " + _UserID);
+                this.Close();
+            }
         }
     }
 }

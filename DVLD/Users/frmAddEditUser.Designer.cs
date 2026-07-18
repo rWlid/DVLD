@@ -33,20 +33,18 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPagePerson = new System.Windows.Forms.TabPage();
             this.btnNext = new System.Windows.Forms.Button();
+            this.ctrlPersonInfoFilter1 = new DVLD.People.Controls.ctrlPersonInfoFilter();
             this.tabPageLogin = new System.Windows.Forms.TabPage();
             this.txtUserName = new System.Windows.Forms.TextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
-            this.txtConfirmPassword = new System.Windows.Forms.TextBox();
             this.cbIsActive = new System.Windows.Forms.CheckBox();
             this.lblUserID = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.ctrlPersonInfoFilter1 = new DVLD.ctrlPersonInfoFilter();
             this.tabControl1.SuspendLayout();
             this.tabPagePerson.SuspendLayout();
             this.tabPageLogin.SuspendLayout();
@@ -100,14 +98,22 @@
             this.btnNext.Text = "Next   ";
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
+            // ctrlPersonInfoFilter1
+            // 
+            this.ctrlPersonInfoFilter1.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
+            this.ctrlPersonInfoFilter1.FilterEnabled = true;
+            this.ctrlPersonInfoFilter1.Location = new System.Drawing.Point(17, 15);
+            this.ctrlPersonInfoFilter1.Name = "ctrlPersonInfoFilter1";
+            this.ctrlPersonInfoFilter1.Size = new System.Drawing.Size(703, 316);
+            this.ctrlPersonInfoFilter1.TabIndex = 0;
+            this.ctrlPersonInfoFilter1.OnPersonSelected += new System.Action<int>(this.ctrlPersonInfoFilter1_OnPersonSelected);
+            // 
             // tabPageLogin
             // 
             this.tabPageLogin.Controls.Add(this.txtUserName);
             this.tabPageLogin.Controls.Add(this.txtPassword);
-            this.tabPageLogin.Controls.Add(this.txtConfirmPassword);
             this.tabPageLogin.Controls.Add(this.cbIsActive);
             this.tabPageLogin.Controls.Add(this.lblUserID);
-            this.tabPageLogin.Controls.Add(this.label4);
             this.tabPageLogin.Controls.Add(this.label3);
             this.tabPageLogin.Controls.Add(this.label1);
             this.tabPageLogin.Controls.Add(this.label2);
@@ -138,21 +144,11 @@
             this.txtPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPassword_KeyPress);
             this.txtPassword.Validating += new System.ComponentModel.CancelEventHandler(this.txt_Validating);
             // 
-            // txtConfirmPassword
-            // 
-            this.txtConfirmPassword.Location = new System.Drawing.Point(214, 211);
-            this.txtConfirmPassword.Name = "txtConfirmPassword";
-            this.txtConfirmPassword.PasswordChar = '*';
-            this.txtConfirmPassword.Size = new System.Drawing.Size(133, 20);
-            this.txtConfirmPassword.TabIndex = 8;
-            this.txtConfirmPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPassword_KeyPress);
-            this.txtConfirmPassword.Validating += new System.ComponentModel.CancelEventHandler(this.txtConfirmPassword_Validating);
-            // 
             // cbIsActive
             // 
             this.cbIsActive.AutoSize = true;
             this.cbIsActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbIsActive.Location = new System.Drawing.Point(228, 249);
+            this.cbIsActive.Location = new System.Drawing.Point(218, 206);
             this.cbIsActive.Name = "cbIsActive";
             this.cbIsActive.Size = new System.Drawing.Size(85, 20);
             this.cbIsActive.TabIndex = 9;
@@ -168,18 +164,6 @@
             this.lblUserID.Size = new System.Drawing.Size(39, 20);
             this.lblUserID.TabIndex = 5;
             this.lblUserID.Text = "???";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Image = global::DVLD.Properties.Resources.Password_32;
-            this.label4.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label4.Location = new System.Drawing.Point(10, 191);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(198, 60);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "  \r\nConfirm Passowrd:        \r\n ";
             // 
             // label3
             // 
@@ -248,16 +232,6 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // ctrlPersonInfoFilter1
-            // 
-            this.ctrlPersonInfoFilter1.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
-            this.ctrlPersonInfoFilter1.FilterEnabled = true;
-            this.ctrlPersonInfoFilter1.Location = new System.Drawing.Point(17, 15);
-            this.ctrlPersonInfoFilter1.Name = "ctrlPersonInfoFilter1";
-            this.ctrlPersonInfoFilter1.Size = new System.Drawing.Size(703, 316);
-            this.ctrlPersonInfoFilter1.TabIndex = 0;
-            this.ctrlPersonInfoFilter1.OnPersonSelected += new System.Action<int>(this.ctrlPersonInfoFilter1_OnPersonSelected);
-            // 
             // frmAddEditUser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -268,6 +242,7 @@
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.lblFormTitle);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmAddEditUser";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add User";
@@ -287,19 +262,17 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPagePerson;
         private System.Windows.Forms.TabPage tabPageLogin;
-        private ctrlPersonInfoFilter ctrlPersonInfoFilter1;
+        private DVLD.People.Controls.ctrlPersonInfoFilter ctrlPersonInfoFilter1;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblUserID;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox cbIsActive;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.TextBox txtUserName;
-        private System.Windows.Forms.TextBox txtConfirmPassword;
         private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

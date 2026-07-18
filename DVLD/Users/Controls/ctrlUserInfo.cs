@@ -28,7 +28,7 @@ namespace DVLD.Users.Controls
         {
             InitializeComponent();
         }
-        private void _LoadData()
+        private void _FillUserInfo()
         {
             _UserID = _User.ID;
             lblUserID.Text = _User.ID.ToString();
@@ -36,26 +36,26 @@ namespace DVLD.Users.Controls
             lblIsActive.Text = _User.IsActive ? "Yes" : "No";
             ctrlPersonInfo.LoadPersonInfo(_User.PersonID);
         }
-        public void ResetPersonInfo()
+        private void _ResetUserInfo()
         {
-            //_UserID = -1;
+            _UserID = -1;
             lblUserID.Text = "??";
             lblUserName.Text = "???";
             lblIsActive.Text = "??";
 
         }
-        public bool LoadPersonInfo(int UserID)
+        public bool LoadUserInfo(int UserID)
         {
-            _User = clsUser.Find(UserID);
+            _User = clsUser.FindByUserID(UserID);
 
             if (_User == null)
             {
-                ResetPersonInfo();
+                _ResetUserInfo();
                 MessageBox.Show("No User with ID: " + UserID.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            _LoadData();
+            _FillUserInfo();
             return true;
         }
     }

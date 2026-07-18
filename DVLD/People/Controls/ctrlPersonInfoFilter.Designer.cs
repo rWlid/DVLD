@@ -1,4 +1,4 @@
-﻿namespace DVLD
+﻿namespace DVLD.People.Controls
 {
     partial class ctrlPersonInfoFilter
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ctrlPersonInfo = new DVLD.ctrlPersonInfo();
+            this.ctrlPersonInfo = new DVLD.People.Controls.ctrlPersonInfo();
             this.btnFind = new System.Windows.Forms.Button();
             this.lblFilterBy = new System.Windows.Forms.Label();
             this.txtFilterValue = new System.Windows.Forms.TextBox();
@@ -129,7 +129,7 @@
 
         #endregion
 
-        private ctrlPersonInfo ctrlPersonInfo;
+        private DVLD.People.Controls.ctrlPersonInfo ctrlPersonInfo;
         private System.Windows.Forms.Button btnFind;
         private System.Windows.Forms.Label lblFilterBy;
         private System.Windows.Forms.TextBox txtFilterValue;
