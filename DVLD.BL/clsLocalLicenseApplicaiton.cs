@@ -84,5 +84,17 @@ namespace DVLD.BL
         {
             return clsLocalLicenseApplicaitonData.GetNumberOfPassedTestByID(this.ID);
         }
+        public static bool DeleteApplication(int LocalDrivingLicenseApplicationID)
+        {
+            int BaseApplicationID = Find(LocalDrivingLicenseApplicationID).BaseApplicationID;
+
+            //Delete Local License Application First And Then Delete Base Application
+            return clsLocalLicenseApplicaitonData.Delete(LocalDrivingLicenseApplicationID) 
+                   && clsApplicationData.Delete(BaseApplicationID);
+        }
+        public int GetActiveApplicationIDForLicenseClass(int PersonID, int LicenseClassID)
+        {
+            return clsLocalLicenseApplicaitonData.GetActiveApplicationIDForLicenseClass(PersonID, LicenseClassID);
+        }
     }
 }

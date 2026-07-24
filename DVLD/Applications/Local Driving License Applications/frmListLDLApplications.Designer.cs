@@ -37,20 +37,18 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.cmManageApplication = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmShowDetails = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmAddNewPerson = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmEditPerson = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmEditApplication = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmSendEmail = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmPhoneCall = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvApplications = new System.Windows.Forms.DataGridView();
             this.lblFormTitle = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.pbHeader = new System.Windows.Forms.PictureBox();
-            this.btnAddNewPerson = new System.Windows.Forms.Button();
+            this.btnAddNewApplication = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.cbStatusFilter = new System.Windows.Forms.ComboBox();
             this.cbLicenseClassFilter = new System.Windows.Forms.ComboBox();
+            this.cancelApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmManageApplication.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvApplications)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbHeader)).BeginInit();
@@ -117,69 +115,54 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(202, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(218, 6);
             // 
             // cmManageApplication
             // 
             this.cmManageApplication.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmShowDetails,
             this.toolStripSeparator1,
-            this.tsmAddNewPerson,
-            this.tsmEditPerson,
+            this.tsmEditApplication,
             this.tsmDelete,
             this.toolStripSeparator2,
-            this.tsmSendEmail,
-            this.tsmPhoneCall});
+            this.cancelApplicationToolStripMenuItem});
             this.cmManageApplication.Name = "contextMenuStrip1";
-            this.cmManageApplication.Size = new System.Drawing.Size(206, 170);
+            this.cmManageApplication.Size = new System.Drawing.Size(222, 190);
+            this.cmManageApplication.Opened += new System.EventHandler(this.cmManageApplication_Opened);
             // 
             // tsmShowDetails
             // 
             this.tsmShowDetails.Image = global::DVLD.Properties.Resources.PersonDetails_32;
+            this.tsmShowDetails.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmShowDetails.Name = "tsmShowDetails";
-            this.tsmShowDetails.Size = new System.Drawing.Size(205, 22);
+            this.tsmShowDetails.Size = new System.Drawing.Size(221, 38);
             this.tsmShowDetails.Text = "Show Application Details";
             this.tsmShowDetails.Click += new System.EventHandler(this.tsmShowDetails_Click);
             // 
-            // tsmAddNewPerson
+            // tsmEditApplication
             // 
-            this.tsmAddNewPerson.Image = global::DVLD.Properties.Resources.Add_Person_40;
-            this.tsmAddNewPerson.Name = "tsmAddNewPerson";
-            this.tsmAddNewPerson.Size = new System.Drawing.Size(205, 22);
-            this.tsmAddNewPerson.Text = "Add New Person";
-            // 
-            // tsmEditPerson
-            // 
-            this.tsmEditPerson.Image = global::DVLD.Properties.Resources.edit_32;
-            this.tsmEditPerson.Name = "tsmEditPerson";
-            this.tsmEditPerson.Size = new System.Drawing.Size(205, 22);
-            this.tsmEditPerson.Text = "Edit";
+            this.tsmEditApplication.Enabled = false;
+            this.tsmEditApplication.Image = global::DVLD.Properties.Resources.edit_32;
+            this.tsmEditApplication.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmEditApplication.Name = "tsmEditApplication";
+            this.tsmEditApplication.Size = new System.Drawing.Size(221, 38);
+            this.tsmEditApplication.Text = "Edit Application";
+            this.tsmEditApplication.Click += new System.EventHandler(this.tsmEditApplication_Click);
             // 
             // tsmDelete
             // 
-            this.tsmDelete.Image = global::DVLD.Properties.Resources.Delete_32;
+            this.tsmDelete.Enabled = false;
+            this.tsmDelete.Image = global::DVLD.Properties.Resources.Delete_32_2;
+            this.tsmDelete.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmDelete.Name = "tsmDelete";
-            this.tsmDelete.Size = new System.Drawing.Size(205, 22);
-            this.tsmDelete.Text = "Delete";
+            this.tsmDelete.Size = new System.Drawing.Size(221, 38);
+            this.tsmDelete.Text = "Delete Application";
+            this.tsmDelete.Click += new System.EventHandler(this.tsmDelete_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(202, 6);
-            // 
-            // tsmSendEmail
-            // 
-            this.tsmSendEmail.Image = global::DVLD.Properties.Resources.send_email_32;
-            this.tsmSendEmail.Name = "tsmSendEmail";
-            this.tsmSendEmail.Size = new System.Drawing.Size(205, 22);
-            this.tsmSendEmail.Text = "Send Email";
-            // 
-            // tsmPhoneCall
-            // 
-            this.tsmPhoneCall.Image = global::DVLD.Properties.Resources.call_32;
-            this.tsmPhoneCall.Name = "tsmPhoneCall";
-            this.tsmPhoneCall.Size = new System.Drawing.Size(205, 22);
-            this.tsmPhoneCall.Text = "Phone Call";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(218, 6);
             // 
             // dgvApplications
             // 
@@ -233,20 +216,20 @@
             this.pbHeader.TabIndex = 10;
             this.pbHeader.TabStop = false;
             // 
-            // btnAddNewPerson
+            // btnAddNewApplication
             // 
-            this.btnAddNewPerson.Image = global::DVLD.Properties.Resources.New_Application_64;
-            this.btnAddNewPerson.Location = new System.Drawing.Point(1053, 138);
-            this.btnAddNewPerson.Name = "btnAddNewPerson";
-            this.btnAddNewPerson.Size = new System.Drawing.Size(75, 75);
-            this.btnAddNewPerson.TabIndex = 16;
-            this.btnAddNewPerson.UseVisualStyleBackColor = true;
-            this.btnAddNewPerson.Click += new System.EventHandler(this.btnAddNewPerson_Click);
+            this.btnAddNewApplication.Image = global::DVLD.Properties.Resources.New_Application_64;
+            this.btnAddNewApplication.Location = new System.Drawing.Point(1053, 138);
+            this.btnAddNewApplication.Name = "btnAddNewApplication";
+            this.btnAddNewApplication.Size = new System.Drawing.Size(75, 75);
+            this.btnAddNewApplication.TabIndex = 16;
+            this.btnAddNewApplication.UseVisualStyleBackColor = true;
+            this.btnAddNewApplication.Click += new System.EventHandler(this.btnAddApplication_Click);
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::DVLD.Properties.Resources.Local_32;
-            this.pictureBox1.Location = new System.Drawing.Point(647, 42);
+            this.pictureBox1.Location = new System.Drawing.Point(614, 43);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(32, 32);
             this.pictureBox1.TabIndex = 20;
@@ -288,6 +271,16 @@
             this.cbLicenseClassFilter.Visible = false;
             this.cbLicenseClassFilter.SelectedIndexChanged += new System.EventHandler(this.cbLicenseClassFilter_SelectedIndexChanged);
             // 
+            // cancelApplicationToolStripMenuItem
+            // 
+            this.cancelApplicationToolStripMenuItem.Enabled = false;
+            this.cancelApplicationToolStripMenuItem.Image = global::DVLD.Properties.Resources.Delete_32;
+            this.cancelApplicationToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.cancelApplicationToolStripMenuItem.Name = "cancelApplicationToolStripMenuItem";
+            this.cancelApplicationToolStripMenuItem.Size = new System.Drawing.Size(221, 38);
+            this.cancelApplicationToolStripMenuItem.Text = "Cancel Application";
+            this.cancelApplicationToolStripMenuItem.Click += new System.EventHandler(this.cancelApplicationToolStripMenuItem_Click);
+            // 
             // frmListLDLApplications
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -303,7 +296,7 @@
             this.Controls.Add(this.txtFilterValue);
             this.Controls.Add(this.cmbFilterBy);
             this.Controls.Add(this.pbHeader);
-            this.Controls.Add(this.btnAddNewPerson);
+            this.Controls.Add(this.btnAddNewApplication);
             this.Controls.Add(this.dgvApplications);
             this.Controls.Add(this.lblFormTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -330,12 +323,9 @@
         private System.Windows.Forms.TextBox txtFilterValue;
         private System.Windows.Forms.ComboBox cmbFilterBy;
         private System.Windows.Forms.PictureBox pbHeader;
-        private System.Windows.Forms.ToolStripMenuItem tsmPhoneCall;
-        private System.Windows.Forms.Button btnAddNewPerson;
-        private System.Windows.Forms.ToolStripMenuItem tsmSendEmail;
+        private System.Windows.Forms.Button btnAddNewApplication;
         private System.Windows.Forms.ToolStripMenuItem tsmDelete;
-        private System.Windows.Forms.ToolStripMenuItem tsmEditPerson;
-        private System.Windows.Forms.ToolStripMenuItem tsmAddNewPerson;
+        private System.Windows.Forms.ToolStripMenuItem tsmEditApplication;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem tsmShowDetails;
         private System.Windows.Forms.ContextMenuStrip cmManageApplication;
@@ -345,5 +335,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ComboBox cbStatusFilter;
         private System.Windows.Forms.ComboBox cbLicenseClassFilter;
+        private System.Windows.Forms.ToolStripMenuItem cancelApplicationToolStripMenuItem;
     }
 }

@@ -14,7 +14,7 @@ namespace DVLD.BL
     {
         public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
-        public enum enStatus { New = 1, Cancelled  = 2, Complated = 3 };
+        public enum enStatus { Unknown = 0, New = 1, Cancelled  = 2, Completed = 3 };
 
 
         public int ID { get; set; }

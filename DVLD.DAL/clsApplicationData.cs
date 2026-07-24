@@ -153,7 +153,7 @@ namespace DVLD.DAL
         public static bool Delete(int ApplicationID)
         {
             int rowsAffected = 0;
-            string query = @"DELETE Applications WHERE ApplicationID = @ApplicationID AND ApplicationStatus = 1"; //Only New Applications.
+            string query = @"DELETE Applications WHERE ApplicationID = @ApplicationID AND ( ApplicationStatus = 1 OR ApplicationStatus = 0 )"; //Only New Applications.
 
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
             SqlCommand command = new SqlCommand(query, connection);

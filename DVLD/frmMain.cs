@@ -73,5 +73,11 @@ namespace DVLD
             frmListLDLApplications frm = new frmListLDLApplications();
             frm.ShowDialog();
         }
+
+        private void localLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmAddNewLocalLicenseApplication frm = new frmAddNewLocalLicenseApplication();
+            frm.ShowDialog();
+        }
     }
 }

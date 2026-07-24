@@ -172,7 +172,7 @@ namespace DVLD.Applications.Local_Driving_License_Applications
             Close();
         }
 
-        private void btnAddNewPerson_Click(object sender, EventArgs e)
+        private void btnAddApplication_Click(object sender, EventArgs e)
         {
             frmAddNewLocalLicenseApplication frm = new frmAddNewLocalLicenseApplication();
             frm.ShowDialog();
@@ -183,6 +183,62 @@ namespace DVLD.Applications.Local_Driving_License_Applications
         {
             frmLocalLicenseApplicationInfo frm = new frmLocalLicenseApplicationInfo((int)dgvApplications.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
+        }
+
+        private void tsmEditApplication_Click(object sender, EventArgs e)
+        {
+            frmAddNewLocalLicenseApplication frm = new frmAddNewLocalLicenseApplication((int)dgvApplications.CurrentRow.Cells[0].Value);
+            frm.ShowDialog();
+            frmListLDLApplications_Load(null, null);
+        }
+
+        private void tsmDelete_Click(object sender, EventArgs e)
+        {
+            if (dgvApplications.CurrentRow.Cells["ApplicationStatus"].Value.ToString() != "New")
+            {
+                MessageBox.Show("This Application can not be deleted", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (MessageBox.Show($"Are you sure you want to delete local driving license application [{dgvApplications.CurrentRow.Cells[0].Value}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                if (clsLocalLicenseApplicaiton.DeleteApplication((int)dgvApplications.CurrentRow.Cells[0].Value))
+
+                {
+                    //Perform Delete and refresh
+                    MessageBox.Show("Application Deleted Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    frmListLDLApplications_Load(null, null);
+                }
+                else { MessageBox.Show("Application was not deleted because it has data linked to it", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            }
+        }
+
+        private void cancelApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            clsLocalLicenseApplicaiton application = clsLocalLicenseApplicaiton.Find((int)dgvApplications.CurrentRow.Cells[0].Value);
+            if (MessageBox.Show($"Are you sure you want to cancel local driving license application [{dgvApplications.CurrentRow.Cells[0].Value}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK
+                && application != null)
+            {
+                application.ApplicationInfo.LastStatus = clsApplication.enStatus.Cancelled;
+                application.ApplicationInfo.LastStatusDate = DateTime.Now;
+
+                if(application.ApplicationInfo.Save())
+                {
+                    MessageBox.Show("Application Canceled Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    frmListLDLApplications_Load(null, null);
+                }
+                else
+                {
+                    MessageBox.Show("Application couldn't be canceled", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            } 
+        }
+
+        private void cmManageApplication_Opened(object sender, EventArgs e)
+        {
+            tsmEditApplication.Enabled = dgvApplications.CurrentRow.Cells["ApplicationStatus"].Value.ToString() == clsApplication.enStatus.New.ToString();
+            tsmDelete.Enabled = dgvApplications.CurrentRow.Cells["ApplicationStatus"].Value.ToString() == clsApplication.enStatus.New.ToString();
+            cancelApplicationToolStripMenuItem.Enabled = dgvApplications.CurrentRow.Cells["ApplicationStatus"].Value.ToString() == clsApplication.enStatus.New.ToString();
         }
     }
 }

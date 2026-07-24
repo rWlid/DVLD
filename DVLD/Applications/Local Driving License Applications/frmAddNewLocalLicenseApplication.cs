@@ -46,6 +46,7 @@ namespace DVLD.Applications
             if (_Mode == enMode.AddNew)
             {
                 _DLApplication = new clsLocalLicenseApplicaiton();
+                tabApplicationInfo.Enabled = false;
             }
             else
             {
@@ -104,13 +105,18 @@ namespace DVLD.Applications
                 return;
             }
 
-            ctrlPersonInfoFilter1.FilterEnabled = false;
             tabControl1.SelectedIndex = 1;
             cbLicenseClasses.Focus();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            //Check if there is license with the same class
+
+            //Check if there is an active application for the same class
+            int ActiveApplicationID = _DLApplication.GetActiveApplicationIDForLicenseClass(ctrlPersonInfoFilter1.PersonID, cbLicenseClasses.SelectedIndex + 1);
+            if(ActiveApplicationID != -1) { MessageBox.Show($"Choose another License Class, The selected Person already has an active application for the selected class with ID: {ActiveApplicationID}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);  return; }
+
             _DLApplication.ApplicationInfo.Type = clsApplicationType.GetApplicationType(1); //1 = New Local Driving License Service 
             _DLApplication.ApplicationInfo.ApplicantID = ctrlPersonInfoFilter1.PersonID;
             _DLApplication.ApplicationInfo.Date = DateTime.Parse(lblDate.Text);
@@ -123,12 +129,17 @@ namespace DVLD.Applications
                 _Mode = enMode.Update;
                 lblFormTitle.Text = "Update Local Driving License Application";
                 this.Text = "Update Local License Application";
-                ctrlPersonInfoFilter1.FilterEnabled = false;
                 lblDLApplicationID.Text = _DLApplication.ID.ToString();
 
                 MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else { MessageBox.Show("Data is not Saved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ctrlPersonInfoFilter1.FilterEnabled = false;
+            tabApplicationInfo.Enabled = true;
         }
     }
 }
