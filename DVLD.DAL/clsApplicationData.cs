@@ -122,7 +122,7 @@ namespace DVLD.DAL
                     ApplicantPersonID = (int)reader["ApplicantPersonID"];
                     ApplicationDate = (DateTime)reader["ApplicationDate"];
                     ApplicationTypeID = (int)reader["ApplicationTypeID"];
-                    ApplicationStatus = (int)reader["ApplicationStatus"];
+                    ApplicationStatus = Convert.ToInt32(reader["ApplicationStatus"]);
                     LastStatusDate = (DateTime)reader["LastStatusDate"];
                     PaidFees = (decimal)reader["PaidFees"];
                     CreatedByUserID = (int)reader["CreatedByUserID"];
@@ -149,6 +149,36 @@ namespace DVLD.DAL
             }
 
             return isFound;
+        }
+        public static bool Delete(int ApplicationID)
+        {
+            int rowsAffected = 0;
+            string query = @"DELETE Applications WHERE ApplicationID = @ApplicationID AND ApplicationStatus = 1"; //Only New Applications.
+
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+
+            try
+            {
+                connection.Open();
+
+                rowsAffected = command.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+
+                connection.Close();
+
+            }
+
+            return (rowsAffected > 0);
         }
 
     }

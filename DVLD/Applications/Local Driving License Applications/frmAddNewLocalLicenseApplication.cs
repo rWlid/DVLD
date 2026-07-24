@@ -14,15 +14,16 @@ namespace DVLD.Applications
     public partial class frmAddNewLocalLicenseApplication : Form
     {
         public enum enMode { AddNew = 0, Update = 1 };
+        public enum enStatus { New = 1, Cancelled = 2, Completed = 3 };
         public enum enLicenseClass 
         {
-            Class1SmallMotorcycle = 0,
-            Class2HeavyMotorcycleLicense = 1,
-            Class3OrdinaryDrivinglicense = 2,
-            Class4Commercial = 3,
-            Class5Agricultural = 4,
-            Class6SmallandMediumBus = 5,
-            Class7TruckAndHeavyVehicle = 6
+            Class1SmallMotorcycle = 1,
+            Class2HeavyMotorcycleLicense = 2,
+            Class3OrdinaryDrivinglicense = 3,
+            Class4Commercial = 4,
+            Class5Agricultural = 5,
+            Class6SmallandMediumBus = 6,
+            Class7TruckAndHeavyVehicle = 7
         };
 
         private enMode _Mode;
@@ -52,10 +53,10 @@ namespace DVLD.Applications
                 this.Text = "Update Local License Application";
             }
             lblDLApplicationID.Text = "???";
-            lblFees.Text = clsApplicationType.GetApplicationType(1).Fees.ToString();
+            lblFees.Text = ((int)clsApplicationType.GetApplicationType(1).Fees).ToString();
             lblDate.Text = DateTime.Now.ToString();
             lblCreatorUsername.Text = Globals.CurrentUser.UserName;
-            cbLicenseClasses.SelectedIndex = (int)enLicenseClass.Class3OrdinaryDrivinglicense;
+            cbLicenseClasses.SelectedIndex = (int)enLicenseClass.Class3OrdinaryDrivinglicense - 1;
             ctrlPersonInfoFilter1.ResetPersonInfo();
         }
         private void _LoadData()
@@ -74,7 +75,7 @@ namespace DVLD.Applications
             lblDate.Text = _DLApplication.ApplicationInfo.Date.ToString();
             lblCreatorUsername.Text = _DLApplication.ApplicationInfo.CreatorUsername;
             cbLicenseClasses.SelectedIndex = _DLApplication.LicenseClassID - 1; // since ID of First Class is 1
-            ctrlPersonInfoFilter1.LoadPersonInfo(_DLApplication.ApplicationInfo.ApplicantInfo);
+            ctrlPersonInfoFilter1.LoadPersonInfo(_DLApplication.ApplicationInfo.ApplicantInfo.ID);
         }
 
         private void frmAddNewLocalLicenseApplication_Load(object sender, EventArgs e)
@@ -91,6 +92,7 @@ namespace DVLD.Applications
 
         private void ctrlPersonInfoFilter1_OnPersonSelected(int obj)
         {
+            btnNext.Focus();
             btnSave.Enabled = true;
         }
 
@@ -102,19 +104,21 @@ namespace DVLD.Applications
                 return;
             }
 
+            ctrlPersonInfoFilter1.FilterEnabled = false;
             tabControl1.SelectedIndex = 1;
             cbLicenseClasses.Focus();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            _DLApplication.ApplicationInfo.Type = clsApplicationType.GetApplicationType(1); //1 = New Local Driving License Service 
             _DLApplication.ApplicationInfo.ApplicantID = ctrlPersonInfoFilter1.PersonID;
             _DLApplication.ApplicationInfo.Date = DateTime.Parse(lblDate.Text);
             _DLApplication.ApplicationInfo.Fees = decimal.Parse(lblFees.Text);
             _DLApplication.ApplicationInfo.CreatorID = clsUser.Find(lblCreatorUsername.Text).ID;
             _DLApplication.LicenseClassID = cbLicenseClasses.SelectedIndex + 1;
 
-            if (_DLApplication.ApplicationInfo.Save() && _DLApplication.Save())
+            if (_DLApplication.Save())
             {
                 _Mode = enMode.Update;
                 lblFormTitle.Text = "Update Local Driving License Application";

@@ -14,7 +14,7 @@ namespace DVLD.BL
         public enMode Mode = enMode.AddNew;
 
         public int ID { get; set; }
-        public int ApplicationID { get; set; }
+        public int BaseApplicationID { get; set; }
         public clsApplication ApplicationInfo;
         public int LicenseClassID {  get; set; }
         public clsLicenseClass LicenseClass;
@@ -22,15 +22,15 @@ namespace DVLD.BL
         public clsLocalLicenseApplicaiton()
         {
             this.ID = -1;
-            this.ApplicationID = -1;
-            this.ApplicationInfo = new clsApplication();
+            this.BaseApplicationID = -1;
+            ApplicationInfo = new clsApplication();
             this.LicenseClassID = -1;
             Mode = enMode.AddNew;
         }
         public clsLocalLicenseApplicaiton(int ID, int ApplicationID, int LicenseClassID)
         {
             this.ID = ID;
-            this.ApplicationID = ApplicationID;
+            this.BaseApplicationID = ApplicationID;
             ApplicationInfo = clsApplication.Find(ApplicationID);
             this.LicenseClassID = LicenseClassID;
             this.LicenseClass = clsLicenseClass.Find(LicenseClassID); 
@@ -42,7 +42,7 @@ namespace DVLD.BL
         }
         private bool _AddNewApplication()
         {
-            this.ID = clsLocalLicenseApplicaitonData.AddNewApplication(this.ApplicationID, this.LicenseClassID);
+            this.ID = clsLocalLicenseApplicaitonData.AddNewApplication(this.BaseApplicationID, this.LicenseClassID);
             return (this.ID != -1);
         }
         private bool _UpdateLicenseClass()
@@ -54,6 +54,8 @@ namespace DVLD.BL
             //Save base Application
             if (!this.ApplicationInfo.Save()) { return false; }
 
+            this.BaseApplicationID = this.ApplicationInfo.ID;
+
             //New Application
             if (Mode == enMode.AddNew && _AddNewApplication())
             {
@@ -64,7 +66,6 @@ namespace DVLD.BL
             //Alter License Class
             else
             {
-                LicenseClass = clsLicenseClass.Find(this.LicenseClassID);
                 return _UpdateLicenseClass();
             }
         }
@@ -78,6 +79,10 @@ namespace DVLD.BL
             }
             else { return null; }
 
+        }
+        public int GetNumberOfPassedTests()
+        {
+            return clsLocalLicenseApplicaitonData.GetNumberOfPassedTestByID(this.ID);
         }
     }
 }

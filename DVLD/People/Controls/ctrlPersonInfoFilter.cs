@@ -79,6 +79,8 @@ namespace DVLD.People.Controls
                 default:
                     break;
             }
+            //raise event
+            PersonSelected(ctrlPersonInfo.PersonID);
         }
         public void LoadPersonInfo(int PersonID)
         {
@@ -86,8 +88,7 @@ namespace DVLD.People.Controls
             txtFilterValue.Text = PersonID.ToString();
             btnFind.PerformClick();
 
-            //raise event
-            PersonSelected(ctrlPersonInfo.PersonID);
+            
         }
         public void LoadPersonInfo(clsPerson Person)
         {

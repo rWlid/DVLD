@@ -40,7 +40,7 @@ namespace DVLD.BL
             Type = null;
             ApplicantInfo = null;
             Date = DateTime.Now;
-            LastStatus = 0;
+            LastStatus = enStatus.New;
             LastStatusDate = DateTime.Now;
             Fees = -1;
             CreatorID = -1;
@@ -94,6 +94,10 @@ namespace DVLD.BL
                 return new clsApplication(ID, ApplicantPersonID, ApplicationDate, ApplicationTypeID, ApplicationStatus, LastStatusDate, PaidFees, CreatedByUserID);
             }
             else { return null; }
+        }
+        public static bool DeleteApplication(int ApplicationID)
+        {
+            return clsApplicationData.Delete(ApplicationID);
         }
     }
 }

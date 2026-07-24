@@ -147,7 +147,7 @@
             "Class 7 - Truck and heavy vehicle"});
             this.cbLicenseClasses.Location = new System.Drawing.Point(354, 109);
             this.cbLicenseClasses.Name = "cbLicenseClasses";
-            this.cbLicenseClasses.Size = new System.Drawing.Size(121, 21);
+            this.cbLicenseClasses.Size = new System.Drawing.Size(194, 21);
             this.cbLicenseClasses.TabIndex = 23;
             // 
             // pictureBox5

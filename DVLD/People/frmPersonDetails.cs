@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DVLD.BL;
 
 namespace DVLD.People
 {
@@ -27,6 +28,15 @@ namespace DVLD.People
             if (!ctrlPersonInfo.LoadPersonInfo(NationalNo))
             {
                 MessageBox.Show("No Person is found with National Number: " + NationalNo);
+                this.Close();
+            }
+        }
+        public frmPersonDetails(clsPerson Person)
+        {
+            InitializeComponent();
+            if (!ctrlPersonInfo.LoadPersonInfo(Person))
+            {
+                MessageBox.Show("No Person is found with ID: " + Person.ID);
                 this.Close();
             }
         }

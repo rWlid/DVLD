@@ -15,7 +15,29 @@ namespace DVLD.DAL
             DataTable dt = new DataTable();
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"";
+            string query = @"SELECT LocalDrivingLicenseApplicationID,
+                                   ClassName,
+                                   NationalNo,
+                                   CONCAT_WS(' ', FirstName, SecondName, ThirdName, LastName) AS FullName,
+                                   ApplicationDate,
+                                   (
+                                    SELECT COUNT(TestID)
+                                    FROM  LocalDrivingLicenseApplications AS L 
+                                    INNER JOIN TestAppointments ON L.LocalDrivingLicenseApplicationID = TestAppointments.LocalDrivingLicenseApplicationID
+                                    INNER JOIN Tests ON TestAppointments.TestAppointmentID = Tests.TestAppointmentID
+                                    WHERE TestResult = 1 AND L.LocalDrivingLicenseApplicationID = LocalDrivingLicenseApplications.LocalDrivingLicenseApplicationID
+                                   ) AS PassedTests,
+                                   CASE ApplicationStatus
+                                   WHEN 1 THEN 'New'
+                                   WHEN 2 THEN 'Cancelled'
+                                   WHEN 3 THEN 'Completed'
+                                   END AS ApplicationStatus
+                            FROM Applications
+                            INNER JOIN LocalDrivingLicenseApplications ON Applications.ApplicationID = LocalDrivingLicenseApplications.ApplicationID
+                            INNER JOIN People ON Applications.ApplicantPersonID = People.PersonID
+                            INNER JOIN LicenseClasses ON LocalDrivingLicenseApplications.LicenseClassID = LicenseClasses.LicenseClassID
+                            
+                            ORDER BY ApplicationDate DESC";
 
             SqlCommand command = new SqlCommand(query, connection);
 
@@ -157,6 +179,43 @@ namespace DVLD.DAL
 
 
             return (rowsAffected > 0);
+        }
+        public static int GetNumberOfPassedTestByID(int LocalDrivingLicenseApplicationID)
+        {
+            int PassedTests = 0;
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+
+            string query = @"SELECT Count(TestResult)
+                            FROM  LocalDrivingLicenseApplications AS L 
+                            INNER JOIN TestAppointments ON L.LocalDrivingLicenseApplicationID = TestAppointments.LocalDrivingLicenseApplicationID
+                            INNER JOIN Tests ON TestAppointments.TestAppointmentID = Tests.TestAppointmentID
+
+                            WHERE TestResult = 1 AND L.LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
+
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+
+            try
+            {
+                connection.Open();
+                PassedTests = (int)command.ExecuteScalar();
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return 0;
+
+            }
+
+            finally
+            {
+                connection.Close();
+            }
+
+
+            return PassedTests;
         }
     }
 }
