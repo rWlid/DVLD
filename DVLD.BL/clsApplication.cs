@@ -48,7 +48,6 @@ namespace DVLD.BL
         }
         private clsApplication(int ID, int ApplicantID, DateTime Date, int TypeID, int LastStatus, DateTime LastStatusDate, decimal Fees, int CreatorID)
         {
-            Mode = enMode.Update;
             this.ID = ID;
             this.ApplicantID = ApplicantID;
             this.ApplicantInfo = clsPerson.Find(ApplicantID);
@@ -58,6 +57,7 @@ namespace DVLD.BL
             this.LastStatusDate = LastStatusDate;
             this.Fees = Fees;
             this.CreatorID = CreatorID;
+            Mode = enMode.Update;
         }
         private bool _AddNewApplication()
         {
@@ -66,7 +66,12 @@ namespace DVLD.BL
         }
         private bool _UpdateStatus()
         {
-            return clsApplicationData.UpdateApplicationStatus(this.ID, (int)this.LastStatus, this.LastStatusDate);
+            return clsApplicationData.UpdateApplicationStatus(this.ID, (int)this.LastStatus);
+        }
+        public bool Cancel()
+        {
+            this.LastStatus = enStatus.Cancelled;
+            return _UpdateStatus();
         }
         public bool Save()
         {

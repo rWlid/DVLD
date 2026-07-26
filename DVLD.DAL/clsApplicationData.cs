@@ -61,7 +61,7 @@ namespace DVLD.DAL
 
             return ApplicationID;
         }
-        public static bool UpdateApplicationStatus(int ApplicationID, int ApplicationStatus, DateTime LastStatusDate)
+        public static bool UpdateApplicationStatus(int ApplicationID, int ApplicationStatus)
         {
             int rowsAffected = 0;
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
@@ -74,7 +74,7 @@ namespace DVLD.DAL
 
             command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
             command.Parameters.AddWithValue("@ApplicationStatus", ApplicationStatus);
-            command.Parameters.AddWithValue("@LastStatusDate", LastStatusDate);
+            command.Parameters.AddWithValue("@LastStatusDate", DateTime.Now);
             try
             {
                 connection.Open();

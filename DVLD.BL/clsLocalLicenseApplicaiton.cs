@@ -90,7 +90,7 @@ namespace DVLD.BL
 
             //Delete Local License Application First And Then Delete Base Application
             return clsLocalLicenseApplicaitonData.Delete(LocalDrivingLicenseApplicationID) 
-                   && clsApplicationData.Delete(BaseApplicationID);
+                   && clsApplication.DeleteApplication(BaseApplicationID);
         }
         public int GetActiveApplicationIDForLicenseClass(int PersonID, int LicenseClassID)
         {

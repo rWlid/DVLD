@@ -253,7 +253,9 @@ namespace DVLD.DAL
             string query = @"SELECT LocalDrivingLicenseApplications.LocalDrivingLicenseApplicationID
                              FROM   Applications
                              INNER JOIN LocalDrivingLicenseApplications ON Applications.ApplicationID = LocalDrivingLicenseApplications.ApplicationID
-                             WHERE Applications.ApplicantPersonID = @PersonID AND LocalDrivingLicenseApplications.LicenseClassID = @LicenseClassID";
+                             WHERE Applications.ApplicantPersonID = @PersonID 
+                             AND LocalDrivingLicenseApplications.LicenseClassID = @LicenseClassID
+                             AND Applications.ApplicationStatus = 1";
 
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
             SqlCommand command = new SqlCommand(query, connection);

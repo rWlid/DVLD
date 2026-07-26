@@ -219,10 +219,8 @@ namespace DVLD.Applications.Local_Driving_License_Applications
             if (MessageBox.Show($"Are you sure you want to cancel local driving license application [{dgvApplications.CurrentRow.Cells[0].Value}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK
                 && application != null)
             {
-                application.ApplicationInfo.LastStatus = clsApplication.enStatus.Cancelled;
-                application.ApplicationInfo.LastStatusDate = DateTime.Now;
 
-                if(application.ApplicationInfo.Save())
+                if(application.ApplicationInfo.Cancel())
                 {
                     MessageBox.Show("Application Canceled Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     frmListLDLApplications_Load(null, null);
