@@ -72,11 +72,11 @@ namespace DVLD.Applications
             }
 
             lblDLApplicationID.Text = _DLApplication.ID.ToString();
-            lblFees.Text = _DLApplication.ApplicationInfo.Type.Fees.ToString() ;
-            lblDate.Text = _DLApplication.ApplicationInfo.Date.ToString();
-            lblCreatorUsername.Text = _DLApplication.ApplicationInfo.CreatorUsername;
+            lblFees.Text = _DLApplication.Type.Fees.ToString() ;
+            lblDate.Text = _DLApplication.Date.ToString();
+            lblCreatorUsername.Text = _DLApplication.CreatorUsername;
             cbLicenseClasses.SelectedIndex = _DLApplication.LicenseClassID - 1; // since ID of First Class is 1
-            ctrlPersonInfoFilter1.LoadPersonInfo(_DLApplication.ApplicationInfo.ApplicantInfo.ID);
+            ctrlPersonInfoFilter1.LoadPersonInfo(_DLApplication.ApplicantInfo.ID);
         }
 
         private void frmAddNewLocalLicenseApplication_Load(object sender, EventArgs e)
@@ -94,7 +94,6 @@ namespace DVLD.Applications
         private void ctrlPersonInfoFilter1_OnPersonSelected(int obj)
         {
             btnNext.Focus();
-            btnSave.Enabled = true;
         }
 
         private void btnNext_Click(object sender, EventArgs e)
@@ -107,6 +106,7 @@ namespace DVLD.Applications
 
             tabControl1.SelectedIndex = 1;
             cbLicenseClasses.Focus();
+            btnSave.Enabled = true;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -117,11 +117,11 @@ namespace DVLD.Applications
             int ActiveApplicationID = _DLApplication.GetActiveApplicationIDForLicenseClass(ctrlPersonInfoFilter1.PersonID, cbLicenseClasses.SelectedIndex + 1);
             if(ActiveApplicationID != -1) { MessageBox.Show($"Choose another License Class, The selected Person already has an active application for the selected class with ID: {ActiveApplicationID}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);  return; }
 
-            _DLApplication.ApplicationInfo.Type = clsApplicationType.GetApplicationType(1); //1 = New Local Driving License Service 
-            _DLApplication.ApplicationInfo.ApplicantID = ctrlPersonInfoFilter1.PersonID;
-            _DLApplication.ApplicationInfo.Date = DateTime.Parse(lblDate.Text);
-            _DLApplication.ApplicationInfo.Fees = decimal.Parse(lblFees.Text);
-            _DLApplication.ApplicationInfo.CreatorID = clsUser.Find(lblCreatorUsername.Text).ID;
+            _DLApplication.Type = clsApplicationType.GetApplicationType(1); //1 = New Local Driving License Service 
+            _DLApplication.ApplicantID = ctrlPersonInfoFilter1.PersonID;
+            _DLApplication.Date = DateTime.Parse(lblDate.Text);
+            _DLApplication.Fees = decimal.Parse(lblFees.Text);
+            _DLApplication.CreatorID = clsUser.Find(lblCreatorUsername.Text).ID;
             _DLApplication.LicenseClassID = cbLicenseClasses.SelectedIndex + 1;
 
             if (_DLApplication.Save())
@@ -134,12 +134,6 @@ namespace DVLD.Applications
                 MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else { MessageBox.Show("Data is not Saved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
-        }
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ctrlPersonInfoFilter1.FilterEnabled = false;
-            tabApplicationInfo.Enabled = true;
         }
     }
 }

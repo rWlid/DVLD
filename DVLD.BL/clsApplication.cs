@@ -46,7 +46,7 @@ namespace DVLD.BL
             CreatorID = -1;
             Mode = enMode.AddNew;
         }
-        private clsApplication(int ID, int ApplicantID, DateTime Date, int TypeID, int LastStatus, DateTime LastStatusDate, decimal Fees, int CreatorID)
+        protected clsApplication(int ID, int ApplicantID, DateTime Date, int TypeID, int LastStatus, DateTime LastStatusDate, decimal Fees, int CreatorID)
         {
             this.ID = ID;
             this.ApplicantID = ApplicantID;
@@ -73,32 +73,22 @@ namespace DVLD.BL
             this.LastStatus = enStatus.Cancelled;
             return _UpdateStatus();
         }
-        public bool Save()
+        public virtual bool Save()
         {
             //New Application
-            if(Mode == enMode.AddNew && _AddNewApplication())
+            if (this.Mode == enMode.AddNew)
             {
-                Mode = enMode.Update;
+                if (!_AddNewApplication()) { return false; }
+
+                this.Mode = enMode.Update;
                 return true;
             }
-            
-            //Alter Application Status
+
+            //Alter License Class
             else
             {
                 return _UpdateStatus();
             }
-        }
-        public static clsApplication Find(int ID)
-        {
-            int ApplicantPersonID = -1;  DateTime ApplicationDate = DateTime.Now;  int ApplicationTypeID = -1;  int ApplicationStatus = -1;
-             DateTime LastStatusDate = DateTime.Now;  decimal PaidFees = -1;  int CreatedByUserID = -1;
-
-            if (clsApplicationData.GetApplicationInfo(ID, ref ApplicantPersonID, ref  ApplicationDate, ref  ApplicationTypeID, ref  ApplicationStatus,
-            ref  LastStatusDate, ref PaidFees, ref CreatedByUserID))
-            {
-                return new clsApplication(ID, ApplicantPersonID, ApplicationDate, ApplicationTypeID, ApplicationStatus, LastStatusDate, PaidFees, CreatedByUserID);
-            }
-            else { return null; }
         }
         public static bool DeleteApplication(int ApplicationID)
         {

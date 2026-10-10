@@ -220,7 +220,7 @@ namespace DVLD.Applications.Local_Driving_License_Applications
                 && application != null)
             {
 
-                if(application.ApplicationInfo.Cancel())
+                if(application.Cancel())
                 {
                     MessageBox.Show("Application Canceled Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     frmListLDLApplications_Load(null, null);

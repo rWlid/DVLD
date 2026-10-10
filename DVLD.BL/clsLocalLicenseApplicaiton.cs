@@ -8,33 +8,35 @@ using DVLD.DAL;
 
 namespace DVLD.BL
 {
-    public class clsLocalLicenseApplicaiton
+    public class clsLocalLicenseApplicaiton : clsApplication
     {
-        public enum enMode { AddNew = 0, Update = 1 };
-        public enMode Mode = enMode.AddNew;
 
-        public int ID { get; set; }
-        public int BaseApplicationID { get; set; }
-        public clsApplication ApplicationInfo;
+        public int LocalID { get; set; }
         public int LicenseClassID {  get; set; }
         public clsLicenseClass LicenseClass;
 
         public clsLocalLicenseApplicaiton()
         {
             this.ID = -1;
-            this.BaseApplicationID = -1;
-            ApplicationInfo = new clsApplication();
+            this.ApplicantID = -1;
+            this.Type = null;
+            this.ApplicantInfo = null;
+            this.Date = DateTime.Now;
+            this.LastStatus = enStatus.New;
+            this.LastStatusDate = DateTime.Now;
+            this.Fees = -1;
+            this.CreatorID = -1;
+            this.LocalID = -1;
             this.LicenseClassID = -1;
-            Mode = enMode.AddNew;
+            this.Mode = enMode.AddNew;
         }
-        public clsLocalLicenseApplicaiton(int ID, int ApplicationID, int LicenseClassID)
+        public clsLocalLicenseApplicaiton(int ID, int ApplicantID, DateTime Date, int TypeID, int LastStatus, DateTime LastStatusDate, decimal Fees, int CreatorID, int LocalID, int LicenseClassID)
+                                          : base(ID,ApplicantID, Date, TypeID, LastStatus, LastStatusDate, Fees, CreatorID)
         {
-            this.ID = ID;
-            this.BaseApplicationID = ApplicationID;
-            ApplicationInfo = clsApplication.Find(ApplicationID);
+            this.LocalID = LocalID;
             this.LicenseClassID = LicenseClassID;
             this.LicenseClass = clsLicenseClass.Find(LicenseClassID); 
-            Mode = enMode.Update;
+            this.Mode = enMode.Update;
         }
         public static DataTable GetAllApplications()
         {
@@ -42,24 +44,24 @@ namespace DVLD.BL
         }
         private bool _AddNewApplication()
         {
-            this.ID = clsLocalLicenseApplicaitonData.AddNewApplication(this.BaseApplicationID, this.LicenseClassID);
-            return (this.ID != -1);
+            this.LocalID = clsLocalLicenseApplicaitonData.AddNewApplication(this.ID, this.LicenseClassID);
+            return (this.LocalID != -1);
         }
         private bool _UpdateLicenseClass()
         {
-            return clsLocalLicenseApplicaitonData.UpdateLicenseClassInApplication(this.ID, this.LicenseClassID);
+            return clsLocalLicenseApplicaitonData.UpdateLicenseClassInApplication(this.LocalID, this.LicenseClassID);
         }
-        public bool Save()
+        public override bool Save()
         {
             //Save base Application
-            if (!this.ApplicationInfo.Save()) { return false; }
-
-            this.BaseApplicationID = this.ApplicationInfo.ID;
+            if (!base.Save()) { return false; }
 
             //New Application
-            if (Mode == enMode.AddNew && _AddNewApplication())
+            if (this.Mode == enMode.AddNew)
             {
-                Mode = enMode.Update;
+                if(!_AddNewApplication()) { return false; }
+
+                this.Mode = enMode.Update;
                 return true;
             }
 
@@ -69,28 +71,36 @@ namespace DVLD.BL
                 return _UpdateLicenseClass();
             }
         }
-        public static clsLocalLicenseApplicaiton Find(int ID)
+        public static clsLocalLicenseApplicaiton Find(int LocalAppID)
         {
-            int ApplicationID = -1, LicenseClassID = -1;
+            int BaseAppID = -1, LicenseClassID = -1, ApplicantPersonID = -1, CreatedByUserID = -1, ApplicationTypeID = -1, ApplicationStatus = -1;
+            DateTime ApplicationDate = DateTime.Now, LastStatusDate = DateTime.Now;
+            decimal PaidFees = -1;
 
-            if (clsLocalLicenseApplicaitonData.GetApplicationInfo(ID, ref ApplicationID, ref LicenseClassID))
+            //Get Local Driving License Application then Base Application 
+            if (clsLocalLicenseApplicaitonData.GetApplicationInfo(LocalAppID, ref BaseAppID, ref LicenseClassID)
+                && clsApplicationData.GetApplicationInfo(BaseAppID, ref ApplicantPersonID, ref ApplicationDate, ref ApplicationTypeID, ref ApplicationStatus, ref LastStatusDate, ref PaidFees, ref CreatedByUserID))
             {
-                return new clsLocalLicenseApplicaiton(ID, ApplicationID, LicenseClassID);
+                return new clsLocalLicenseApplicaiton(BaseAppID, ApplicantPersonID, ApplicationDate, ApplicationTypeID, ApplicationStatus, LastStatusDate, PaidFees, CreatedByUserID, LocalAppID, LicenseClassID);
             }
             else { return null; }
 
         }
         public int GetNumberOfPassedTests()
         {
-            return clsLocalLicenseApplicaitonData.GetNumberOfPassedTestByID(this.ID);
+            return clsLocalLicenseApplicaitonData.GetNumberOfPassedTestByID(this.LocalID);
         }
-        public static bool DeleteApplication(int LocalDrivingLicenseApplicationID)
+        public new static bool DeleteApplication(int LocalDrivingLicenseApplicationID)
         {
-            int BaseApplicationID = Find(LocalDrivingLicenseApplicationID).BaseApplicationID;
+            int BaseApplicationID = Find(LocalDrivingLicenseApplicationID).ID;
 
             //Delete Local License Application First And Then Delete Base Application
-            return clsLocalLicenseApplicaitonData.Delete(LocalDrivingLicenseApplicationID) 
-                   && clsApplication.DeleteApplication(BaseApplicationID);
+            if (clsLocalLicenseApplicaitonData.Delete(LocalDrivingLicenseApplicationID))
+            {
+                return clsApplication.DeleteApplication(BaseApplicationID);
+            }
+
+            return false;
         }
         public int GetActiveApplicationIDForLicenseClass(int PersonID, int LicenseClassID)
         {
