@@ -1,41 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DVLD.Tests.TestTypes
 {
     public partial class frmUpdateTestType : Form
     {
-        private clsTestType.enTestType _TestTypeID;
-        private clsTestType _TestType;
+        private readonly TestType.TestKind _testTypeID;
+        private TestType _testType;
         public frmUpdateTestType(int TestTypeID)
         {
             InitializeComponent();
-            _TestTypeID = (clsTestType.enTestType)TestTypeID;
+            _testTypeID = (TestType.TestKind)TestTypeID;
         }
-        private void _LoadData()
+        private void LoadData()
         {
-            _TestType = clsTestType.Find((clsTestType.enTestType) _TestTypeID);
+            _testType = TestType.Find((TestType.TestKind)_testTypeID);
 
-            if (_TestType == null)
+            if (_testType == null)
             {
-                MessageBox.Show("This form will be closed because No Test Type with ID = " + _TestTypeID, "Not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Close();
+                MessageBox.Show("This form will be closed because No Test Type with ID = " + _testTypeID,
+                    "Not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
                 return;
             }
 
-            lblTypeID.Text = ((int)_TestTypeID).ToString();
-            txtTitle.Text = _TestType.Title;
-            txtDescription.Text = _TestType.Description;
-            txtFees.Text = _TestType.Fees.ToString();
+            lblTypeID.Text = ((int)_testTypeID).ToString();
+            txtTitle.Text = _testType.Title;
+            txtDescription.Text = _testType.Description;
+            txtFees.Text = _testType.Fees.ToString();
         }
         private void btnClose_Click(object sender, EventArgs e)
         {
@@ -44,12 +38,12 @@ namespace DVLD.Tests.TestTypes
 
         private void frmUpdateTestType_Load(object sender, EventArgs e)
         {
-            _LoadData();
+            LoadData();
             txtTitle.Focus();
         }
         private void txt_Validating(object sender, CancelEventArgs e)
         {
-            TextBox txt = (TextBox)sender;
+            var txt = (TextBox)sender;
             if (string.IsNullOrEmpty(txt.Text))
             {
                 e.Cancel = true;
@@ -62,7 +56,11 @@ namespace DVLD.Tests.TestTypes
         }
         private void Title_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != (char)Keys.Space) { e.Handled = true; }
+            if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back
+                && e.KeyChar != (char)Keys.Space)
+            {
+                e.Handled = true;
+            }
         }
         private void Fees_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -70,19 +68,19 @@ namespace DVLD.Tests.TestTypes
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (!this.ValidateChildren()) { return; }
+            if (!ValidateChildren()) { return; }
 
-            _TestType.Title = txtTitle.Text;
-            _TestType.Description = txtDescription.Text;
-            _TestType.Fees = decimal.TryParse(txtFees.Text, out decimal Fees) ? Fees : _TestType.Fees;
+            _testType.Title = txtTitle.Text;
+            _testType.Description = txtDescription.Text;
+            _testType.Fees = decimal.TryParse(txtFees.Text, out decimal Fees) ? Fees : _testType.Fees;
 
-            if (_TestType.UpdateTestType())
+            if (_testType.UpdateTestType())
             {
                 MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else { MessageBox.Show("Data is not Saved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
 
-            _LoadData();
+            LoadData();
         }
     }
 }

@@ -1,31 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+using System;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DVLD.DAL
 {
-    public static class clsApplicationData
+    public static class ApplicationData
     {
-        public static int AddNewApplication(int ApplicantPersonID, DateTime ApplicationDate, int ApplicationTypeID, int ApplicationStatus, 
-            DateTime LastStatusDate, decimal PaidFees, int CreatedByUserID)
+        public static int AddNewApplication(int ApplicantPersonID, DateTime ApplicationDate, int ApplicationTypeID,
+            int ApplicationStatus, DateTime LastStatusDate, decimal PaidFees, int CreatedByUserID)
         {
             //this function will return the new Application id if succeeded and -1 if not.
             int ApplicationID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
-            string query = @"INSERT INTO Applications (ApplicantPersonID, ApplicationDate, ApplicationTypeID, ApplicationStatus, LastStatusDate, PaidFees, CreatedByUserID)
-                             VALUES (@ApplicantPersonID, @ApplicationDate, @ApplicationTypeID, @ApplicationStatus,@LastStatusDate, @PaidFees, @CreatedByUserID);
+            string query = @"INSERT INTO Applications
+                                (ApplicantPersonID, ApplicationDate, ApplicationTypeID, ApplicationStatus,
+                                 LastStatusDate, PaidFees, CreatedByUserID)
+                             VALUES (@ApplicantPersonID, @ApplicationDate, @ApplicationTypeID, @ApplicationStatus,
+                                     @LastStatusDate, @PaidFees, @CreatedByUserID);
                              SELECT SCOPE_IDENTITY();";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@ApplicantPersonID", ApplicantPersonID);
             command.Parameters.AddWithValue("@ApplicationDate", ApplicationDate);
@@ -64,13 +59,13 @@ namespace DVLD.DAL
         public static bool UpdateApplicationStatus(int ApplicationID, int ApplicationStatus)
         {
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"UPDATE  Applications  
                 SET ApplicationStatus = @ApplicationStatus, LastStatusDate = @LastStatusDate
                     where ApplicationID = @ApplicationID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
             command.Parameters.AddWithValue("@ApplicationStatus", ApplicationStatus);
@@ -96,16 +91,17 @@ namespace DVLD.DAL
 
             return (rowsAffected > 0);
         }
-        public static bool GetApplicationInfo(int ApplicationID, ref int ApplicantPersonID, ref DateTime ApplicationDate, ref int ApplicationTypeID, ref int ApplicationStatus,
+        public static bool GetApplicationInfo(int ApplicationID, ref int ApplicantPersonID,
+            ref DateTime ApplicationDate, ref int ApplicationTypeID, ref int ApplicationStatus,
             ref DateTime LastStatusDate, ref decimal PaidFees, ref int CreatedByUserID)
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT * FROM Applications WHERE ApplicationID = @ApplicationID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
 
@@ -153,10 +149,11 @@ namespace DVLD.DAL
         public static bool Delete(int ApplicationID)
         {
             int rowsAffected = 0;
-            string query = @"DELETE Applications WHERE ApplicationID = @ApplicationID AND ( ApplicationStatus = 1 OR ApplicationStatus = 0 )"; //Only New Applications.
+            string query = @"DELETE Applications WHERE ApplicationID = @ApplicationID
+                             AND ( ApplicationStatus = 1 OR ApplicationStatus = 0 )"; //Only New Applications.
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
 

@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DVLD.DAL
 {
-    public static class clsUserData
+    public static class UserData
     {
         public static DataTable GetAllUsers()
         {
-            DataTable dt = new DataTable();
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var dt = new DataTable();
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT 
                                 Users.UserID,
                                 Users.PersonID,
-                                CONCAT_WS(' ', People.FirstName, People.SecondName, People.ThirdName, People.LastName) AS FullName,
+                                CONCAT_WS(' ', People.FirstName, People.SecondName, People.ThirdName,
+                                          People.LastName) AS FullName,
                                 Users.UserName, 
                                 Users.IsActive
                              FROM Users
                              INNER JOIN People ON Users.PersonID = People.PersonID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             try
             {
@@ -43,15 +40,15 @@ namespace DVLD.DAL
 
             return dt;
         }
-        public static bool GetUserInfoByID(int UserID,  ref int PersonID, ref string UserName, ref bool IsActive)
+        public static bool GetUserInfoByID(int UserID, ref int PersonID, ref string UserName, ref bool IsActive)
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT PersonID,UserName,IsActive FROM Users WHERE UserID = @UserID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@UserID", UserID);
 
@@ -96,11 +93,11 @@ namespace DVLD.DAL
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT UserID,UserName,IsActive FROM Users WHERE PersonID = @PersonID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@PersonID", PersonID);
 
@@ -145,11 +142,11 @@ namespace DVLD.DAL
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT UserID,PersonID,IsActive FROM Users WHERE UserName = @UserName";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@UserName", UserName);
 
@@ -195,13 +192,13 @@ namespace DVLD.DAL
             //this function will return the new User id if succeeded and -1 if not.
             int UserID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"INSERT INTO Users (PersonID, UserName, Password, IsActive)
                              VALUES (@PersonID, @UserName, @Password, @IsActive);
                              SELECT SCOPE_IDENTITY();";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@PersonID", PersonID);
             command.Parameters.AddWithValue("@UserName", UserName);
@@ -238,7 +235,7 @@ namespace DVLD.DAL
         public static bool UpdateUser(int UserID, int PersonID, string UserName, string Password, bool IsActive)
         {
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"UPDATE  Users  
                             SET UserName = @UserName, 
@@ -246,7 +243,7 @@ namespace DVLD.DAL
                                 IsActive = @IsActive
                             WHERE UserID = @UserID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@UserID", UserID);
             command.Parameters.AddWithValue("@UserName", UserName);
@@ -279,8 +276,8 @@ namespace DVLD.DAL
             int rowsAffected = 0;
             string query = @"DELETE Users WHERE UserID = @UserID";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@UserID", UserID);
 
@@ -311,8 +308,8 @@ namespace DVLD.DAL
                             SET Password = @Password
                             WHERE UserID = @UserID";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@UserID", UserID);
             command.Parameters.AddWithValue("@Password", newPassword);
@@ -342,8 +339,8 @@ namespace DVLD.DAL
             bool isFound = false;
             string query = @"SELECT Found=1 FROM Users WHERE UserID = @UserID";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@UserID", UserID);
 
@@ -370,8 +367,8 @@ namespace DVLD.DAL
             bool isFound = false;
             string query = @"SELECT Found=1 FROM Users WHERE UserName = @UserName";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@UserName", UserName);
 
@@ -398,8 +395,8 @@ namespace DVLD.DAL
             bool isFound = false;
             string query = @"SELECT Found=1 FROM Users WHERE PersonID = @PersonID";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@PersonID", PersonID);
 
@@ -421,13 +418,13 @@ namespace DVLD.DAL
 
             return isFound;
         }
-        public static bool AreCredintialsValid(int UserID, string Password)
+        public static bool AreCredentialsValid(int UserID, string Password)
         {
             bool valid = false;
             string query = @"SELECT Found=1 FROM Users WHERE UserID = @UserID AND Password = @Password";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@UserID", UserID);
             command.Parameters.AddWithValue("@Password", Password);
@@ -450,13 +447,13 @@ namespace DVLD.DAL
 
             return valid;
         }
-        public static bool AreCredintialsValid(string UserName, string Password)
+        public static bool AreCredentialsValid(string UserName, string Password)
         {
             bool valid = false;
             string query = @"SELECT Found=1 FROM Users WHERE UserName = @UserName AND Password = @Password";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@UserName", UserName);
             command.Parameters.AddWithValue("@Password", Password);
@@ -479,13 +476,15 @@ namespace DVLD.DAL
 
             return valid;
         }
-        public static bool GetUserInfoByUsernameAndPassword(string UserName, string Password, ref int UserID, ref int PersonID, ref bool IsActive)
+        public static bool GetUserInfoByUsernameAndPassword(string UserName, string Password, ref int UserID,
+            ref int PersonID, ref bool IsActive)
         {
             bool isFound = false;
-            string query = @"SELECT UserID, PersonID, IsActive FROM Users WHERE UserName = @UserName AND Password = @Password";
+            string query = @"SELECT UserID, PersonID, IsActive FROM Users
+                             WHERE UserName = @UserName AND Password = @Password";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@UserName", UserName);
             command.Parameters.AddWithValue("@Password", Password);

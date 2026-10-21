@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
-using DVLD.Properties;
 
 namespace DVLD.People.Controls
 {
@@ -20,11 +13,7 @@ namespace DVLD.People.Controls
         protected virtual void PersonSelected(int PersonID)
         {
             if (!FilterEnabled) { return; }
-            Action<int> handler = OnPersonSelected;
-            if (handler != null)
-            {
-                handler(PersonID); // Raise the event with the parameter
-            }
+            OnPersonSelected?.Invoke(PersonID); // Raise the event with the parameter
         }
         //private bool _ShowAddPerson = true;
         //public bool ShowAddPerson
@@ -36,21 +25,21 @@ namespace DVLD.People.Controls
         //        btnAdd.Enabled = _ShowAddPerson;
         //    }
         //}
-        private bool _FilterEnabled = true;
+        private bool _filterEnabled = true;
         public bool FilterEnabled
         {
-            get { return _FilterEnabled; }
+            get { return _filterEnabled; }
             set
             {
-                _FilterEnabled = value;
-                gbFilter.Enabled = _FilterEnabled;
+                _filterEnabled = value;
+                gbFilter.Enabled = _filterEnabled;
             }
         }
         public int PersonID
         {
             get { return ctrlPersonInfo.SelectedPersonInfo.ID; }
         }
-        public clsPerson SelectedPersonInfo
+        public Person SelectedPersonInfo
         {
             get { return ctrlPersonInfo.SelectedPersonInfo; }
         }
@@ -88,9 +77,9 @@ namespace DVLD.People.Controls
             txtFilterValue.Text = PersonID.ToString();
             btnFind.PerformClick();
 
-            
+
         }
-        public void LoadPersonInfo(clsPerson Person)
+        public void LoadPersonInfo(Person Person)
         {
             cmbFilterBy.SelectedIndex = 1;
             txtFilterValue.Text = Person.ID.ToString();
@@ -101,7 +90,7 @@ namespace DVLD.People.Controls
         }
         private void tBFilter_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar == (char)Keys.Enter)
+            if (e.KeyChar == (char)Keys.Enter)
             {
                 btnFind.PerformClick();
             }
@@ -118,15 +107,18 @@ namespace DVLD.People.Controls
 
         private void btnPersonLookUp_Click(object sender, EventArgs e)
         {
-            if (!this.ValidateChildren()) return;
+            if (!ValidateChildren())
+            {
+                return;
+            }
 
             Find();
         }
 
         private void tBFilter_Validating(object sender, CancelEventArgs e)
         {
-            if(string.IsNullOrEmpty(txtFilterValue.Text)) 
-            { 
+            if (string.IsNullOrEmpty(txtFilterValue.Text))
+            {
                 e.Cancel = true;
                 txtFilterValue.Focus();
                 return;
@@ -135,14 +127,16 @@ namespace DVLD.People.Controls
 
         private void btnAddNewPerson_Click(object sender, EventArgs e)
         {
-            frmAddEditPerson frm = new frmAddEditPerson();
+            var frm = new frmAddEditPerson();
             frm.DataBack += ReciveNewPersonID;
             frm.ShowDialog();
         }
         private void ReciveNewPersonID(object sender, int PersonID)
         {
-            if(PersonID != -1)
+            if (PersonID != -1)
+            {
                 LoadPersonInfo(PersonID);
+            }
         }
 
         private void cmbFilterBy_SelectedIndexChanged(object sender, EventArgs e)

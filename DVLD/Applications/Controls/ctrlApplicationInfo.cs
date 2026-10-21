@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
 using DVLD.People;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DVLD.Applications.Controls
 {
     public partial class ctrlApplicationInfo : UserControl
     {
-        private clsLocalLicenseApplicaiton _Application;
+        private LocalLicenseApplication _application;
         public ctrlApplicationInfo()
         {
             InitializeComponent();
@@ -23,27 +14,27 @@ namespace DVLD.Applications.Controls
 
         private void llViewPersonDetails_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmPersonDetails frm = new frmPersonDetails(_Application.ApplicantInfo);
+            var frm = new frmPersonDetails(_application.ApplicantInfo);
             frm.ShowDialog();
-            LoadApplicationInfo(_Application.ID);
+            LoadApplicationInfo(_application.ID);
         }
 
         public bool LoadApplicationInfo(int ApplicationID)
         {
-            _Application = clsLocalLicenseApplicaiton.Find(ApplicationID);
-            if (_Application == null) { return false; }
+            _application = LocalLicenseApplication.Find(ApplicationID);
+            if (_application == null) { return false; }
 
-            lblLDLAID.Text = _Application.LocalID.ToString();
-            lblLicenseClass.Text = _Application.LicenseClass.Name;
-            lblPassedTest.Text = $"{_Application.GetNumberOfPassedTests()}/3";
-            lblBaseID.Text = _Application.ID.ToString();
-            lblStatus.Text = _Application.LastStatus.ToString();
-            lblFees.Text = _Application.Fees.ToString();
-            lblApplicationType.Text = _Application.Type.Title;
-            lblApplicationDate.Text = _Application.Date.ToString();
-            lblStatusDate.Text = _Application.LastStatusDate.ToString();
-            lblCreatorID.Text = _Application.CreatorUsername;
-            lblApplicantFullName.Text = _Application.ApplicantInfo.FullName;
+            lblLDLAID.Text = _application.LocalID.ToString();
+            lblLicenseClass.Text = _application.LicenseClass.Name;
+            lblPassedTest.Text = $"{_application.GetNumberOfPassedTests()}/3";
+            lblBaseID.Text = _application.ID.ToString();
+            lblStatus.Text = _application.LastStatus.ToString();
+            lblFees.Text = _application.Fees.ToString();
+            lblApplicationType.Text = _application.Type.Title;
+            lblApplicationDate.Text = _application.Date.ToString();
+            lblStatusDate.Text = _application.LastStatusDate.ToString();
+            lblCreatorID.Text = _application.CreatorUsername;
+            lblApplicantFullName.Text = _application.ApplicantInfo.FullName;
             return true;
         }
     }

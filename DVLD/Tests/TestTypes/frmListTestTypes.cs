@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using DVLD.Applications;
 using DVLD.BL;
 
 namespace DVLD.Tests.TestTypes
@@ -31,14 +24,14 @@ namespace DVLD.Tests.TestTypes
 
         private void frmManageTestTypes_Load(object sender, EventArgs e)
         {
-            _dtAllTestTypes = clsTestType.GetAllTestTypes();
+            _dtAllTestTypes = TestType.GetAllTestTypes();
             dgvTestTypes.DataSource = _dtAllTestTypes;
             lblNumberOfRecords.Text = dgvTestTypes.RowCount.ToString();
         }
 
         private void editTestTypeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmUpdateTestType frm = new frmUpdateTestType((int)dgvTestTypes.CurrentRow.Cells[0].Value);
+            var frm = new frmUpdateTestType((int)dgvTestTypes.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
             frmManageTestTypes_Load(null, null);
         }

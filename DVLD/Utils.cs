@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DVLD
 {
-    public static class clsUtil
+    public static class Utils
     {
         public static bool CreateFolderIfDoesNotExist(string FolderPath)
         {

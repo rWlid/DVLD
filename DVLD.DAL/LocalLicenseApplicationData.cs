@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DVLD.DAL
 {
-    public static class clsLocalLicenseApplicaitonData
+    public static class LocalLicenseApplicationData
     {
         public static DataTable GetAllApplications()
         {
-            DataTable dt = new DataTable();
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var dt = new DataTable();
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT LocalDrivingLicenseApplicationID,
                                    ClassName,
@@ -23,9 +19,12 @@ namespace DVLD.DAL
                                    (
                                     SELECT COUNT(TestID)
                                     FROM  LocalDrivingLicenseApplications AS L 
-                                    INNER JOIN TestAppointments ON L.LocalDrivingLicenseApplicationID = TestAppointments.LocalDrivingLicenseApplicationID
+                                    INNER JOIN TestAppointments ON
+                                        L.LocalDrivingLicenseApplicationID =
+                                            TestAppointments.LocalDrivingLicenseApplicationID
                                     INNER JOIN Tests ON TestAppointments.TestAppointmentID = Tests.TestAppointmentID
-                                    WHERE TestResult = 1 AND L.LocalDrivingLicenseApplicationID = LocalDrivingLicenseApplications.LocalDrivingLicenseApplicationID
+                                    WHERE TestResult = 1 AND L.LocalDrivingLicenseApplicationID =
+                                        LocalDrivingLicenseApplications.LocalDrivingLicenseApplicationID
                                    ) AS PassedTests,
                                    CASE ApplicationStatus
                                    WHEN 1 THEN 'New'
@@ -33,13 +32,15 @@ namespace DVLD.DAL
                                    WHEN 3 THEN 'Completed'
                                    END AS ApplicationStatus
                             FROM Applications
-                            INNER JOIN LocalDrivingLicenseApplications ON Applications.ApplicationID = LocalDrivingLicenseApplications.ApplicationID
+                            INNER JOIN LocalDrivingLicenseApplications ON
+                                Applications.ApplicationID = LocalDrivingLicenseApplications.ApplicationID
                             INNER JOIN People ON Applications.ApplicantPersonID = People.PersonID
-                            INNER JOIN LicenseClasses ON LocalDrivingLicenseApplications.LicenseClassID = LicenseClasses.LicenseClassID
+                            INNER JOIN LicenseClasses ON
+                                LocalDrivingLicenseApplications.LicenseClassID = LicenseClasses.LicenseClassID
                             
                             ORDER BY ApplicationDate DESC";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             try
             {
@@ -58,15 +59,17 @@ namespace DVLD.DAL
 
             return dt;
         }
-        public static bool GetApplicationInfo(int LocalDrivingLicenseApplicationID, ref int ApplicationID, ref int LicenseClassID)
+        public static bool GetApplicationInfo(int LocalDrivingLicenseApplicationID, ref int ApplicationID,
+            ref int LicenseClassID)
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
-            string query = @"SELECT * FROM LocalDrivingLicenseApplications WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
+            string query = @"SELECT * FROM LocalDrivingLicenseApplications
+                             WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
 
@@ -108,13 +111,13 @@ namespace DVLD.DAL
             //this function will return the new Application id if succeeded and -1 if not.
             int LocalLicenseApplicationID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"INSERT INTO LocalDrivingLicenseApplications (ApplicationID, LicenseClassID)
                              VALUES (@ApplicationID, @LicenseClassID);
                              SELECT SCOPE_IDENTITY();";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
             command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
@@ -148,13 +151,13 @@ namespace DVLD.DAL
         public static bool UpdateLicenseClassInApplication(int LocalDrivingLicenseApplicationID, int LicenseClassID)
         {
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"UPDATE  LocalDrivingLicenseApplications  
                 SET LicenseClassID = @LicenseClassID
                     where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
             command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
@@ -183,16 +186,18 @@ namespace DVLD.DAL
         public static int GetNumberOfPassedTestByID(int LocalDrivingLicenseApplicationID)
         {
             int PassedTests = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT Count(TestResult)
                             FROM  LocalDrivingLicenseApplications AS L 
-                            INNER JOIN TestAppointments ON L.LocalDrivingLicenseApplicationID = TestAppointments.LocalDrivingLicenseApplicationID
+                            INNER JOIN TestAppointments ON
+                                L.LocalDrivingLicenseApplicationID = TestAppointments.LocalDrivingLicenseApplicationID
                             INNER JOIN Tests ON TestAppointments.TestAppointmentID = Tests.TestAppointmentID
 
-                            WHERE TestResult = 1 AND L.LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
+                            WHERE TestResult = 1 AND
+                                L.LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
 
@@ -220,10 +225,11 @@ namespace DVLD.DAL
         public static bool Delete(int LocalDrivingLicenseApplicationID)
         {
             int rowsAffected = 0;
-            string query = @"DELETE LocalDrivingLicenseApplications WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
+            string query = @"DELETE LocalDrivingLicenseApplications
+                             WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
 
@@ -252,13 +258,14 @@ namespace DVLD.DAL
             int ApplicationID = -1;
             string query = @"SELECT LocalDrivingLicenseApplications.LocalDrivingLicenseApplicationID
                              FROM   Applications
-                             INNER JOIN LocalDrivingLicenseApplications ON Applications.ApplicationID = LocalDrivingLicenseApplications.ApplicationID
+                             INNER JOIN LocalDrivingLicenseApplications ON
+                                 Applications.ApplicationID = LocalDrivingLicenseApplications.ApplicationID
                              WHERE Applications.ApplicantPersonID = @PersonID 
                              AND LocalDrivingLicenseApplications.LicenseClassID = @LicenseClassID
                              AND Applications.ApplicationStatus = 1";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@PersonID", PersonID);
             command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
@@ -267,7 +274,7 @@ namespace DVLD.DAL
             {
                 connection.Open();
 
-                var result = command.ExecuteScalar();
+                object result = command.ExecuteScalar();
                 ApplicationID = result == null ? -1 : (int)result;
 
             }

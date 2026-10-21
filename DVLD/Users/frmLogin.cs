@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
 
@@ -18,44 +11,53 @@ namespace DVLD.Users
         {
             InitializeComponent();
         }
-        private void _LoadUser()
+        private void LoadUser()
         {
-            Globals.CurrentUser = clsUser.Find(txtUsername.Text);
+            Globals.CurrentUser = User.Find(txtUsername.Text);
         }
-        private void _Login()
+        private void Login()
         {
-            frmMain frm = new frmMain();
+            var frm = new frmMain();
             frm.ShowDialog();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            if (!this.ValidateChildren()) { return; }
+            if (!ValidateChildren()) { return; }
 
-            if (!clsUser.ValidateCredintials(txtUsername.Text, txtPassword.Text))
-            { MessageBox.Show("Invalid Username or Password", "Wrong Credintials", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
-            
-            _LoadUser();
-            
-            if(!Globals.CurrentUser.IsActive)
-            { MessageBox.Show("Your account is not active, Contact Admin", "inactive account", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
-
-            if (cbRememberUser.Checked) 
+            if (!User.ValidateCredentials(txtUsername.Text, txtPassword.Text))
             {
-                Globals.StoreCredintials(txtUsername.Text,txtPassword.Text);
-            }else
-            {
-                Globals.StoreCredintials("", "");
+                MessageBox.Show("Invalid Username or Password", "Wrong Credentials",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
-            this.Hide();
-            _Login();
-            this.Show();
+
+            LoadUser();
+
+            if (!Globals.CurrentUser.IsActive)
+            {
+                MessageBox.Show("Your account is not active, Contact Admin", "inactive account",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (cbRememberUser.Checked)
+            {
+                Globals.StoreCredentials(txtUsername.Text, txtPassword.Text);
+            }
+            else
+            {
+                Globals.StoreCredentials("", "");
+            }
+            Hide();
+            Login();
+            Show();
             frmLogin_Load(null, null);
 
         }
         private void txt_Validating(object sender, CancelEventArgs e)
         {
-            TextBox txt = (TextBox)sender;
+            var txt = (TextBox)sender;
             if (string.IsNullOrEmpty(txt.Text))
             {
                 errorProvider1.SetError(txt, "Required field");
@@ -77,16 +79,16 @@ namespace DVLD.Users
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
-             (txtUsername.Text, txtPassword.Text) = Globals.GetStoredCredintials();
+            (txtUsername.Text, txtPassword.Text) = Globals.GetStoredCredentials();
 
-            if (string.IsNullOrEmpty(txtUsername.Text)) 
-            { cbRememberUser.Checked = false; } 
-            else 
+            if (string.IsNullOrEmpty(txtUsername.Text))
+            { cbRememberUser.Checked = false; }
+            else
             { cbRememberUser.Checked = true; }
         }
     }

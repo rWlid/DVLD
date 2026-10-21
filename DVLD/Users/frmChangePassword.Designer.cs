@@ -1,6 +1,6 @@
 ﻿namespace DVLD.Users
 {
-    partial class frmChangePassowrd
+    partial class frmChangePassword
     {
         /// <summary>
         /// Required designer variable.
@@ -142,7 +142,7 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // frmChangePassowrd
+            // frmChangePassword
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -159,7 +159,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmChangePassowrd";
+            this.Name = "frmChangePassword";
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

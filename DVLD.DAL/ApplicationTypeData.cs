@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DVLD.DAL
 {
-    public static class clsApplicationTypeData
+    public static class ApplicationTypeData
     {
         public static DataTable GetAllApplicationTypes()
         {
-            DataTable dt = new DataTable();
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var dt = new DataTable();
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT ApplicationTypeID AS ID, 
                                     ApplicationTypeTitle AS Title, 
                                     ApplicationFees AS Fees 
                              FROM ApplicationTypes";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             try
             {
@@ -41,14 +37,14 @@ namespace DVLD.DAL
         {
             int ApplicationTypeID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"Insert Into ApplicationTypes (ApplicationTypeTitle,ApplicationFees)
                             Values (@Title,@Fees)
                             
                             SELECT SCOPE_IDENTITY();";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@ApplicationTypeTitle", Title);
             command.Parameters.AddWithValue("@ApplicationFees", Fees);
@@ -83,14 +79,14 @@ namespace DVLD.DAL
         public static bool UpdateApplicationType(int ID, string Title, decimal Fees)
         {
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"UPDATE ApplicationTypes 
                              SET   ApplicationTypeTitle = @Title,
                                         ApplicationFees = @Fees
                              WHERE    ApplicationTypeID = @ID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@ID", ID);
             command.Parameters.AddWithValue("@Title", Title);
             command.Parameters.AddWithValue("@Fees", Fees);
@@ -109,12 +105,12 @@ namespace DVLD.DAL
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT ApplicationTypeTitle,ApplicationFees FROM ApplicationTypes
                               WHERE ApplicationTypeID = @ApplicationTypeID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@ApplicationTypeID", ID);
 

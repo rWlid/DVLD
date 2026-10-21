@@ -1,34 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
 using DVLD.Users.Controls;
 
 namespace DVLD.Users
 {
-    public partial class frmChangePassowrd : Form
+    public partial class frmChangePassword : Form
     {
-        private int _UserID;
-        public frmChangePassowrd(int UserID)
+        private readonly int _userID;
+        public frmChangePassword(int UserID)
         {
             InitializeComponent();
-            _UserID = UserID;
+            _userID = UserID;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (!this.ValidateChildren()) return;
-
-            if (clsUser.ChangeUserPassword(ctrlUserInfo.UserID, txtCurrentPassword.Text, txtNewPassoword.Text))
+            if (!ValidateChildren())
             {
-                MessageBox.Show("Password Changed Successfully","Changed",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                this.Close();
+                return;
+            }
+
+            if (User.ChangeUserPassword(ctrlUserInfo.UserID, txtCurrentPassword.Text, txtNewPassoword.Text))
+            {
+                MessageBox.Show("Password Changed Successfully", "Changed",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Close();
             }
             else
             {
@@ -37,7 +35,7 @@ namespace DVLD.Users
         }
         private void txt_Validating(object sender, CancelEventArgs e)
         {
-            TextBox txt = (TextBox)sender;
+            var txt = (TextBox)sender;
             if (string.IsNullOrEmpty(txt.Text))
             {
                 errorProvider1.SetError(txt, "Required field");
@@ -71,10 +69,10 @@ namespace DVLD.Users
         }
         private void frmChangePassowrd_Load(object sender, EventArgs e)
         {
-            if (!ctrlUserInfo.LoadUserInfo(_UserID))
+            if (!ctrlUserInfo.LoadUserInfo(_userID))
             {
-                MessageBox.Show("No User is found with ID: " + _UserID);
-                this.Close();
+                MessageBox.Show("No User is found with ID: " + _userID);
+                Close();
             }
         }
     }

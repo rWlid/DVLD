@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
 using DVLD.Properties;
@@ -15,41 +8,43 @@ namespace DVLD.People.Controls
 {
     public partial class ctrlPersonInfo : UserControl
     {
-        private clsPerson _Person;
+        private Person _person;
 
-        private int _PersonID = -1;
+        private int _personID = -1;
         public int PersonID
         {
-            get { return _PersonID; }
+            get { return _personID; }
         }
-        public clsPerson SelectedPersonInfo
+        public Person SelectedPersonInfo
         {
-            get { return _Person; }
+            get { return _person; }
         }
         public ctrlPersonInfo()
         {
             InitializeComponent();
         }
-        private void _SetDefaultImage()
+        private void SetDefaultImage()
         {
-            pbPersonPicture.Image = _Person.Gender == 0 ? (Image)DVLD.Properties.Resources.Male_512.Clone() : (Image)DVLD.Properties.Resources.Female_512.Clone();
+            pbPersonPicture.Image = _person.Gender == 0
+                ? (Image)DVLD.Properties.Resources.Male_512.Clone()
+                : (Image)DVLD.Properties.Resources.Female_512.Clone();
         }
-        private void _LoadPersonImage()
+        private void LoadPersonImage()
         {
-            if (!string.IsNullOrEmpty(_Person.ImagePath) && File.Exists(_Person.ImagePath))
+            if (!string.IsNullOrEmpty(_person.ImagePath) && File.Exists(_person.ImagePath))
             {
-                pbPersonPicture.ImageLocation = _Person.ImagePath;
+                pbPersonPicture.ImageLocation = _person.ImagePath;
             }
-            else { _SetDefaultImage(); }
+            else { SetDefaultImage(); }
         }
-        private void _LoadData()
+        private void LoadData()
         {
             llblEditPersonInfo.Enabled = true;
-            _PersonID = _Person.ID;
-            lblPersonID.Text = _Person.ID.ToString();
-            lblFullName.Text = _Person.FullName;
-            lblNationalNo.Text = _Person.NationalNo;
-            if (_Person.Gender == 0)
+            _personID = _person.ID;
+            lblPersonID.Text = _person.ID.ToString();
+            lblFullName.Text = _person.FullName;
+            lblNationalNo.Text = _person.NationalNo;
+            if (_person.Gender == 0)
             {
                 lblGender.Text = "Male";
                 lblGenderIcon.Image = (Image)DVLD.Properties.Resources.Man_32.Clone();
@@ -59,16 +54,16 @@ namespace DVLD.People.Controls
                 lblGender.Text = "Female";
                 lblGenderIcon.Image = (Image)DVLD.Properties.Resources.Woman_32.Clone();
             }
-            lblEmail.Text = _Person.Email;
-            lblAddress.Text = _Person.Address;
-            lblDOB.Text = _Person.DateOfBirth.ToString("dd/MM/yyyy");
-            lblPhone.Text = _Person.Phone;
-            lblCountry.Text = _Person.CountryInfo.CountryName;
-            _LoadPersonImage();
+            lblEmail.Text = _person.Email;
+            lblAddress.Text = _person.Address;
+            lblDOB.Text = _person.DateOfBirth.ToString("dd/MM/yyyy");
+            lblPhone.Text = _person.Phone;
+            lblCountry.Text = _person.CountryInfo.CountryName;
+            LoadPersonImage();
         }
         public void ResetPersonInfo()
         {
-            _PersonID = -1;
+            _personID = -1;
             lblPersonID.Text = "[????]";
             lblNationalNo.Text = "[????]";
             lblFullName.Text = "[????]";
@@ -84,53 +79,56 @@ namespace DVLD.People.Controls
         }
         public bool LoadPersonInfo(int PersonID)
         {
-            _Person = clsPerson.Find(PersonID);
+            _person = Person.Find(PersonID);
 
-            if( _Person == null ) 
+            if (_person == null)
             {
                 ResetPersonInfo();
-                MessageBox.Show("No Person with ID: " + PersonID.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false; 
+                MessageBox.Show("No Person with ID: " + PersonID.ToString(), "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
 
-            _LoadData();
+            LoadData();
             return true;
         }
         public bool LoadPersonInfo(string NationalNo)
         {
-            _Person = clsPerson.Find(NationalNo);
+            _person = Person.Find(NationalNo);
 
-            if (_Person == null)
+            if (_person == null)
             {
                 ResetPersonInfo();
-                MessageBox.Show("No Person with National Number: " + NationalNo.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No Person with National Number: " + NationalNo.ToString(), "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            _LoadData();
+            LoadData();
             return true;
         }
-        public bool LoadPersonInfo(clsPerson Perosn)
+        public bool LoadPersonInfo(Person person)
         {
-            _Person = Perosn;
+            _person = person;
 
-            if (_Person == null)
+            if (_person == null)
             {
                 ResetPersonInfo();
-                MessageBox.Show("No Person with National Number: " + Perosn.NationalNo.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No Person with National Number: " + person.NationalNo.ToString(), "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            _LoadData();
+            LoadData();
             return true;
         }
         private void llblEditPersonInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmAddEditPerson frm = new frmAddEditPerson(_Person.ID);
+            var frm = new frmAddEditPerson(_person.ID);
             frm.ShowDialog();
 
             //Load new edited data
-            LoadPersonInfo(_Person.ID);
+            LoadPersonInfo(_person.ID);
         }
     }
 }

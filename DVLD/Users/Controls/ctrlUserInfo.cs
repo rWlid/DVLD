@@ -1,44 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
-using DVLD.Properties;
 
 namespace DVLD.Users.Controls
 {
     public partial class ctrlUserInfo : UserControl
     {
-        private clsUser _User;
-        private int _UserID;
-        public int UserID 
+        private User _user;
+        private int _userID;
+        public int UserID
         {
-            get { return _UserID; }
+            get { return _userID; }
         }
-        public clsUser SelectedUserInfo
+        public User SelectedUserInfo
         {
-            get { return _User; }
+            get { return _user; }
         }
         public ctrlUserInfo()
         {
             InitializeComponent();
         }
-        private void _FillUserInfo()
+        private void FillUserInfo()
         {
-            _UserID = _User.ID;
-            lblUserID.Text = _User.ID.ToString();
-            lblUserName.Text = _User.UserName;
-            lblIsActive.Text = _User.IsActive ? "Yes" : "No";
-            ctrlPersonInfo.LoadPersonInfo(_User.PersonID);
+            _userID = _user.ID;
+            lblUserID.Text = _user.ID.ToString();
+            lblUserName.Text = _user.UserName;
+            lblIsActive.Text = _user.IsActive ? "Yes" : "No";
+            ctrlPersonInfo.LoadPersonInfo(_user.PersonID);
         }
-        private void _ResetUserInfo()
+        private void ResetUserInfo()
         {
-            _UserID = -1;
+            _userID = -1;
             lblUserID.Text = "??";
             lblUserName.Text = "???";
             lblIsActive.Text = "??";
@@ -46,16 +37,17 @@ namespace DVLD.Users.Controls
         }
         public bool LoadUserInfo(int UserID)
         {
-            _User = clsUser.FindByUserID(UserID);
+            _user = User.FindByUserID(UserID);
 
-            if (_User == null)
+            if (_user == null)
             {
-                _ResetUserInfo();
-                MessageBox.Show("No User with ID: " + UserID.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ResetUserInfo();
+                MessageBox.Show("No User with ID: " + UserID.ToString(), "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            _FillUserInfo();
+            FillUserInfo();
             return true;
         }
     }

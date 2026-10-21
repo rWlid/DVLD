@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 using System.Windows.Forms;
 using DVLD.BL;
 
@@ -18,8 +11,8 @@ namespace DVLD.People
             InitializeComponent();
             if (!ctrlPersonInfo.LoadPersonInfo(PersonID))
             {
-                MessageBox.Show("No Person is found with ID: " + PersonID); 
-                this.Close();
+                MessageBox.Show("No Person is found with ID: " + PersonID);
+                Close();
             }
         }
         public frmPersonDetails(string NationalNo)
@@ -28,21 +21,21 @@ namespace DVLD.People
             if (!ctrlPersonInfo.LoadPersonInfo(NationalNo))
             {
                 MessageBox.Show("No Person is found with National Number: " + NationalNo);
-                this.Close();
+                Close();
             }
         }
-        public frmPersonDetails(clsPerson Person)
+        public frmPersonDetails(Person Person)
         {
             InitializeComponent();
             if (!ctrlPersonInfo.LoadPersonInfo(Person))
             {
                 MessageBox.Show("No Person is found with ID: " + Person.ID);
-                this.Close();
+                Close();
             }
         }
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

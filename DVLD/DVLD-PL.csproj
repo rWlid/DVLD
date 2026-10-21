@@ -82,7 +82,7 @@
     <Compile Include="Applications\Local Driving License Applications\frmLocalLicenseApplicationInfo.Designer.cs">
       <DependentUpon>frmLocalLicenseApplicationInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="clsUtil.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,11 +145,11 @@
     <Compile Include="Users\frmAddEditUser.Designer.cs">
       <DependentUpon>frmAddEditUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Users\frmChangePassowrd.cs">
+    <Compile Include="Users\frmChangePassword.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Users\frmChangePassowrd.Designer.cs">
-      <DependentUpon>frmChangePassowrd.cs</DependentUpon>
+    <Compile Include="Users\frmChangePassword.Designer.cs">
+      <DependentUpon>frmChangePassword.cs</DependentUpon>
     </Compile>
     <Compile Include="Users\frmLogin.cs">
       <SubType>Form</SubType>
@@ -227,8 +227,8 @@
     <EmbeddedResource Include="Users\frmAddEditUser.resx">
       <DependentUpon>frmAddEditUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Users\frmChangePassowrd.resx">
-      <DependentUpon>frmChangePassowrd.cs</DependentUpon>
+    <EmbeddedResource Include="Users\frmChangePassword.resx">
+      <DependentUpon>frmChangePassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Users\frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>

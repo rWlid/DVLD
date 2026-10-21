@@ -1,31 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 using System.Windows.Forms;
-using DVLD.BL;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DVLD.Applications.Local_Driving_License_Applications
 {
     public partial class frmLocalLicenseApplicationInfo : Form
     {
-        private int _ApplicationID;
+        private readonly int _applicationID;
         public frmLocalLicenseApplicationInfo(int applicationID)
         {
             InitializeComponent();
-            _ApplicationID = applicationID;
+            _applicationID = applicationID;
         }
 
         private void frmLocalLicenseApplicationInfo_Load(object sender, EventArgs e)
         {
-            if (!ctrlApplicationInfo1.LoadApplicationInfo(_ApplicationID))
+            if (!ctrlApplicationInfo1.LoadApplicationInfo(_applicationID))
             {
-                this.Close();
+                Close();
             }
         }
 

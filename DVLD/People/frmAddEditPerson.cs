@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using DVLD.BL;
 using DVLD.Properties;
 
@@ -24,43 +16,43 @@ namespace DVLD.People
         // Declare an event using the delegate
         public event DataBackEventHandler DataBack;
 
-        public enum enMode { AddNew = 0, Update = 1 };
-        public enum enGender{ Male = 0, Female = 1 };
+        public enum Mode { AddNew = 0, Update = 1 }
+        public enum Gender { Male = 0, Female = 1 }
 
-        private enMode _Mode;
-        int _PersonID;
-        clsPerson _Person;
-        bool _EditNotSaved = false;
+        private Mode _mode;
+        private readonly int _personID;
+        private Person _person;
+        private bool _editNotSaved = false;
 
         public frmAddEditPerson()
         {
             InitializeComponent();
 
-            _Mode = enMode.AddNew;
+            _mode = Mode.AddNew;
 
         }
         public frmAddEditPerson(int PersonID)
         {
             InitializeComponent();
 
-            _PersonID = PersonID;
-            _Mode = enMode.Update;
+            _personID = PersonID;
+            _mode = Mode.Update;
 
         }
-        private void _ResetDefaultValues()
+        private void ResetDefaultValues()
         {
-            _FillCountriesInComoboBox();
-           
-            if (_Mode == enMode.AddNew)
+            FillCountriesInComboBox();
+
+            if (_mode == Mode.AddNew)
             {
                 lblFormTitle.Text = "Add Person";
-                this.Text = "Add Person";
-                _Person = new clsPerson();
+                Text = "Add Person";
+                _person = new Person();
             }
             else
             {
                 lblFormTitle.Text = "Update Person";
-                this.Text = "Update Person";
+                Text = "Update Person";
             }
             pbPersonPicture.Image = rbMale.Checked ? Resources.Male_512 : Resources.Female_512;
             llRemoveImage.Visible = false;
@@ -82,7 +74,7 @@ namespace DVLD.People
             cbCountry.SelectedIndex = cbCountry.FindString("Saudi Arabia");
 
         }
-        private bool _HandlePersonImage()
+        private bool HandlePersonImage()
         {
 
             //this procedure will handle the person image,
@@ -91,16 +83,16 @@ namespace DVLD.People
             // place it in the images folder.
 
 
-            //_Person.ImagePath contains the old Image, we check if it changed then we copy the new image
-            if (_Person.ImagePath != pbPersonPicture.ImageLocation)
+            //_person.ImagePath contains the old Image, we check if it changed then we copy the new image
+            if (_person.ImagePath != pbPersonPicture.ImageLocation)
             {
-                if (!string.IsNullOrEmpty(_Person.ImagePath))
+                if (!string.IsNullOrEmpty(_person.ImagePath))
                 {
                     //first we delete the old image from the folder in case there is any.
 
                     try
                     {
-                        File.Delete(_Person.ImagePath);
+                        File.Delete(_person.ImagePath);
                     }
                     catch (IOException)
                     {
@@ -114,14 +106,15 @@ namespace DVLD.People
                     //then we copy the new image to the image folder after we rename it
                     string SourceImageFile = pbPersonPicture.ImageLocation.ToString();
 
-                    if (clsUtil.CopyImageToProjectImagesFolder(ref SourceImageFile))
+                    if (Utils.CopyImageToProjectImagesFolder(ref SourceImageFile))
                     {
                         pbPersonPicture.ImageLocation = SourceImageFile;
                         return true;
                     }
                     else
                     {
-                        MessageBox.Show("Error Copying Image File", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error Copying Image File", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
                     }
                 }
@@ -129,24 +122,24 @@ namespace DVLD.People
             }
             return true;
         }
-        private void _EditMaded(object sender, EventArgs e) { _EditNotSaved = true; }
-        private void _AttachChangeEvents()
+        private void EditMade(object sender, EventArgs e) { _editNotSaved = true; }
+        private void AttachChangeEvents()
         {
-            txtNationalNo.TextChanged += _EditMaded;
-            txtFirstName.TextChanged += _EditMaded;
-            txtSecondName.TextChanged += _EditMaded;
-            txtThirdName.TextChanged += _EditMaded;
-            txtLastName.TextChanged += _EditMaded;
-            txtAddress.TextChanged += _EditMaded;
-            txtEmail.TextChanged += _EditMaded;
-            txtPhone.TextChanged += _EditMaded;
-            dtpDOB.ValueChanged += _EditMaded;
-            cbCountry.SelectedIndexChanged += _EditMaded;
-            rbMale.CheckedChanged += _EditMaded;
+            txtNationalNo.TextChanged += EditMade;
+            txtFirstName.TextChanged += EditMade;
+            txtSecondName.TextChanged += EditMade;
+            txtThirdName.TextChanged += EditMade;
+            txtLastName.TextChanged += EditMade;
+            txtAddress.TextChanged += EditMade;
+            txtEmail.TextChanged += EditMade;
+            txtPhone.TextChanged += EditMade;
+            dtpDOB.ValueChanged += EditMade;
+            cbCountry.SelectedIndexChanged += EditMade;
+            rbMale.CheckedChanged += EditMade;
         }
-        private void _FillCountriesInComoboBox()
+        private void FillCountriesInComboBox()
         {
-            DataTable dtCountries = clsCountry.GetAllCountries();
+            DataTable dtCountries = Country.GetAllCountries();
 
             foreach (DataRow row in dtCountries.Rows)
             {
@@ -156,36 +149,39 @@ namespace DVLD.People
             }
 
         }
-        private void _SetDefaultImage()
+        private void SetDefaultImage()
         {
-            pbPersonPicture.Image = rbMale.Checked == true ? DVLD.Properties.Resources.Male_512 : DVLD.Properties.Resources.Female_512;
+            pbPersonPicture.Image = rbMale.Checked == true
+                ? DVLD.Properties.Resources.Male_512
+                : DVLD.Properties.Resources.Female_512;
         }
-        private void _LoadData()
+        private void LoadData()
         {
-            _Person = clsPerson.Find(_PersonID);
+            _person = Person.Find(_personID);
 
-            if(_Person  == null)
+            if (_person == null)
             {
-                MessageBox.Show("This form will be closed because No Person with ID = " + _PersonID,"Not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Close();
+                MessageBox.Show("This form will be closed because No Person with ID = " + _personID,
+                    "Not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
                 return;
             }
 
-            lblPersonID.Text = _Person.ID.ToString();
-            txtNationalNo.Text = _Person.NationalNo;
-            txtFirstName.Text = _Person.FirstName;
-            txtSecondName.Text = _Person.SecondName;
-            txtThirdName.Text = _Person.ThirdName;
-            txtLastName.Text = _Person.LastName;
-            txtAddress.Text = _Person.Address;
-            txtEmail.Text = _Person.Email;
-            txtPhone.Text = _Person.Phone; 
-            dtpDOB.Value = _Person.DateOfBirth;
-            cbCountry.SelectedIndex = cbCountry.FindString(_Person.CountryInfo.CountryName);
-            if (_Person.Gender == 0) { rbMale.Checked = true; } else { rbFemale.Checked = true; }
-            if (!string.IsNullOrEmpty(_Person.ImagePath))
+            lblPersonID.Text = _person.ID.ToString();
+            txtNationalNo.Text = _person.NationalNo;
+            txtFirstName.Text = _person.FirstName;
+            txtSecondName.Text = _person.SecondName;
+            txtThirdName.Text = _person.ThirdName;
+            txtLastName.Text = _person.LastName;
+            txtAddress.Text = _person.Address;
+            txtEmail.Text = _person.Email;
+            txtPhone.Text = _person.Phone;
+            dtpDOB.Value = _person.DateOfBirth;
+            cbCountry.SelectedIndex = cbCountry.FindString(_person.CountryInfo.CountryName);
+            if (_person.Gender == 0) { rbMale.Checked = true; } else { rbFemale.Checked = true; }
+            if (!string.IsNullOrEmpty(_person.ImagePath))
             {
-                pbPersonPicture.ImageLocation = _Person.ImagePath;
+                pbPersonPicture.ImageLocation = _person.ImagePath;
                 llRemoveImage.Visible = true;
             }
 
@@ -193,57 +189,59 @@ namespace DVLD.People
         }
         private void frmAddEditPerson_Load(object sender, EventArgs e)
         {
-            _ResetDefaultValues();
+            ResetDefaultValues();
 
-            if(_Mode == enMode.Update)
-                _LoadData();
+            if (_mode == Mode.Update)
+            {
+                LoadData();
+            }
 
-            _AttachChangeEvents();
+            AttachChangeEvents();
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (!_EditNotSaved)
+            if (!_editNotSaved)
             {
                 MessageBox.Show("Nothing to Save", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            if (!this.ValidateChildren()) { return; }
+            if (!ValidateChildren()) { return; }
 
-            if (!_HandlePersonImage()) { return; }
+            if (!HandlePersonImage()) { return; }
 
-            _Person.NationalNo = txtNationalNo.Text;
-            _Person.FirstName = txtFirstName.Text;
-            _Person.SecondName = txtSecondName.Text;
-            _Person.ThirdName = txtThirdName.Text;
-            _Person.LastName = txtLastName.Text;
-            _Person.Address = txtAddress.Text;
-            _Person.DateOfBirth = dtpDOB.Value;
-            _Person.Email = txtEmail.Text;
-            _Person.Phone = txtPhone.Text;
-            _Person.CountryID = clsCountry.Find(cbCountry.Text).ID;
-            _Person.Gender = rbMale.Checked ? (short)enGender.Male : (short)enGender.Female;
-            _Person.ImagePath = pbPersonPicture.ImageLocation != null ? pbPersonPicture.ImageLocation.ToString() : "";
+            _person.NationalNo = txtNationalNo.Text;
+            _person.FirstName = txtFirstName.Text;
+            _person.SecondName = txtSecondName.Text;
+            _person.ThirdName = txtThirdName.Text;
+            _person.LastName = txtLastName.Text;
+            _person.Address = txtAddress.Text;
+            _person.DateOfBirth = dtpDOB.Value;
+            _person.Email = txtEmail.Text;
+            _person.Phone = txtPhone.Text;
+            _person.CountryID = Country.Find(cbCountry.Text).ID;
+            _person.Gender = rbMale.Checked ? (short)Gender.Male : (short)Gender.Female;
+            _person.ImagePath = pbPersonPicture.ImageLocation != null ? pbPersonPicture.ImageLocation.ToString() : "";
 
 
-            if (_Person.Save())
+            if (_person.Save())
             {
-                _Mode = enMode.Update;
+                _mode = Mode.Update;
                 lblFormTitle.Text = "Update Person";
-                this.Text = "Update Person";
-                lblPersonID.Text = _Person.ID.ToString();
-                _EditNotSaved = false;
+                Text = "Update Person";
+                lblPersonID.Text = _person.ID.ToString();
+                _editNotSaved = false;
 
                 MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Trigger the event to send data back to the caller form.
-                //DataBack?.Invoke(this, _Person.ID);
+                //DataBack?.Invoke(this, _person.ID);
             }
             else { MessageBox.Show("Data is not Saved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 
         }
         private void btnCloseForm_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
         private void llblSetImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -257,34 +255,36 @@ namespace DVLD.People
             {
                 string selectedImagePath = openFileDialogImage.FileName;
                 pbPersonPicture.Load(selectedImagePath);
-                _EditNotSaved = true;
+                _editNotSaved = true;
                 llRemoveImage.Visible = true;
             }
         }
         private void llRemoveImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             pbPersonPicture.ImageLocation = null;
-            _SetDefaultImage();
-            _EditNotSaved = true;
+            SetDefaultImage();
+            _editNotSaved = true;
             llRemoveImage.Visible = false;
         }
         private void rbGender_CheckedChanged(object sender, EventArgs e)
         {
-            if (_Person.ImagePath == "")
-                _SetDefaultImage();
+            if (_person.ImagePath == "")
+            {
+                SetDefaultImage();
+            }
         }
         private void frmAddEditPerson_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_EditNotSaved && MessageBox.Show("You have unsaved changes. Are you sure you want to close?",
+            if (_editNotSaved && MessageBox.Show("You have unsaved changes. Are you sure you want to close?",
                     "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
             {
                 e.Cancel = true;
             }
-            DataBack?.Invoke(this, _Person.ID);
+            DataBack?.Invoke(this, _person.ID);
         }
         private void txt_Validating(object sender, CancelEventArgs e)
         {
-            TextBox txt = (TextBox)sender;
+            var txt = (TextBox)sender;
             if (string.IsNullOrEmpty(txt.Text))
             {
                 e.Cancel = true;
@@ -301,7 +301,7 @@ namespace DVLD.People
 
             if (string.IsNullOrWhiteSpace(email))
             {
-                errorProvider1.SetError(txtEmail,null);
+                errorProvider1.SetError(txtEmail, null);
                 return;
             }
 
@@ -324,7 +324,7 @@ namespace DVLD.People
                 e.Cancel = true;
                 errorProvider1.SetError(txtNationalNo, "Required field");
             }
-            else if (txtNationalNo.Text.Trim() != _Person.NationalNo && clsPerson.IsPersonExist(txtNationalNo.Text.Trim()))
+            else if (txtNationalNo.Text.Trim() != _person.NationalNo && Person.IsPersonExist(txtNationalNo.Text.Trim()))
             {
                 e.Cancel = true;
                 errorProvider1.SetError(txtNationalNo, "National Number is used for another person");
@@ -340,7 +340,7 @@ namespace DVLD.People
         }
         private void Digit_KeyPress(object sender, KeyPressEventArgs e)
         {
-          if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) { e.Handled = true; }
         }
         private void Letter_KeyPress(object sender, KeyPressEventArgs e)
         {

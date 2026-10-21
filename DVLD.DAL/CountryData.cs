@@ -1,20 +1,20 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace DVLD.DAL
 {
-    public class clsCountryData
+    public class CountryData
     {
         public static bool GetCountryInfoByID(int ID, ref string CountryName)
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = "SELECT * FROM Countries WHERE CountryID = @CountryID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@CountryID", ID);
 
@@ -58,11 +58,11 @@ namespace DVLD.DAL
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = "SELECT * FROM Countries WHERE CountryName = @CountryName";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@CountryName", CountryName);
 
@@ -105,12 +105,12 @@ namespace DVLD.DAL
         public static DataTable GetAllCountries()
         {
 
-            DataTable dt = new DataTable();
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var dt = new DataTable();
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = "SELECT * FROM Countries ORDER BY CountryName";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             try
             {

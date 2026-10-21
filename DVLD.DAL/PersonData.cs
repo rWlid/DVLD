@@ -1,16 +1,16 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace DVLD.DAL
 {
-    public static class clsPersonData
+    public static class PersonData
     {
 
         public static DataTable GetAllPeople()
         {
-            DataTable dt = new DataTable();
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var dt = new DataTable();
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT People.PersonID, People.NationalNo, 
                             People.FirstName, People.SecondName, People.ThirdName, People.LastName, People.DateOfBirth, 
@@ -21,7 +21,7 @@ namespace DVLD.DAL
                             Countries.CountryName AS Nationality FROM Countries 
                             INNER JOIN People ON Countries.CountryID = People.NationalityCountryID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             try
             {
@@ -46,11 +46,11 @@ namespace DVLD.DAL
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT * FROM People WHERE PersonID = @PersonID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@PersonID", ID);
 
@@ -100,17 +100,18 @@ namespace DVLD.DAL
 
             return isFound;
         }
-        public static bool GetPersonInfoByNationalNo(string NationalNo, ref int ID, ref string FirstName, ref string SecondName,
-            ref string ThirdName, ref string LastName, ref DateTime DateOfBirth, ref short Gender,
-            ref string Address, ref string Phone, ref string Email, ref int CountryID, ref string ImagePath)
+        public static bool GetPersonInfoByNationalNo(string NationalNo, ref int ID, ref string FirstName,
+            ref string SecondName, ref string ThirdName, ref string LastName, ref DateTime DateOfBirth,
+            ref short Gender, ref string Address, ref string Phone, ref string Email, ref int CountryID,
+            ref string ImagePath)
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT * FROM People WHERE NationalNo = @NationalNo";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@NationalNo", NationalNo);
 
@@ -165,8 +166,8 @@ namespace DVLD.DAL
             string ImagePath = string.Empty;
             string query = @"SELECT ImagePath FROM People WHERE PersonID = @PersonID";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@PersonID", PersonID);
 
@@ -190,36 +191,47 @@ namespace DVLD.DAL
 
             return ImagePath;
         }
-        public static int AddNewPerson( string NationalNo,  string FirstName,  string SecondName,
-             string ThirdName,  string LastName,  DateTime DateOfBirth,  short Gender,
-             string Address,  string Phone,  string Email,  int CountryID,  string ImagePath)
+        public static int AddNewPerson(string NationalNo, string FirstName, string SecondName,
+             string ThirdName, string LastName, DateTime DateOfBirth, short Gender,
+             string Address, string Phone, string Email, int CountryID, string ImagePath)
         {
             //this function will return the new Person id if succeeded and -1 if not.
             int PersonID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
-            string query = @"INSERT INTO People (NationalNo, FirstName, SecondName, ThirdName, LastName, Email, Phone, Address,DateOfBirth, NationalityCountryID, ImagePath, Gender)
-                             VALUES (@NationalNo, @FirstName, @SecondName, @ThirdName, @LastName, @Email, @Phone, @Address,@DateOfBirth, @NationalityCountryID,@ImagePath,@Gender);
+            string query = @"INSERT INTO People
+                                (NationalNo, FirstName, SecondName, ThirdName, LastName, Email, Phone, Address,
+                                 DateOfBirth, NationalityCountryID, ImagePath, Gender)
+                             VALUES (@NationalNo, @FirstName, @SecondName, @ThirdName, @LastName, @Email, @Phone,
+                                     @Address, @DateOfBirth, @NationalityCountryID, @ImagePath, @Gender);
                              SELECT SCOPE_IDENTITY();";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@NationalNo", NationalNo);
             command.Parameters.AddWithValue("@FirstName", FirstName);
             command.Parameters.AddWithValue("@SecondName", SecondName);
 
             if (ThirdName != "" && ThirdName != null)
+            {
                 command.Parameters.AddWithValue("@ThirdName", ThirdName);
+            }
             else
+            {
                 command.Parameters.AddWithValue("@ThirdName", System.DBNull.Value);
+            }
 
             command.Parameters.AddWithValue("@LastName", LastName);
 
             if (Email != "" && Email != null)
+            {
                 command.Parameters.AddWithValue("@Email", Email);
+            }
             else
+            {
                 command.Parameters.AddWithValue("@Email", System.DBNull.Value);
+            }
 
             command.Parameters.AddWithValue("@Phone", Phone);
             command.Parameters.AddWithValue("@Address", Address);
@@ -228,9 +240,13 @@ namespace DVLD.DAL
             command.Parameters.AddWithValue("@Gender", Gender);
 
             if (ImagePath != "" && ImagePath != null)
+            {
                 command.Parameters.AddWithValue("@ImagePath", ImagePath);
+            }
             else
+            {
                 command.Parameters.AddWithValue("@ImagePath", System.DBNull.Value);
+            }
 
             try
             {
@@ -264,10 +280,11 @@ namespace DVLD.DAL
                  string Address, string Phone, string Email, int CountryID, string ImagePath)
         {
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"Update  People  
-                            set FirstName = @FirstName,SecondName = @SecondName, ThirdName = @ThirdName,LastName = @LastName, 
+                            set FirstName = @FirstName,SecondName = @SecondName, ThirdName = @ThirdName,
+                                LastName = @LastName, 
                                 Email = @Email, 
                                 Phone = @Phone, 
                                 Address = @Address, 
@@ -278,7 +295,7 @@ namespace DVLD.DAL
                                 ImagePath =@ImagePath
                                 where PersonID = @PersonID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@PersonID", PersonID);
             command.Parameters.AddWithValue("@NationalNo", NationalNo);
@@ -286,16 +303,24 @@ namespace DVLD.DAL
             command.Parameters.AddWithValue("@SecondName", SecondName);
 
             if (ThirdName != "" && ThirdName != null)
+            {
                 command.Parameters.AddWithValue("@ThirdName", ThirdName);
+            }
             else
+            {
                 command.Parameters.AddWithValue("@ThirdName", System.DBNull.Value);
+            }
 
             command.Parameters.AddWithValue("@LastName", LastName);
 
             if (Email != "" && Email != null)
+            {
                 command.Parameters.AddWithValue("@Email", Email);
+            }
             else
+            {
                 command.Parameters.AddWithValue("@Email", System.DBNull.Value);
+            }
 
             command.Parameters.AddWithValue("@Phone", Phone);
             command.Parameters.AddWithValue("@Address", Address);
@@ -304,9 +329,13 @@ namespace DVLD.DAL
             command.Parameters.AddWithValue("@Gender", Gender);
 
             if (ImagePath != "" && ImagePath != null)
+            {
                 command.Parameters.AddWithValue("@ImagePath", ImagePath);
+            }
             else
+            {
                 command.Parameters.AddWithValue("@ImagePath", System.DBNull.Value);
+            }
 
             try
             {
@@ -329,13 +358,13 @@ namespace DVLD.DAL
 
             return (rowsAffected > 0);
         }
-        public static bool DeletePerson(int PersonID) 
+        public static bool DeletePerson(int PersonID)
         {
             int rowsAffected = 0;
             string query = @"DELETE People WHERE PersonID = @PersonID";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@PersonID", PersonID);
 
@@ -359,20 +388,20 @@ namespace DVLD.DAL
 
             return (rowsAffected > 0);
         }
-        public static bool IsPersonExist(int PersonID) 
+        public static bool IsPersonExist(int PersonID)
         {
             bool isFound = false;
             string query = @"SELECT Found=1 FROM People WHERE PersonID = @PersonID";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@PersonID", PersonID);
 
             try
             {
                 connection.Open();
-                var result = command.ExecuteScalar();
+                object result = command.ExecuteScalar();
 
                 isFound = result != null;
             }
@@ -393,15 +422,15 @@ namespace DVLD.DAL
             bool isFound = false;
             string query = @"SELECT Found=1 FROM People WHERE NationalNo = @NationalNo";
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            SqlCommand command = new SqlCommand(query, connection);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@NationalNo", NationalNo);
 
             try
             {
                 connection.Open();
-                var result = command.ExecuteScalar();
+                object result = command.ExecuteScalar();
 
                 isFound = result != null;
             }

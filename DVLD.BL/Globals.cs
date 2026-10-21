@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DVLD.BL;
 
-namespace DVLD
+namespace DVLD.BL
 {
     public static class Globals
     {
-        public static clsUser CurrentUser;
-        public static (string Username, string Password) GetStoredCredintials()
+        public static User CurrentUser;
+        public static (string Username, string Password) GetStoredCredentials()
         {
-            string[] credintials = File.ReadAllLines(@"D:\LastLoginUser.txt");
-            return (credintials[0], credintials[1]);
+            string[] credentials = File.ReadAllLines(@"D:\LastLoginUser.txt");
+            return (credentials[0], credentials[1]);
         }
-        public static void StoreCredintials(string Username, string Password)
+        public static void StoreCredentials(string Username, string Password)
         {
             File.WriteAllLines(@"D:\LastLoginUser.txt", new string[] { Username, Password });
         }

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
-using DVLD.People;
 
 namespace DVLD.Users
 {
@@ -18,7 +11,11 @@ namespace DVLD.Users
         {
             InitializeComponent();
         }
-        private void FeatureStubError(object sender, EventArgs e) { MessageBox.Show("This feature is not implemented yet", "Try agian later", MessageBoxButtons.OK, icon: MessageBoxIcon.Warning); }
+        private void FeatureStubError(object sender, EventArgs e)
+        {
+            MessageBox.Show("This feature is not implemented yet", "Try agian later",
+                MessageBoxButtons.OK, icon: MessageBoxIcon.Warning);
+        }
         private void dgvAllUsers_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             if (dgvAllUsers.Rows.Count <= 0) { return; }
@@ -33,20 +30,20 @@ namespace DVLD.Users
         }
         private void frmManageUsers_Load(object sender, EventArgs e)
         {
-            dgvAllUsers.DataSource = clsUser.GettAllUsers().DefaultView;
+            dgvAllUsers.DataSource = User.GettAllUsers().DefaultView;
             lblNumberOfRecords.Text = dgvAllUsers.RowCount.ToString();
             cmbFilterBy.SelectedIndex = 0;
         }
         private void ShowUserDetails(object sender, EventArgs e)
         {
-            frmUserDetails frm = new frmUserDetails(Convert.ToInt32(dgvAllUsers.CurrentRow.Cells[0].Value));
+            var frm = new frmUserDetails(Convert.ToInt32(dgvAllUsers.CurrentRow.Cells[0].Value));
             frm.ShowDialog();
-            frmManageUsers_Load(null,null);
+            frmManageUsers_Load(null, null);
 
         }
         private void txtFilterValue_TextChanged(object sender, EventArgs e)
         {
-            DataView dv = (DataView)dgvAllUsers.DataSource;
+            var dv = (DataView)dgvAllUsers.DataSource;
 
             string column = cmbFilterBy.Text.Replace(" ", ""); // "Person ID" → "PersonID"
             string searchValue = txtFilterValue.Text.Trim();
@@ -67,12 +64,12 @@ namespace DVLD.Users
             {
                 dv.RowFilter = $"[{column}] LIKE '{searchValue}%'";
             }
-                
+
             lblNumberOfRecords.Text = dgvAllUsers.RowCount.ToString();
         }
         private void cmbActiveFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataView dv = (DataView)dgvAllUsers.DataSource;
+            var dv = (DataView)dgvAllUsers.DataSource;
 
             switch (cmbActiveFilter.SelectedIndex)
             {
@@ -115,7 +112,8 @@ namespace DVLD.Users
         private void txtFilterValue_KeyPress(object sender, KeyPressEventArgs e)
         {
 
-            if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != ' ' && e.KeyChar != '@')
+            if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back
+                && e.KeyChar != ' ' && e.KeyChar != '@')
             {
                 e.Handled = true;
             }
@@ -128,43 +126,48 @@ namespace DVLD.Users
         }
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
         private void btnAddUser_Click(object sender, EventArgs e)
         {
-            frmAddEditUser frm = new frmAddEditUser();
+            var frm = new frmAddEditUser();
             frm.ShowDialog();
             frmManageUsers_Load(null, null);
         }
 
         private void tsmiEditUser_Click(object sender, EventArgs e)
         {
-            frmAddEditUser frm = new frmAddEditUser((int)dgvAllUsers.CurrentRow.Cells[0].Value);
+            var frm = new frmAddEditUser((int)dgvAllUsers.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
             frmManageUsers_Load(null, null);
         }
 
         private void tsmiDeleteUser_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show($"Are you sure you want to delete user [{dgvAllUsers.CurrentRow.Cells[0].Value}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show($"Are you sure you want to delete user " +
+                $"[{dgvAllUsers.CurrentRow.Cells[0].Value}]?", "Confirm Delete", MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Question) == DialogResult.OK)
 
             {
                 //Perform Delete and refresh
-                if (clsUser.DeleteUser((int)dgvAllUsers.CurrentRow.Cells[0].Value))
+                if (User.DeleteUser((int)dgvAllUsers.CurrentRow.Cells[0].Value))
                 {
-                    MessageBox.Show("User Deleted Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("User Deleted Successfully", "Successful",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     frmManageUsers_Load(null, null);
                 }
 
                 else
-                    MessageBox.Show("User was not deleted because it has data linked to it", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                {
+                    MessageBox.Show("User was not deleted because it has data linked to it", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
         private void tsmiChangePass_Click(object sender, EventArgs e)
         {
-            frmChangePassowrd frm = new frmChangePassowrd((int)dgvAllUsers.CurrentRow.Cells[0].Value);
+            var frm = new frmChangePassword((int)dgvAllUsers.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
         }
     }

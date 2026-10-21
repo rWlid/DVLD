@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 using System.Windows.Forms;
 using DVLD.Applications;
 using DVLD.Applications.Local_Driving_License_Applications;
+using DVLD.BL;
 using DVLD.People;
 using DVLD.Tests.TestTypes;
 using DVLD.Users;
@@ -24,36 +18,36 @@ namespace DVLD
 
         private void peopleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmListPeople frm = new frmListPeople();
+            var frm = new frmListPeople();
             frm.ShowDialog();
         }
 
         private void usersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmListUsers frm = new frmListUsers();
+            var frm = new frmListUsers();
             frm.ShowDialog();
         }
 
         private void signOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void currentUserInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmUserDetails frm = new frmUserDetails(Globals.CurrentUser.ID);
+            var frm = new frmUserDetails(Globals.CurrentUser.ID);
             frm.ShowDialog();
         }
 
         private void changePasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmChangePassowrd frm = new frmChangePassowrd(Globals.CurrentUser.ID);
+            var frm = new frmChangePassword(Globals.CurrentUser.ID);
             frm.ShowDialog();
         }
 
         private void manageApplicationTypesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmListApplicationsTypes frm = new frmListApplicationsTypes();
+            var frm = new frmListApplicationsTypes();
             frm.ShowDialog();
         }
 
@@ -64,19 +58,19 @@ namespace DVLD
 
         private void manageTestTypesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmListTestTypes frm = new frmListTestTypes();
+            var frm = new frmListTestTypes();
             frm.ShowDialog();
         }
 
         private void localDrivingLicenseApplicationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmListLDLApplications frm = new frmListLDLApplications();
+            var frm = new frmListLDLApplications();
             frm.ShowDialog();
         }
 
         private void localLicenseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmAddNewLocalLicenseApplication frm = new frmAddNewLocalLicenseApplication();
+            var frm = new frmAddNewLocalLicenseApplication();
             frm.ShowDialog();
         }
     }

@@ -1,47 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DVLD.Users
 {
     public partial class frmAddEditUser : Form
     {
-        public enum enMode { AddNew = 0, Update = 1 };
+        public enum Mode { AddNew = 0, Update = 1 }
 
-        private enMode _Mode;
-        int _UserID;
-        clsUser _User;
+        private Mode _mode;
+        private readonly int _userID;
+        private User _user;
         public frmAddEditUser()
         {
             InitializeComponent();
-            _Mode = enMode.AddNew;
+            _mode = Mode.AddNew;
         }
         public frmAddEditUser(int UserID)
         {
             InitializeComponent();
-            _UserID = UserID;
-            _Mode = enMode.Update;
+            _userID = UserID;
+            _mode = Mode.Update;
         }
-        private void _ResetDefaultValues()
+        private void ResetDefaultValues()
         {
-            if (_Mode == enMode.AddNew)
+            if (_mode == Mode.AddNew)
             {
                 lblFormTitle.Text = "Add User";
-                this.Text = "Add User";
-                _User = new clsUser();
+                Text = "Add User";
+                _user = new User();
             }
             else
             {
                 lblFormTitle.Text = "Update User";
-                this.Text = "Update User";
+                Text = "Update User";
             }
             lblUserID.Text = "???";
             txtUserName.Text = string.Empty;
@@ -50,29 +43,30 @@ namespace DVLD.Users
             ctrlPersonInfoFilter1.ResetPersonInfo();
             tabPageLogin.Enabled = false;
         }
-        private void _LoadData()
+        private void LoadData()
         {
-            _User = clsUser.FindByUserID(_UserID);
+            _user = User.FindByUserID(_userID);
 
-            if (_User == null)
+            if (_user == null)
             {
-                MessageBox.Show("This form will be closed because No User with ID = " + _UserID, "Not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Close();
+                MessageBox.Show("This form will be closed because No User with ID = " + _userID,
+                    "Not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
                 return;
             }
 
-            lblUserID.Text = _User.ID.ToString();
-            txtUserName.Text = _User.UserName;
-            cbIsActive.Checked = _User.IsActive;
-            ctrlPersonInfoFilter1.LoadPersonInfo(_User.PersonID);
+            lblUserID.Text = _user.ID.ToString();
+            txtUserName.Text = _user.UserName;
+            cbIsActive.Checked = _user.IsActive;
+            ctrlPersonInfoFilter1.LoadPersonInfo(_user.PersonID);
         }
         private void frmAddEditUser_Load(object sender, EventArgs e)
         {
-            _ResetDefaultValues();
-            
-            if (_Mode == enMode.Update) 
-            { 
-                _LoadData();
+            ResetDefaultValues();
+
+            if (_mode == Mode.Update)
+            {
+                LoadData();
                 ctrlPersonInfoFilter1.FilterEnabled = false;
                 tabPageLogin.Enabled = true;
             }
@@ -81,13 +75,14 @@ namespace DVLD.Users
         {
             if (ctrlPersonInfoFilter1.SelectedPersonInfo == null)
             {
-                MessageBox.Show("Please Select a Person to create User", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please Select a Person to create User", "",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (_Mode == enMode.AddNew && clsUser.IsUserExistForPerson(ctrlPersonInfoFilter1.PersonID)) 
+            if (_mode == Mode.AddNew && User.IsUserExistForPerson(ctrlPersonInfoFilter1.PersonID))
             {
                 MessageBox.Show("Selected Person already has User", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return; 
+                return;
             }
 
             tabControl1.SelectedIndex = 1;
@@ -95,7 +90,7 @@ namespace DVLD.Users
         }
         private void txt_Validating(object sender, CancelEventArgs e)
         {
-            TextBox txt = (TextBox)sender;
+            var txt = (TextBox)sender;
             if (string.IsNullOrEmpty(txt.Text))
             {
                 errorProvider1.SetError(txt, "Required field");
@@ -108,31 +103,35 @@ namespace DVLD.Users
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (!this.ValidateChildren()) { return; }
-            if (_Mode == enMode.AddNew && clsUser.IsUserExistForPerson(ctrlPersonInfoFilter1.PersonID)) 
+            if (!ValidateChildren()) { return; }
+            if (_mode == Mode.AddNew && User.IsUserExistForPerson(ctrlPersonInfoFilter1.PersonID))
             {
                 MessageBox.Show("Selected Person already has User", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return; 
+                return;
             }
-            if (_Mode == enMode.Update && !clsUser.ValidateCredintials(_User.UserName, txtPassword.Text)) {
-                MessageBox.Show("Wrong Password.", "Invalid Credintials", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
-
-            _User.PersonID = ctrlPersonInfoFilter1.PersonID;
-            _User.UserName = txtUserName.Text;
-            _User.Password = txtPassword.Text;
-            _User.IsActive = cbIsActive.Checked;
-
-            if (_User.Save())
+            if (_mode == Mode.Update && !User.ValidateCredentials(_user.UserName, txtPassword.Text))
             {
-                _Mode = enMode.Update;
+                MessageBox.Show("Wrong Password.", "Invalid Credentials", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+            _user.PersonID = ctrlPersonInfoFilter1.PersonID;
+            _user.UserName = txtUserName.Text;
+            _user.Password = txtPassword.Text;
+            _user.IsActive = cbIsActive.Checked;
+
+            if (_user.Save())
+            {
+                _mode = Mode.Update;
                 lblFormTitle.Text = "Update User";
-                this.Text = "Update User";
+                Text = "Update User";
                 ctrlPersonInfoFilter1.FilterEnabled = false;
-                lblUserID.Text = _User.ID.ToString();
+                lblUserID.Text = _user.ID.ToString();
 
                 MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                if(Globals.CurrentUser.ID == _User.ID) { Globals.CurrentUser = _User; }
+                if (Globals.CurrentUser.ID == _user.ID) { Globals.CurrentUser = _user; }
             }
             else { MessageBox.Show("Data is not Saved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
@@ -143,7 +142,7 @@ namespace DVLD.Users
                 errorProvider1.SetError(txtUserName, "Required field");
                 e.Cancel = true;
             }
-            else if (!_User.UserName.ToLower().Equals(txtUserName.Text.ToLower()) && clsUser.IsUserExist(txtUserName.Text))
+            else if (!_user.UserName.ToLower().Equals(txtUserName.Text.ToLower()) && User.IsUserExist(txtUserName.Text))
             {
                 errorProvider1.SetError(txtUserName, "This Username is Already Used");
                 e.Cancel = true;

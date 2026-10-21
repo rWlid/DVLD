@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System;
 using System.Data;
-using System.Data.Common;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BL;
 
@@ -46,7 +39,7 @@ namespace DVLD.Applications.Local_Driving_License_Applications
 
         private void frmListLDLApplications_Load(object sender, EventArgs e)
         {
-            dgvApplications.DataSource = clsLocalLicenseApplicaiton.GetAllApplications().DefaultView;
+            dgvApplications.DataSource = LocalLicenseApplication.GetAllApplications().DefaultView;
             lblNumberOfRecords.Text = dgvApplications.RowCount.ToString();
             cmbFilterBy.SelectedIndex = 0;
         }
@@ -90,10 +83,10 @@ namespace DVLD.Applications.Local_Driving_License_Applications
 
         private void txtFilterValue_TextChanged(object sender, EventArgs e)
         {
-            DataView dv = (DataView)dgvApplications.DataSource;
+            var dv = (DataView)dgvApplications.DataSource;
 
             string column = cmbFilterBy.Text.Replace(" ", ""); // "Person ID" → "PersonID"
-            if(cmbFilterBy.Text.Equals("L.D.L Application ID"))
+            if (cmbFilterBy.Text.Equals("L.D.L Application ID"))
             {
                 column = "LocalDrivingLicenseApplicationID";
             }
@@ -121,7 +114,7 @@ namespace DVLD.Applications.Local_Driving_License_Applications
 
         private void cbLicenseClassFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataView dv = (DataView)dgvApplications.DataSource;
+            var dv = (DataView)dgvApplications.DataSource;
 
             if (cbLicenseClassFilter.Text.Equals("All")) // Reset view
             {
@@ -138,7 +131,7 @@ namespace DVLD.Applications.Local_Driving_License_Applications
 
         private void cbStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataView dv = (DataView)dgvApplications.DataSource;
+            var dv = (DataView)dgvApplications.DataSource;
 
             if (cbStatusFilter.Text.Equals("All")) // Reset view
             {
@@ -155,7 +148,8 @@ namespace DVLD.Applications.Local_Driving_License_Applications
         private void txtFilterValue_KeyPress(object sender, KeyPressEventArgs e)
         {
 
-            if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != ' ' && e.KeyChar != '@')
+            if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back
+                && e.KeyChar != ' ' && e.KeyChar != '@')
             {
                 e.Handled = true;
             }
@@ -174,20 +168,20 @@ namespace DVLD.Applications.Local_Driving_License_Applications
 
         private void btnAddApplication_Click(object sender, EventArgs e)
         {
-            frmAddNewLocalLicenseApplication frm = new frmAddNewLocalLicenseApplication();
+            var frm = new frmAddNewLocalLicenseApplication();
             frm.ShowDialog();
             frmListLDLApplications_Load(null, null);
         }
 
         private void tsmShowDetails_Click(object sender, EventArgs e)
         {
-            frmLocalLicenseApplicationInfo frm = new frmLocalLicenseApplicationInfo((int)dgvApplications.CurrentRow.Cells[0].Value);
+            var frm = new frmLocalLicenseApplicationInfo((int)dgvApplications.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
         }
 
         private void tsmEditApplication_Click(object sender, EventArgs e)
         {
-            frmAddNewLocalLicenseApplication frm = new frmAddNewLocalLicenseApplication((int)dgvApplications.CurrentRow.Cells[0].Value);
+            var frm = new frmAddNewLocalLicenseApplication((int)dgvApplications.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
             frmListLDLApplications_Load(null, null);
         }
@@ -196,47 +190,65 @@ namespace DVLD.Applications.Local_Driving_License_Applications
         {
             if (dgvApplications.CurrentRow.Cells["ApplicationStatus"].Value.ToString() != "New")
             {
-                MessageBox.Show("This Application can not be deleted", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("This Application can not be deleted", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (MessageBox.Show($"Are you sure you want to delete local driving license application [{dgvApplications.CurrentRow.Cells[0].Value}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show($"Are you sure you want to delete local driving license application " +
+                $"[{dgvApplications.CurrentRow.Cells[0].Value}]?", "Confirm Delete", MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Question) == DialogResult.OK)
             {
-                if (clsLocalLicenseApplicaiton.DeleteApplication((int)dgvApplications.CurrentRow.Cells[0].Value))
+                if (LocalLicenseApplication.DeleteApplication((int)dgvApplications.CurrentRow.Cells[0].Value))
 
                 {
                     //Perform Delete and refresh
-                    MessageBox.Show("Application Deleted Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Application Deleted Successfully", "Successful",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     frmListLDLApplications_Load(null, null);
                 }
-                else { MessageBox.Show("Application was not deleted because it has data linked to it", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                else
+                {
+                    MessageBox.Show("Application was not deleted because it has data linked to it",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
         private void cancelApplicationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            clsLocalLicenseApplicaiton application = clsLocalLicenseApplicaiton.Find((int)dgvApplications.CurrentRow.Cells[0].Value);
-            if (MessageBox.Show($"Are you sure you want to cancel local driving license application [{dgvApplications.CurrentRow.Cells[0].Value}]?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK
+            var application = LocalLicenseApplication.Find((int)dgvApplications.CurrentRow.Cells[0].Value);
+            if (MessageBox.Show($"Are you sure you want to cancel local driving license application " +
+                $"[{dgvApplications.CurrentRow.Cells[0].Value}]?", "Confirm Delete", MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Question) == DialogResult.OK
                 && application != null)
             {
 
-                if(application.Cancel())
+                if (application.Cancel())
                 {
-                    MessageBox.Show("Application Canceled Successfully", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Application Canceled Successfully", "Successful",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     frmListLDLApplications_Load(null, null);
                 }
                 else
                 {
-                    MessageBox.Show("Application couldn't be canceled", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Application couldn't be canceled", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            } 
+            }
         }
 
         private void cmManageApplication_Opened(object sender, EventArgs e)
         {
-            tsmEditApplication.Enabled = dgvApplications.CurrentRow.Cells["ApplicationStatus"].Value.ToString() == clsApplication.enStatus.New.ToString();
-            tsmDelete.Enabled = dgvApplications.CurrentRow.Cells["ApplicationStatus"].Value.ToString() == clsApplication.enStatus.New.ToString();
-            cancelApplicationToolStripMenuItem.Enabled = dgvApplications.CurrentRow.Cells["ApplicationStatus"].Value.ToString() == clsApplication.enStatus.New.ToString();
+            tsmEditApplication.Enabled =
+                dgvApplications.CurrentRow.Cells["ApplicationStatus"].Value.ToString()
+                    == DVLD.BL.Application.Status.New.ToString();
+            tsmDelete.Enabled =
+                dgvApplications.CurrentRow.Cells["ApplicationStatus"].Value.ToString()
+                    == DVLD.BL.Application.Status.New.ToString();
+            cancelApplicationToolStripMenuItem.Enabled =
+                dgvApplications.CurrentRow.Cells["ApplicationStatus"].Value.ToString()
+                    == DVLD.BL.Application.Status.New.ToString();
         }
     }
 }

@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DVLD.DAL
 {
-    public static class clsLicenseClassData
+    public static class LicenseClassData
     {
-        public static bool GetLicenseClassInfo(int LicenseClassID, ref string ClassName, ref string ClassDescription, ref int MinimumAllowedAge, ref int DefaultValidityLength, ref decimal ClassFees)
+        public static bool GetLicenseClassInfo(int LicenseClassID, ref string ClassName, ref string ClassDescription,
+            ref int MinimumAllowedAge, ref int DefaultValidityLength, ref decimal ClassFees)
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
             string query = @"SELECT * FROM LicenseClasses WHERE LicenseClassID = @LicenseClassID";
 
-            SqlCommand command = new SqlCommand(query, connection);
+            var command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
 
