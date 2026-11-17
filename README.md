@@ -2,7 +2,7 @@
 
 A desktop application for managing driving-license operations, built with C# and Windows Forms on a three-tier architecture. The system covers people, system users, license applications, and the reference data (application types, test types, license classes) needed to issue driving licenses.
 
-This project follows the DVLD project specification from [ProgrammingAdvices.com]([https://programmingadvices.com](https://programmingadvices.com/p/19-fullrealproject)).
+This project follows the DVLD project specification from [ProgrammingAdvices.com]([https://programmingadvices.com/p/19-fullrealproject]).
 
 ## Features
 
