@@ -11,34 +11,7 @@ namespace DVLD.DAL
             var dt = new DataTable();
             var connection = new SqlConnection(DataAccessSettings.ConnectionString);
 
-            string query = @"SELECT LocalDrivingLicenseApplicationID,
-                                   ClassName,
-                                   NationalNo,
-                                   CONCAT_WS(' ', FirstName, SecondName, ThirdName, LastName) AS FullName,
-                                   ApplicationDate,
-                                   (
-                                    SELECT COUNT(TestID)
-                                    FROM  LocalDrivingLicenseApplications AS L 
-                                    INNER JOIN TestAppointments ON
-                                        L.LocalDrivingLicenseApplicationID =
-                                            TestAppointments.LocalDrivingLicenseApplicationID
-                                    INNER JOIN Tests ON TestAppointments.TestAppointmentID = Tests.TestAppointmentID
-                                    WHERE TestResult = 1 AND L.LocalDrivingLicenseApplicationID =
-                                        LocalDrivingLicenseApplications.LocalDrivingLicenseApplicationID
-                                   ) AS PassedTests,
-                                   CASE ApplicationStatus
-                                   WHEN 1 THEN 'New'
-                                   WHEN 2 THEN 'Cancelled'
-                                   WHEN 3 THEN 'Completed'
-                                   END AS ApplicationStatus
-                            FROM Applications
-                            INNER JOIN LocalDrivingLicenseApplications ON
-                                Applications.ApplicationID = LocalDrivingLicenseApplications.ApplicationID
-                            INNER JOIN People ON Applications.ApplicantPersonID = People.PersonID
-                            INNER JOIN LicenseClasses ON
-                                LocalDrivingLicenseApplications.LicenseClassID = LicenseClasses.LicenseClassID
-                            
-                            ORDER BY ApplicationDate DESC";
+            string query = @"SELECT * FROM LocalDrivingLicenseApplications_View";
 
             var command = new SqlCommand(query, connection);
 
