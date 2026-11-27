@@ -13,20 +13,10 @@ namespace DVLD.BL
 
         public LocalLicenseApplication()
         {
-            ID = -1;
-            ApplicantID = -1;
-            Type = null;
-            ApplicantInfo = null;
-            Date = DateTime.Now;
-            LastStatus = Status.New;
-            LastStatusDate = DateTime.Now;
-            Fees = -1;
-            CreatorID = -1;
             LocalID = -1;
             LicenseClassID = -1;
-            Mode = Mode.AddNew;
         }
-        public LocalLicenseApplication(int ID, int ApplicantID, DateTime Date, int TypeID, int LastStatus,
+        private LocalLicenseApplication(int ID, int ApplicantID, DateTime Date, int TypeID, int LastStatus,
             DateTime LastStatusDate, decimal Fees, int CreatorID, int LocalID, int LicenseClassID)
             : base(ID, ApplicantID, Date, TypeID, LastStatus, LastStatusDate, Fees, CreatorID)
         {
@@ -50,23 +40,19 @@ namespace DVLD.BL
         }
         public override bool Save()
         {
+            bool isNew = (Mode == Mode.AddNew);
+
             //Save base Application
             if (!base.Save()) { return false; }
 
-            //New Application
-            if (Mode == Mode.AddNew)
+            //New Application: base.Save() already set Mode = Update
+            if (isNew)
             {
-                if (!AddNewApplication()) { return false; }
-
-                Mode = Mode.Update;
-                return true;
+                return AddNewApplication();
             }
 
             //Alter License Class
-            else
-            {
-                return UpdateLicenseClass();
-            }
+            return UpdateLicenseClass();
         }
         public static LocalLicenseApplication Find(int LocalAppID)
         {
